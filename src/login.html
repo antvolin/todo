@@ -12,8 +12,14 @@
 	<div class="content">
 		<form action="/?route=auth/login" method="post">
 			<p>
-				<input type="text" name="user">
-				<input type="text" name="password">
+				<label for="user">User name</label>
+				<br/>
+				<input id='user' type="text" name="user">
+			</p>
+			<p>
+				<label for="password">Password</label>
+				<br/>
+				<input id="password" type="text" name="password">
 			</p>
 			<p>
 				<input type="submit">

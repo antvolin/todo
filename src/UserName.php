@@ -4,10 +4,8 @@ namespace BeeJeeMVC;
 
 use InvalidArgumentException;
 
-class UserName implements TaskFieldInterface
+class UserName
 {
-    public const FIELD_NAME = 'User name';
-
     /**
      * @var string
      */
@@ -19,7 +17,7 @@ class UserName implements TaskFieldInterface
     public function __construct(string $value)
     {
         if (!$value) {
-            $msg = sprintf('%s value cannot be empty.', self::FIELD_NAME);
+            $msg = 'User name value cannot be empty.';
 
             throw new InvalidArgumentException($msg);
         }
@@ -38,7 +36,7 @@ class UserName implements TaskFieldInterface
     /**
      * @return string
      */
-    public function getValue(): string
+    private function getValue(): string
     {
         return $this->value;
     }

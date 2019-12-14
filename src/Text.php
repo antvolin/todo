@@ -4,7 +4,7 @@ namespace BeeJeeMVC;
 
 use InvalidArgumentException;
 
-class Text implements TaskFieldInterface
+class Text
 {
     public const FIELD_NAME = 'Text';
 
@@ -19,7 +19,7 @@ class Text implements TaskFieldInterface
     public function __construct(string $value)
     {
         if (!$value) {
-            $msg = sprintf('%s value cannot be empty.', self::FIELD_NAME);
+            $msg = 'Text value cannot be empty.';
 
             throw new InvalidArgumentException($msg);
         }
@@ -38,7 +38,7 @@ class Text implements TaskFieldInterface
     /**
      * @return string
      */
-    public function getValue(): string
+    private function getValue(): string
     {
         return $this->value;
     }

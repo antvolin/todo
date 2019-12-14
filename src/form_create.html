@@ -12,11 +12,23 @@
 	<div class="content">
 		<form action="/?route=page/create" method="post">
 			<p>
-				<input type="text" name="user_name">
-				<input type="text" name="email">
-				<input type="text" name="text">
+				<label for="user_name">User name</label>
+				<br/>
+				<input id="user_name" type="text" name="user_name">
 			</p>
-			<p><input type="submit"></p>
+			<p>
+				<label for="email">Email</label>
+				<br/>
+				<input id="email" type="email" name="email">
+			</p>
+			<p>
+				<label for="text">Text</label>
+				<br/>
+				<input id="text" type="text" name="text">
+			</p>
+			<p>
+				<input type="submit">
+			</p>
 		</form>
 	</div>
 </div>

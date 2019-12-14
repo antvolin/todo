@@ -15,7 +15,7 @@ class UserNameTest extends TestCase
     {
         $userName = new UserName('test user name');
 
-        $this->assertEquals('test user name', $userName->getValue());
+        $this->assertEquals('test user name', $userName);
     }
 
     /**

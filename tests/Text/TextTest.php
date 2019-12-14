@@ -15,7 +15,7 @@ class TextTest extends TestCase
     {
         $text = new Text('test text');
 
-        $this->assertEquals('test text', $text->getValue());
+        $this->assertEquals('test text', $text);
     }
 
     /**

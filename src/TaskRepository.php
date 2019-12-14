@@ -44,7 +44,7 @@ class TaskRepository
     public function create(UserName $userName, Email $email, Text $text): Task
     {
         $task = new Task($userName, $email, $text);
-        $hash = (new HashGenerator())->generateHash($userName->getValue(), $email->getValue(), $text->getValue());
+        $hash = (new HashGenerator())->generateHash($userName, $email, $text);
 
         $this->taskList[$hash] = $task;
 

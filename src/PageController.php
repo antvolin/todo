@@ -47,14 +47,18 @@ class PageController
                 $text = $this->request->get('text');
 
                 try {
-                    $content = 'Task #' . (new User())->createTask($userName, $email, $text) . 'created!';
+                    $taskRepo = new TaskRepository();
+                    $content = 'Task #' . $taskRepo->create($userName, $email, $text) . 'created!';
+
                     include_once('created.html');
                 } catch (InvalidArgumentException $exception) {
                     $error = $exception->getMessage();
+
                     include_once('form_create.html');
                 }
             } else {
                 $error = 'Insufficient rights for this operation!';
+
                 include_once('form_create.html');
             }
         } else {
@@ -69,7 +73,9 @@ class PageController
                 $hash = $this->request->get('hash');
                 $text = $this->request->get('text');
 
-                (new Admin())->editTask($hash, $text);
+                $taskRepo = new TaskRepository();
+
+                $taskRepo->edit($hash, $text);
 
                 include_once('edit.html');
             } else {
@@ -90,7 +96,9 @@ class PageController
     public function done(): void
     {
         if ($_SESSION['admin']) {
-            (new Admin())->doneTask(func_get_args()[0]);
+            $taskRepo = new TaskRepository();
+
+            $taskRepo->done(func_get_args()[0]);
         } else {
             $error = 'Insufficient rights for this operation!';
         }

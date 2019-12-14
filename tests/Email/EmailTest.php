@@ -15,7 +15,7 @@ class EmailTest extends TestCase
     {
         $email = new Email('test@test.test');
 
-        $this->assertEquals('test@test.test', $email->getValue());
+        $this->assertEquals('test@test.test', $email);
     }
 
     /**

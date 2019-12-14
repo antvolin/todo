@@ -45,11 +45,9 @@ class TaskTest extends TestCase
      */
     public function shouldBeCreated(): void
     {
-        $this->assertEquals($this->userName->getValue(), $this->task->getUserName()->getValue());
-        $this->assertEquals($this->email->getValue(), $this->task->getEmail()->getValue());
-        $this->assertEquals($this->text->getValue(), $this->task->getText()->getValue());
-        $createdStatus = (new AllowedStatuses())->getCreatedStatus();
-        $this->assertEquals($createdStatus, $this->task->getStatus()->getValue());
+        $this->assertEquals($this->userName, $this->task->getUserName());
+        $this->assertEquals($this->email, $this->task->getEmail());
+        $this->assertEquals($this->text, $this->task->getText());
     }
 
     /**
@@ -59,10 +57,10 @@ class TaskTest extends TestCase
     {
         $newText = 'new test text';
         $this->task->edit($newText);
-        $this->assertEquals($newText, $this->task->getText()->getValue());
+        $this->assertEquals($newText, $this->task->getText());
 
         $editStatus = (new AllowedStatuses())->getEditStatus();
-        $this->assertEquals($editStatus, $this->task->getStatus()->getValue());
+        $this->assertEquals($editStatus, $this->task->getStatus());
     }
 
     /**
@@ -72,6 +70,6 @@ class TaskTest extends TestCase
     {
         $doneStatus = (new AllowedStatuses())->getDoneStatus();
         $this->task->done();
-        $this->assertEquals($doneStatus, $this->task->getStatus()->getValue());
+        $this->assertEquals($doneStatus, $this->task->getStatus());
     }
 }

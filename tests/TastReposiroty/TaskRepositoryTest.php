@@ -50,9 +50,9 @@ class TaskRepositoryTest extends TestCase
         $this->text = new Text('test text');
         $this->taskRepository = new TaskRepository();
 
-        $userName = $this->userName->getValue();
-        $email = $this->email->getValue();
-        $text = $this->text->getValue();
+        $userName = $this->userName;
+        $email = $this->email;
+        $text = $this->text;
 
         $this->task = $this->taskRepository->create($this->userName, $this->email, $this->text);
         $this->hash = (new HashGenerator())->generateHash($userName, $email, $text);
@@ -63,9 +63,9 @@ class TaskRepositoryTest extends TestCase
      */
     public function shouldBeCreated(): void
     {
-        $this->assertEquals($this->userName->getValue(), $this->task->getUserName()->getValue());
-        $this->assertEquals($this->email->getValue(), $this->task->getEmail()->getValue());
-        $this->assertEquals($this->text->getValue(), $this->task->getText()->getValue());
+        $this->assertEquals($this->userName, $this->task->getUserName());
+        $this->assertEquals($this->email, $this->task->getEmail());
+        $this->assertEquals($this->text, $this->task->getText());
     }
 
     /**
@@ -76,10 +76,10 @@ class TaskRepositoryTest extends TestCase
         $newText = 'test new task text';
         $this->task->edit($newText);
         $task = $this->taskRepository->getByHash($this->hash);
-        $this->assertEquals($newText, $task->getText()->getValue());
+        $this->assertEquals($newText, $task->getText());
 
         $statusEdit = (new AllowedStatuses())->getEditStatus();
-        $this->assertEquals($statusEdit, $task->getStatus()->getValue());
+        $this->assertEquals($statusEdit, $task->getStatus());
     }
 
     /**
@@ -91,6 +91,6 @@ class TaskRepositoryTest extends TestCase
         $task = $this->taskRepository->getByHash($this->hash);
         $statusDone = (new AllowedStatuses())->getDoneStatus();
 
-        $this->assertEquals($statusDone, $task->getStatus()->getValue());
+        $this->assertEquals($statusDone, $task->getStatus());
     }
 }

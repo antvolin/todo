@@ -4,10 +4,8 @@ namespace BeeJeeMVC;
 
 use InvalidArgumentException;
 
-class Status implements TaskFieldInterface
+class Status
 {
-    public const FIELD_NAME = 'Status';
-
     /**
      * @var string
      */
@@ -19,7 +17,7 @@ class Status implements TaskFieldInterface
     public function __construct(string $value)
     {
         if (!$value) {
-            $msg = sprintf('%s value cannot be empty.', self::FIELD_NAME);
+            $msg = 'Status value cannot be empty.';
 
             throw new InvalidArgumentException($msg);
         }
@@ -38,7 +36,7 @@ class Status implements TaskFieldInterface
     /**
      * @return string
      */
-    public function getValue(): string
+    private function getValue(): string
     {
         return $this->value;
     }

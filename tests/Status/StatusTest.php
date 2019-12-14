@@ -15,7 +15,7 @@ class StatusTest extends TestCase
     {
         $status = new Status('test status');
 
-        $this->assertEquals('test status', $status->getValue());
+        $this->assertEquals('test status', $status);
     }
 
     /**

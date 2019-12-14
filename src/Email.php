@@ -4,10 +4,8 @@ namespace BeeJeeMVC;
 
 use InvalidArgumentException;
 
-class Email implements TaskFieldInterface
+class Email
 {
-    public const FIELD_NAME = 'Email';
-
     /**
      * @var string
      */
@@ -19,7 +17,7 @@ class Email implements TaskFieldInterface
     public function __construct(string $value)
     {
         if (!$value) {
-            $msg = sprintf('%s value cannot be empty.', self::FIELD_NAME);
+            $msg = 'Email value cannot be empty.';
 
             throw new InvalidArgumentException($msg);
         }
@@ -27,7 +25,7 @@ class Email implements TaskFieldInterface
         $emailRegExp = (new EmailRegExp())->getRegExp();
 
         if (!preg_match($emailRegExp, $value)) {
-            $msg = sprintf('%s value must be a valid email address.', self::FIELD_NAME);
+            $msg = 'Email value must be a valid email address.';
 
             throw new InvalidArgumentException($msg);
         }
@@ -46,7 +44,7 @@ class Email implements TaskFieldInterface
     /**
      * @return string
      */
-    public function getValue(): string
+    private function getValue(): string
     {
         return $this->value;
     }

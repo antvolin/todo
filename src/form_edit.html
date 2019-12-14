@@ -12,7 +12,11 @@
 	<div class="content">
 		<form action="/?route=page/edit" method="post">
 			<p>
-				<input type="text" name="text">
+				<label for="text">Text</label>
+				<br/>
+				<input id="text" type="text" name="text">
+			</p>
+			<p>
 				<input type="hidden" name="hash" value="<?php echo $hash; ?>">
 			</p>
 			<p>

@@ -22,7 +22,12 @@ class Task
     /**
      * @var Status
      */
-    private $status;
+    private $editStatus;
+
+    /**
+     * @var Status
+     */
+    private $doneStatus;
 
     /**
      * @param UserName $userName
@@ -34,8 +39,6 @@ class Task
         $this->userName = $userName;
         $this->email = $email;
         $this->text = $text;
-        $createdStatus = (new AllowedStatuses())->getCreatedStatus();
-        $this->status = new Status($createdStatus);
     }
 
     /**
@@ -51,7 +54,7 @@ class Task
      */
     public function getHash(): string
     {
-        return (new HashGenerator())->generateHash($this->userName->getValue(), $this->email->getValue(), $this->text->getValue());
+        return (new HashGenerator())->generateHash($this->userName, $this->email, $this->text);
     }
 
     /**
@@ -79,11 +82,11 @@ class Task
     }
 
     /**
-     * @return Status
+     * @return string
      */
-    public function getStatus(): Status
+    public function getStatus(): string
     {
-        return $this->status;
+        return $this->editStatus.$this->doneStatus;
     }
 
     /**
@@ -93,12 +96,12 @@ class Task
     {
         $this->text = new Text($text);
         $editStatus = (new AllowedStatuses())->getEditStatus();
-        $this->status = new Status($editStatus);
+        $this->editStatus = new Status($editStatus);
     }
 
     public function done(): void
     {
         $doneStatus = (new AllowedStatuses())->getDoneStatus();
-        $this->status = new Status($doneStatus);
+        $this->doneStatus = new Status($doneStatus);
     }
 }
