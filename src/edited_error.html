@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>List</title>
+	<title>Edit task</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script type="text/javascript">
+		(function(){
+			setTimeout("window.location.href = '?route=page/list'", 2000);
+		})();
+	</script>
 </head>
 <body>
 <div class="container">
@@ -10,10 +15,7 @@
 		<?php echo ($error ?? ''); ?>
 	</div>
 	<div class="content">
-		<?php echo ($content ?? ''); ?>
-	</div>
-	<div class="pages">
-		<?php echo ($html ?? ''); ?>
+		Edited error!
 	</div>
 </div>
 </body>

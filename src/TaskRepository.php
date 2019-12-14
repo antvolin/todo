@@ -13,6 +13,10 @@ class TaskRepository
     {
         $this->taskList = [
             '17f072526080bf7daa7b742c1dd94ec8' => new Task(new UserName('test1'), new Email('test@test.com'), new Text('text1')),
+            'f928bb3caaf876878d8dc172324bfd3acreated' => new Task(new UserName('test2'), new Email('test@test.com'), new Text('text2')),
+            '853c962407c926a5a16479438bf45c40created' => new Task(new UserName('test1'), new Email('test@test.com'), new Text('tttt')),
+            '5949b6e77c7cedeeeac18f12e38fbb6fcreated' => new Task(new UserName('test1'), new Email('test@test.com'), new Text('asdasd')),
+            '2daebe4112efe83e565aecb9c2632238created' => new Task(new UserName('test2'), new Email('test@test.com'), new Text('asdasd')),
         ];
     }
 

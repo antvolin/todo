@@ -4,6 +4,9 @@ namespace BeeJeeMVC;
 
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\View\DefaultView;
 
 class PageController
 {
@@ -32,8 +35,28 @@ class PageController
     public function list(): void
     {
         $repo = new TaskRepository();
+
+        $adapter = new ArrayAdapter($repo->getList());
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(3);
+
+        if ($this->request->get('p')) {
+            $pagerfanta->setCurrentPage($this->request->get('p'));
+        }
+
+        $nbResults = $pagerfanta->getNbResults();
+        $currentPageResults = $pagerfanta->getCurrentPageResults();
+
+        $routeGenerator = function($page) {
+            return '/?route=page/list&p='.$page;
+        };
+
+        $view = new DefaultView();
+        $options = array('proximity' => 3);
+        $html = $view->render($pagerfanta, $routeGenerator, $options);
+
         $builder = new Builder($this->name, $this->base);
-        $content = $builder->buildList($repo->getList());
+        $content = $builder->buildList($currentPageResults);
 
         include_once('list.html');
     }
@@ -77,14 +100,11 @@ class PageController
 
                 $taskRepo->edit($hash, $text);
 
-                include_once('edit.html');
+                include_once('edited.html');
             } else {
-                $repo = new TaskRepository();
-                $builder = new Builder($this->name, $this->base);
                 $error = 'Insufficient rights for this operation!';
-                $content = $builder->buildList($repo->getList());
 
-                include_once('list.html');
+                include_once('edited_error.html');
             }
         } else {
             $hash = func_get_args()[0];
@@ -99,14 +119,12 @@ class PageController
             $taskRepo = new TaskRepository();
 
             $taskRepo->done(func_get_args()[0]);
+
+            include_once('done.html');
         } else {
             $error = 'Insufficient rights for this operation!';
+
+            include_once('done_error.html');
         }
-
-        $repo = new TaskRepository();
-        $builder = new Builder($this->name, $this->base);
-        $content = $builder->buildList($repo->getList());
-
-        include_once('list.html');
     }
 }
