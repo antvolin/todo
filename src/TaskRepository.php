@@ -35,15 +35,15 @@ class TaskRepository
     }
 
     /**
-     * @param UserName $userName
-     * @param Email $email
-     * @param Text $text
+     * @param string $userName
+     * @param string $email
+     * @param string $text
      *
      * @return Task
      */
-    public function create(UserName $userName, Email $email, Text $text): Task
+    public function create(string $userName, string $email, string $text): Task
     {
-        $task = new Task($userName, $email, $text);
+        $task = new Task(new UserName($userName), new Email($email), new Text($text));
         $hash = (new HashGenerator())->generateHash($userName, $email, $text);
 
         $this->taskList[$hash] = $task;

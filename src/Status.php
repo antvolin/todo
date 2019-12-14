@@ -16,8 +16,8 @@ class Status
      */
     public function __construct(string $value)
     {
-        if (!$value) {
-            $msg = 'Status value cannot be empty.';
+        if (!in_array($value, (new AllowedStatuses())->getAllowedStatuses(), true)) {
+            $msg = 'Status value not allowed.';
 
             throw new InvalidArgumentException($msg);
         }

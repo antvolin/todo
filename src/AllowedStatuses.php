@@ -22,4 +22,15 @@ class AllowedStatuses
     {
         return self::EDITED_STATUS;
     }
+
+    /**
+     * @return array
+     */
+    public function getAllowedStatuses(): array
+    {
+        return [
+            self::DONE_STATUS,
+            self::EDITED_STATUS,
+        ];
+    }
 }

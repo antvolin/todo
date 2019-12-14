@@ -13,18 +13,35 @@ class StatusTest extends TestCase
      */
     public function shouldBeConstructable(): void
     {
-        $status = new Status('test status');
+        $status = new Status('edited');
 
-        $this->assertEquals('test status', $status);
+        $this->assertEquals('edited', $status);
     }
 
     /**
      * @test
+     *
+     * @param $value
+     *
+     * @dataProvider notAllowedValue
      */
-    public function shouldBeNotConstructableWithEmptyString(): void
+    public function shouldBeNotConstructableWithNotAllowedValue($value): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Status('');
+        new Status($value);
+    }
+
+    /**
+     * @return array
+     */
+    public function notAllowedValue(): array
+    {
+        return [
+            ['test'],
+            [-1],
+            [true],
+            [''],
+        ];
     }
 }
