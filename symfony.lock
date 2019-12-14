@@ -29,6 +29,12 @@
             ".env"
         ]
     },
+    "symfony/http-foundation": {
+        "version": "v5.0.1"
+    },
+    "symfony/mime": {
+        "version": "v5.0.1"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.3",
         "recipe": {
@@ -48,7 +54,13 @@
     "symfony/polyfill-ctype": {
         "version": "v1.13.1"
     },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.13.1"
+    },
     "symfony/polyfill-mbstring": {
+        "version": "v1.13.1"
+    },
+    "symfony/polyfill-php72": {
         "version": "v1.13.1"
     },
     "symfony/test-pack": {

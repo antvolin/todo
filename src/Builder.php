@@ -26,6 +26,13 @@ class Builder
 			$content .= $this->buildTask($task);
 		}
 
+        if ($_SESSION['admin']) {
+            $content .= '<div><a href="/?route=auth/logout">Logout</a></div>';
+        } else {
+            $content .= '<div><a href="/?route=page/create">Create task</a></div>';
+            $content .= '<div><a href="/?route=auth/login">Login</a></div>';
+        }
+
 		return $content;
 	}
 
@@ -34,19 +41,50 @@ class Builder
      *
      * @return string
      */
-	public function buildTask(Task $task): string
+	private function buildTask(Task $task): string
     {
 		$content =
 			'<div id="$task->getHash()" class="task">
-				<a href="' . $this->base . strtolower($this->controller) . '/edit/' . $task->getHash() . '">
-					<?php echo $task->getHash(); ?>
-				</a>
 				<div class="userName">' . $task->getUserName() . '</div>
 				<div class="email">' . $task->getEmail() . '</div>
 				<div class="text">' . $task->getText() . '</div>
-				<div class="status">' . $task->getStatus() . '</div>
-			</div>';
+				<div class="status">' . $task->getStatus() . '</div>'.
+                $this->createEditLink($task->getHash()).
+                $this->createDoneLink($task->getHash()).
+			'</div>';
 
 		return $content;
 	}
+
+    /**
+     * @param string $hash
+     *
+     * @return string
+     */
+	private function createEditLink(string $hash): string
+    {
+        $link = '';
+
+        if ($_SESSION['admin']) {
+            $link = '<a href="?route='.$this->base.strtolower($this->controller).'/edit/'.$hash.'">Edit task</a><br/>';
+        }
+
+        return $link;
+    }
+
+    /**
+     * @param string $hash
+     *
+     * @return string
+     */
+    private function createDoneLink(string $hash): string
+    {
+        $link = '';
+
+        if ($_SESSION['admin']) {
+            $link = '<a href="?route='.$this->base.strtolower($this->controller).'/done/'.$hash.'">Done task</a><br/>';
+        }
+
+        return $link;
+    }
 }

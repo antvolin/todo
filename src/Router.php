@@ -17,7 +17,7 @@ class Router
 			}
 
 			if (method_exists($controller, $action)) {
-				$controller->$action($urlParts);
+				$controller->$action(...$urlParts);
 			}
 		}
 	}

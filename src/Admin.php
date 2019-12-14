@@ -16,12 +16,12 @@ class Admin
     }
 
     /**
-     * @param Task $task
+     * @param string $hash
      */
-    public function doneTask(Task $task): void
+    public function doneTask(string $hash): void
     {
         $taskRepo = new TaskRepository();
 
-        $taskRepo->done($task);
+        $taskRepo->done($hash);
     }
 }

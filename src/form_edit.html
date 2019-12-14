@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>List</title>
+	<title>Edit task</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
@@ -10,7 +10,15 @@
 		<?php echo ($error ?? ''); ?>
 	</div>
 	<div class="content">
-		<?php echo ($content ?? ''); ?>
+		<form action="/?route=page/edit" method="post">
+			<p>
+				<input type="text" name="text">
+				<input type="hidden" name="hash" value="<?php echo $hash; ?>">
+			</p>
+			<p>
+				<input type="submit">
+			</p>
+		</form>
 	</div>
 </div>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>List</title>
+	<title>Create task</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
@@ -10,7 +10,14 @@
 		<?php echo ($error ?? ''); ?>
 	</div>
 	<div class="content">
-		<?php echo ($content ?? ''); ?>
+		<form action="/?route=page/create" method="post">
+			<p>
+				<input type="text" name="user_name">
+				<input type="text" name="email">
+				<input type="text" name="text">
+			</p>
+			<p><input type="submit"></p>
+		</form>
 	</div>
 </div>
 </body>

@@ -12,7 +12,8 @@
     "require": {
         "php": ">=7.1",
         "symfony/flex": "^1.5@dev",
-        "symfony/dotenv": "^5.0"
+        "symfony/dotenv": "^5.0",
+        "symfony/http-foundation": "^5.0"
     },
     "require-dev": {
         "symfony/test-pack": "^1.0",
