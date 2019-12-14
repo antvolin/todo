@@ -30,6 +30,14 @@ class Text implements TaskFieldInterface
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return $this->getValue();
+    }
+
+    /**
+     * @return string
+     */
     public function getValue(): string
     {
         return $this->value;

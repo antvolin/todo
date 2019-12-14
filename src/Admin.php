@@ -5,14 +5,14 @@ namespace BeeJeeMVC;
 class Admin
 {
     /**
-     * @param Task $task
+     * @param string $hash
      * @param string $newText
      */
-    public function editTask(Task $task, string $newText): void
+    public function editTask(string $hash, string $newText): void
     {
         $taskRepo = new TaskRepository();
 
-        $taskRepo->edit($task, $newText);
+        $taskRepo->edit($hash, $newText);
     }
 
     /**

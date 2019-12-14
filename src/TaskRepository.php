@@ -45,11 +45,13 @@ class TaskRepository
     }
 
     /**
-     * @param Task $task
+     * @param string $hash
      * @param string $newText
      */
-    public function edit(Task $task, string $newText): void
+    public function edit(string $hash, string $newText): void
     {
+        $task = $this->getByHash($hash);
+
         if ($task) {
             $task->edit($newText);
             $this->taskList[$task->getHash()] = $task;

@@ -2,27 +2,36 @@
 
 namespace BeeJeeMVC;
 
-use BeeJeeMVC\TaskRepository;
-
 class PageController
 {
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $base;
+
+    public function __construct()
+    {
+        $this->base = '/';
+        $this->name = 'Page';
+    }
+
     public function taskList(): void
     {
         $repo = new TaskRepository();
-
-        $content = $repo->getList();
+        $builder = new Builder($this->name, $this->base);
+        $content = $builder->buildList($repo->getList());
 
         include_once('list.html');
     }
 
-    public function create(): void
+    public function create(array $taskData): void
     {
-        $repo = new TaskRepository();
-        $userName = new UserName('user 1');
-        $email = new Email('test@tes.com');
-        $text = new Text('text');
-
-        $content = $repo->create($userName, $email, $text);
+        $content = (new User())->createTask($taskData[0], $taskData[1], $taskData[2]);
 
         include_once('create.html');
     }

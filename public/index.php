@@ -2,9 +2,7 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use BeeJeeMVC\PageController;
+use BeeJeeMVC\Router;
 
-$pageController = new PageController();
-
-//$pageController->taskList();
-$pageController->create();
+$router = new Router();
+$router->process();
