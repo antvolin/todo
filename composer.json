@@ -1,0 +1,31 @@
+{
+    "name": "antvolin/bee_jee_mvc",
+    "description": "task book",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "antvolin",
+            "email": "antvolin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "symfony/flex": "^1.5@dev",
+        "symfony/dotenv": "^5.0"
+    },
+    "require-dev": {
+        "symfony/test-pack": "^1.0",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "BeeJeeMVC\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BeeJeeMVC\\Tests\\": "tests/"
+        }
+    }
+}
