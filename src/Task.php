@@ -41,6 +41,14 @@ class Task
     /**
      * @return string
      */
+    public function __toString(): string
+    {
+        return $this->getHash();
+    }
+
+    /**
+     * @return string
+     */
     public function getHash(): string
     {
         return (new HashGenerator())->generateHash($this->userName->getValue(), $this->email->getValue(), $this->text->getValue());

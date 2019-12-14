@@ -5,16 +5,6 @@ namespace BeeJeeMVC;
 class User
 {
     /**
-     * @return array
-     */
-    public function getTaskList(): array
-    {
-        $taskRepo = new TaskRepository();
-
-        return $taskRepo->getList();
-    }
-
-    /**
      * @param string $userName
      * @param string $email
      * @param string $text
