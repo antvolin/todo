@@ -8,15 +8,15 @@ class Kernel
 {
 	public function process(): void
     {
-		if (isset($_GET['route']) && !empty($_GET['route'])) {
+        $request = Request::createFromGlobals();
+
+		if (!empty($request->query->get('route'))) {
             $controller = null;
-			$urlParts = explode('/', trim($_GET['route'], '/'));
+			$urlParts = explode('/', trim($request->query->get('route'), '/'));
 			$name = strtolower(array_shift($urlParts));
 			$controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst($name).'Controller';
 
 			if (class_exists($controllerName)) {
-                $request = Request::createFromGlobals();
-
 			    if ('task' === $name) {
                     $controller = new $controllerName(new TaskFileRepository(), $request);
                 } else {

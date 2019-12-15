@@ -107,10 +107,29 @@ class TemplateBuilder
             <div class="col-sm">'.$task->getUserName().'</div>
             <div class="col-sm">'.$task->getEmail().'</div>
             <div class="col-sm">'.$task->getText().'</div>
-            <div class="col-sm">'.$task->getStatus().'</div>'.
+            <div class="col-sm">'.$this->getStatus($task).'</div>'.
             '<div class="col-sm">'.$this->createEditLink($task->getId()).$this->createDoneLink($task->getId()).'</div>'.
         '</div>';
 	}
+
+    /**
+     * @param Task $task
+     *
+     * @return string
+     */
+	private function getStatus(Task $task)
+    {
+        $status = '';
+
+        if ($task->isEdited()) {
+            $status .= ' edited ';
+        }
+        if ($task->isDone()) {
+            $status .= ' done ';
+        }
+
+        return $status;
+    }
 
     /**
      * @param string $hash

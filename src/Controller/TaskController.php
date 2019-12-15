@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TemplateBuilder;
 use BeeJeeMVC\Lib\RepositoryInterface;
 use BeeJeeMVC\Model\Email;
@@ -13,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TaskController
 {
-    private const FIRST_PAGE = 1;
     private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
 
     /**
@@ -38,14 +38,14 @@ class TaskController
 
     public function list(): void
     {
-        $page = $this->request->get('page') ? : self::FIRST_PAGE;
+        $page = $this->request->get('page', 1);
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
         $builder = new TemplateBuilder();
         $content = $builder->buildList($page, $sortBy, $orderBy);
 
-        include_once(dirname(__DIR__).'/View/list.html');
+        echo (new Template())->render('list');
     }
 
     public function create(): void

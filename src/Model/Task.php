@@ -82,37 +82,19 @@ class Task
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getEdited(): string
+    public function isEdited(): bool
     {
         return $this->edited;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getDone(): string
+    public function isDone(): bool
     {
         return $this->done;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus(): string
-    {
-        $status = '';
-
-        if ($this->edited) {
-            $status .= ' edited ';
-        }
-
-        if ($this->done) {
-            $status .= ' done ';
-        }
-
-        return $status;
     }
 
     /**

@@ -58,7 +58,7 @@ class TaskTest extends TestCase
         $this->task->edit($newText);
         $this->assertEquals($newText, $this->task->getText());
 
-        $this->assertEquals(true, $this->task->getEdited());
+        $this->assertEquals(true, $this->task->isEdited());
     }
 
     /**
@@ -67,6 +67,6 @@ class TaskTest extends TestCase
     public function shouldBeDone(): void
     {
         $this->task->done();
-        $this->assertEquals(true, $this->task->getDone());
+        $this->assertEquals(true, $this->task->isDone());
     }
 }
