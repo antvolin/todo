@@ -4,7 +4,6 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Model\Task;
 use LogicException;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class TaskFileTaskRepository implements TaskRepositoryInterface
@@ -14,11 +13,12 @@ class TaskFileTaskRepository implements TaskRepositoryInterface
      */
     private $taskFolderPath;
 
-    public function __construct()
+    /**
+     * @param string $taskFolderPath
+     */
+    public function __construct(string $taskFolderPath)
     {
-        $env = new Dotenv();
-        $env->load(dirname(__DIR__).'/../.env');
-        $this->taskFolderPath = dirname(__DIR__).$_ENV['TASK_FOLDER_NAME'];
+        $this->taskFolderPath = $taskFolderPath;
     }
 
     /**

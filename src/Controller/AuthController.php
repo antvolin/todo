@@ -39,8 +39,7 @@ class AuthController
         $user = $this->request->get('user');
         $password = $this->request->request->getInt('password');
 
-        if ('admin' === $user && 123 === $password) {
-            // $this->request->getSession()->set('admin', true);
+        if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
             $_SESSION['admin'] = true;
 
             return $this->template->render('login_success');

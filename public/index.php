@@ -1,6 +1,6 @@
 <?php
 
-require dirname(__DIR__).'/vendor/autoload.php';
+include_once '../config/bootstrap.php';
 
 use BeeJeeMVC\Lib\Kernel;
 

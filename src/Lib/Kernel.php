@@ -15,7 +15,9 @@ class Kernel
         $request->setSession($session);
 
         $template = new Template();
-        $taskManager = new TaskManager(new TaskFileTaskRepository());
+        $taskFolderPath = dirname(__DIR__).$_ENV['TASK_FOLDER_NAME'];
+        $taskManager = new TaskManager(new TaskFileTaskRepository($taskFolderPath));
+        $templateBuilder = new TemplateBuilder($taskFolderPath);
 
 		if (!empty($request->query->get('route'))) {
             $controller = null;
@@ -25,7 +27,7 @@ class Kernel
 
 			if (class_exists($controllerName)) {
 			    if ('task' === $name) {
-                    $controller = new $controllerName($taskManager, $request, $template);
+                    $controller = new $controllerName($taskManager, $request, $template, $templateBuilder);
                 } else {
                     $controller = new $controllerName($request, $template);
                 }

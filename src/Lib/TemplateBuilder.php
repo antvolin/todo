@@ -6,10 +6,22 @@ use BeeJeeMVC\Model\Task;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\DefaultView;
-use Symfony\Component\Dotenv\Dotenv;
 
 class TemplateBuilder
 {
+    /**
+     * @var string
+     */
+    private $taskFolderPath;
+
+    /**
+     * @param string $taskFolderPath
+     */
+    public function __construct(string $taskFolderPath)
+    {
+        $this->taskFolderPath = $taskFolderPath;
+    }
+
     /**
      * @param int $page
      * @param string|null $sortBy
@@ -85,10 +97,7 @@ class TemplateBuilder
      */
     private function createPager(int $page, ?string $sortBy, ?string $orderBy): Pagerfanta
     {
-        $env = new Dotenv();
-        $env->load(dirname(__DIR__).'/../.env');
-
-        $tasks = (new TaskFileTaskRepository())->getList($sortBy, $orderBy);
+        $tasks = (new TaskFileTaskRepository($this->taskFolderPath))->getList($sortBy, $orderBy);
         $pager = new Pagerfanta(new ArrayAdapter($tasks));
         $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
         $pager->setCurrentPage($page);

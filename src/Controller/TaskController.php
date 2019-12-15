@@ -28,15 +28,22 @@ class TaskController
     private $template;
 
     /**
+     * @var TemplateBuilder
+     */
+    private $templateBuilder;
+
+    /**
      * @param TaskManager $taskManager
      * @param Request $request
      * @param Template $template
+     * @param TemplateBuilder $templateBuilder
      */
-    public function __construct(TaskManager $taskManager, Request $request, Template $template)
+    public function __construct(TaskManager $taskManager, Request $request, Template $template, TemplateBuilder $templateBuilder)
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
         $this->template = $template;
+        $this->templateBuilder = $templateBuilder;
     }
 
     public function list(): string
@@ -45,8 +52,7 @@ class TaskController
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
-        $builder = new TemplateBuilder();
-        $content = $builder->buildList($page, $sortBy, $orderBy);
+        $content = $this->templateBuilder->buildList($page, $sortBy, $orderBy);
 
         return $this->template->render('list', ['content' => $content]);
     }
