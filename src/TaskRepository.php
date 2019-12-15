@@ -77,8 +77,10 @@ class TaskRepository
     /**
      * @param string $hash
      * @param string $newText
+     *
+     * @return Task|null
      */
-    public function edit(string $hash, string $newText): void
+    public function edit(string $hash, string $newText): ?Task
     {
         $task = $this->getByHash($hash);
 
@@ -86,12 +88,16 @@ class TaskRepository
             $task->edit($newText);
             $this->taskList[$task->getHash()] = $task;
         }
+
+        return $task;
     }
 
     /**
      * @param string $hash
+     *
+     * @return Task|null
      */
-    public function done(string $hash): void
+    public function done(string $hash): ?Task
     {
         $task = $this->getByHash($hash);
 
@@ -99,5 +105,7 @@ class TaskRepository
             $task->done();
             $this->taskList[$task->getHash()] = $task;
         }
+
+        return $task;
     }
 }

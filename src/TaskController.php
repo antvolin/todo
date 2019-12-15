@@ -10,6 +10,7 @@ use Pagerfanta\View\DefaultView;
 
 class TaskController
 {
+    private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
     /**
      * @var string
      */
@@ -68,17 +69,14 @@ class TaskController
 
                 try {
                     $task = (new TaskRepository())->create($userName, $email, $text);
-                    $content = 'Task #'.$task.'created!';
-
+                    $content = 'Task #'.$task.' created!';
                     include_once('created.html');
                 } catch (InvalidArgumentException $exception) {
                     $error = $exception->getMessage();
-
                     include_once('form_create.html');
                 }
             } else {
-                $error = 'Insufficient rights for this operation!';
-
+                $error = self::NOT_ENOUGH_RIGHTS_MSG;
                 include_once('form_create.html');
             }
         } else {
@@ -93,17 +91,20 @@ class TaskController
                 $hash = $this->request->get('hash');
                 $key = $this->request->get('text');
 
-                (new TaskRepository())->edit($hash, $key);
-
-                include_once('edited.html');
+                try {
+                    $task = (new TaskRepository())->edit($hash, $key);
+                    $content = 'Task #'.$task.' edited!';
+                    include_once('edited.html');
+                } catch (InvalidArgumentException $exception) {
+                    $error = $exception->getMessage();
+                    include_once('edit_error.html');
+                }
             } else {
-                $error = 'Insufficient rights for this operation!';
-
+                $error = self::NOT_ENOUGH_RIGHTS_MSG;
                 include_once('edit_error.html');
             }
         } else {
             $hash = func_get_args()[0];
-
             include_once('form_edit.html');
         }
     }
@@ -111,12 +112,16 @@ class TaskController
     public function done(): void
     {
         if ($_SESSION['admin']) {
-            (new TaskRepository())->done(func_get_args()[0]);
-
-            include_once('done.html');
+            try {
+                $task = (new TaskRepository())->done(func_get_args()[0]);
+                $content = 'Task #'.$task.' done!';
+                include_once('done.html');
+            } catch (InvalidArgumentException $exception) {
+                $error = $exception->getMessage();
+                include_once('done_error.html');
+            }
         } else {
-            $error = 'Insufficient rights for this operation!';
-
+            $error = self::NOT_ENOUGH_RIGHTS_MSG;
             include_once('done_error.html');
         }
     }
