@@ -39,15 +39,8 @@ class Builder
      */
 	public function buildList(int $page, ?string $sortBy, ?string $orderBy): string
     {
-        if ($_SESSION['admin']) {
-            $content = '<div class="buttons"><button class="button"><a href="/?route=auth/logout">Logout</a></button></div>';
-        } else {
-            $content = '<div class="buttons"><button class="button"><a href="/?route=task/create">Create task</a></button>';
-            $content .= '<button class="button"><a href="/?route=auth/login">Login</a></button></div>';
-        }
-
+        $content = $this->buildButtons();
         $content .= $this->buildSorting($page, $orderBy);
-
         $pager = $this->createPager($page, $sortBy, $orderBy);
 
         foreach ($pager->getCurrentPageResults() as $task) {
@@ -58,6 +51,21 @@ class Builder
 
 		return $content;
 	}
+
+    /**
+     * @return string
+     */
+	private function buildButtons(): string
+    {
+        if ($_SESSION['admin']) {
+            $content = '<div class="buttons"><button class="button"><a href="/?route=auth/logout">Logout</a></button></div>';
+        } else {
+            $content = '<div class="buttons"><button class="button"><a href="/?route=task/create">Create task</a></button>';
+            $content .= '<button class="button"><a href="/?route=auth/login">Login</a></button></div>';
+        }
+
+        return $content;
+    }
 
     /**
      * @param int $page
@@ -85,7 +93,7 @@ class Builder
      */
     private function getNextOrder(?string $orderBy): string
     {
-        return !$orderBy || 'ASC' === $orderBy ? 'DESC' : 'ASC';
+        return !$orderBy || Sorting::ASC === $orderBy ? Sorting::DESC : Sorting::ASC;
     }
 
     /**
@@ -97,8 +105,8 @@ class Builder
      */
     private function createPager(int $page, ?string $sortBy, ?string $orderBy): Pagerfanta
     {
-        $dotenv = new Dotenv();
-        $dotenv->load(dirname(__DIR__).'/../.env');
+        $env = new Dotenv();
+        $env->load(dirname(__DIR__).'/../.env');
 
         $tasks = (new TaskRepository())->getList($sortBy, $orderBy);
         $pager = new Pagerfanta(new ArrayAdapter($tasks));
@@ -115,13 +123,15 @@ class Builder
      */
 	private function buildTask(Task $task): string
     {
+        $hash = $task->getHash();
+
 		$content =
-			'<div id="$task->getHash()" class="row">
+			'<div id="'.$hash.'" class="row">
 				<div class="col-sm">'.$task->getUserName().'</div>
 				<div class="col-sm">'.$task->getEmail().'</div>
 				<div class="col-sm">'.$task->getText().'</div>
 				<div class="col-sm">'.$task->getStatus().'</div>'.
-                '<div class="col-sm">'.$this->createEditLink($task->getHash()).$this->createDoneLink($task->getHash()).'</div>'.
+                '<div class="col-sm">'.$this->createEditLink($hash).$this->createDoneLink($hash).'</div>'.
 			'</div>';
 
 		return $content;
@@ -168,12 +178,9 @@ class Builder
      */
     private function buildPagination(Pagerfanta $pager, ?string $sortBy, ?string $orderBy): string
     {
-        $routeGenerator = function($page) use ($sortBy, $orderBy)
+        $routeGenerator = function(int $page) use ($sortBy, $orderBy)
         {
-            $sortBy = $sortBy ? '&sortBy='.$sortBy : '';
-            $orderBy = $orderBy ? '&orderBy='.$orderBy : '';
-
-            return '/?route=task/list&page='.$page.$sortBy.$orderBy;
+            return '/?route=task/list&page='.$page.'&sortBy='.$sortBy.'&orderBy='.$orderBy;
         };
 
         return '<div class="pages">'.(new DefaultView())->render($pager, $routeGenerator).'</div>';

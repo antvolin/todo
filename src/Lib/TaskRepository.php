@@ -48,7 +48,7 @@ class TaskRepository
         if ($sortBy && $orderBy) {
             $method = 'get'.ucfirst($sortBy);
 
-            if ('ASC' === $orderBy) {
+            if (Sorting::ASC === $orderBy) {
                 uasort($list, function (Task $a, Task $b) use ($method) {
                     return strcmp($a->$method(), $b->$method());
                 });
