@@ -50,9 +50,9 @@ class TaskController
     {
         if ('POST' === $this->request->getMethod()) {
             if (!$_SESSION['admin']) {
-                $userName = $this->request->get('userName');
-                $email = $this->request->get('email');
-                $text = $this->request->get('text');
+                $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
+                $email = $this->request->request->filter('email', null, FILTER_SANITIZE_SPECIAL_CHARS);
+                $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
                 try {
                     $task = (new TaskRepository())->create($userName, $email, $text);
@@ -75,8 +75,8 @@ class TaskController
     {
         if ('POST' === $this->request->getMethod()) {
             if ($_SESSION['admin']) {
-                $hash = $this->request->get('hash');
-                $text = $this->request->get('text');
+                $hash = $this->request->request->filter('hash', null, FILTER_SANITIZE_SPECIAL_CHARS);
+                $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
                 try {
                     $task = (new TaskRepository())->edit($hash, $text);
