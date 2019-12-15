@@ -2,7 +2,8 @@
 
 namespace BeeJeeMVC\Tests\TaskRepository;
 
-use BeeJeeMVC\Lib\TaskFileRepository;
+use BeeJeeMVC\Lib\TaskFileTaskRepository;
+use BeeJeeMVC\Lib\TaskManager;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
@@ -32,18 +33,17 @@ class TaskRepositoryTest extends TestCase
     protected $task;
 
     /**
-     * @var TaskFileRepository
+     * @var TaskManager
      */
-    protected $taskRepository;
+    protected $taskManager;
 
     protected function setUp(): void
     {
         $this->userName = new UserName('test user name');
         $this->email = new Email('test@test.test');
         $this->text = new Text('test text');
-        $this->taskRepository = new TaskFileRepository();
-
-        $this->task = $this->taskRepository->save(new Task(new UserName($this->userName), new Email($this->email), new Text($this->text)));
+        $this->taskRepository = new TaskFileTaskRepository();
+        $this->taskManager->save($this->userName, $this->email, $this->text);
     }
 
     /**

@@ -88,7 +88,7 @@ class TemplateBuilder
         $env = new Dotenv();
         $env->load(dirname(__DIR__).'/../.env');
 
-        $tasks = (new TaskFileRepository())->getList($sortBy, $orderBy);
+        $tasks = (new TaskFileTaskRepository())->getList($sortBy, $orderBy);
         $pager = new Pagerfanta(new ArrayAdapter($tasks));
         $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
         $pager->setCurrentPage($page);

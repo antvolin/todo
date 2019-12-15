@@ -10,14 +10,14 @@ use BeeJeeMVC\Model\UserName;
 class TaskManager
 {
     /**
-     * @var RepositoryInterface
+     * @var TaskRepositoryInterface
      */
     private $repository;
 
     /**
-     * @param RepositoryInterface $repository
+     * @param TaskRepositoryInterface $repository
      */
-    public function __construct(RepositoryInterface $repository)
+    public function __construct(TaskRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

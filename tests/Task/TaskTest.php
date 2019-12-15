@@ -35,7 +35,6 @@ class TaskTest extends TestCase
         $this->userName = new UserName('test user name');
         $this->email = new Email('test@test.test');
         $this->text = new Text('test task text');
-
         $this->task = new Task($this->userName, $this->email, $this->text);
     }
 
@@ -57,7 +56,6 @@ class TaskTest extends TestCase
         $newText = 'new test text';
         $this->task->edit($newText);
         $this->assertEquals($newText, $this->task->getText());
-
         $this->assertEquals(true, $this->task->isEdited());
     }
 

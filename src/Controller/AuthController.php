@@ -17,6 +17,10 @@ class AuthController
      */
     private $template;
 
+    /**
+     * @param Request $request
+     * @param Template $template
+     */
     public function __construct(Request $request, Template $template)
     {
         $this->request = $request;
@@ -36,7 +40,8 @@ class AuthController
         $password = $this->request->request->getInt('password');
 
         if ('admin' === $user && 123 === $password) {
-            $this->request->getSession()->set('admin', true);
+            // $this->request->getSession()->set('admin', true);
+            $_SESSION['admin'] = true;
 
             return $this->template->render('login_success');
         }
@@ -50,7 +55,7 @@ class AuthController
     public function logout(): string
     {
         if ($this->request->getSession()->get('admin')) {
-            $this->request->getSession()->remove('admin');
+            unset($_SESSION['admin']);
         }
 
         return $this->template->render('logout_success');

@@ -5,7 +5,7 @@ namespace BeeJeeMVC\Tests\HashGenerator;
 use BeeJeeMVC\Lib\IdGenerator;
 use PHPUnit\Framework\TestCase;
 
-class HashGeneratorTest extends TestCase
+class IdGeneratorTest extends TestCase
 {
     /**
      * @test

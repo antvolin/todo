@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Model\Task;
 
-interface RepositoryInterface
+interface TaskRepositoryInterface
 {
     /**
      * @param string $id
@@ -24,5 +24,5 @@ interface RepositoryInterface
     /**
      * @param Task $task
      */
-    public function save(Task $task);
+    public function save(Task $task): void;
 }

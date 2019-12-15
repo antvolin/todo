@@ -3,11 +3,11 @@
 namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Model\Task;
-use InvalidArgumentException;
 use LogicException;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-class TaskFileRepository implements RepositoryInterface
+class TaskFileTaskRepository implements TaskRepositoryInterface
 {
     /**
      * @var string
@@ -31,7 +31,7 @@ class TaskFileRepository implements RepositoryInterface
         $file = file_get_contents($this->taskFolderPath.$hash);
 
         if (false === $file) {
-            throw new InvalidArgumentException('Invalid task id!');
+            throw new FileNotFoundException('Invalid task id!');
         }
 
         $task = unserialize($file, ['allowed_classes' => true]);
@@ -77,7 +77,7 @@ class TaskFileRepository implements RepositoryInterface
     /**
      * @param Task $task
      */
-    public function save(Task $task)
+    public function save(Task $task): void
     {
         file_put_contents($this->taskFolderPath.$task->getId(), serialize($task));
     }
