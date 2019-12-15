@@ -6,12 +6,10 @@ use BeeJeeMVC\Lib\Builder;
 use BeeJeeMVC\Lib\TaskRepository;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\View\DefaultView;
 
 class TaskController
 {
+    private const FIRST_PAGE = 1;
     private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
 
     /**
@@ -38,26 +36,12 @@ class TaskController
 
     public function list(): void
     {
-        $page = $this->request->get('page') ? : 1;
+        $page = $this->request->get('page') ? : self::FIRST_PAGE;
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
-        $tasks = (new TaskRepository())->getList($sortBy, $orderBy);
-        $pager = new Pagerfanta(new ArrayAdapter($tasks));
-        $pager->setMaxPerPage(3);
-        $pager->setCurrentPage($page);
-
-        $routeGenerator = function($page) use ($sortBy, $orderBy)
-        {
-            $sortBy = $sortBy ? '&sortBy='.$sortBy : '';
-            $orderBy = $orderBy ? '&orderBy='.$orderBy : '';
-
-            return '/?route=task/list&page='.$page.$sortBy.$orderBy;
-        };
-        $pages = (new DefaultView())->render($pager, $routeGenerator);
-
         $builder = new Builder($this->name, $this->base);
-        $content = $builder->buildList($pager->getCurrentPageResults(), $page, $orderBy);
+        $content = $builder->buildList($page, $sortBy, $orderBy);
 
         include_once(dirname(__DIR__).'/View/list.html');
     }

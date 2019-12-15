@@ -3,6 +3,10 @@
 namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Model\Task;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\View\DefaultView;
+use Symfony\Component\Dotenv\Dotenv;
 
 class Builder
 {
@@ -27,17 +31,16 @@ class Builder
 	}
 
     /**
-     * @param array $arrayTask
      * @param int $page
+     * @param string|null $sortBy
      * @param string|null $orderBy
      *
      * @return string
      */
-	public function buildList(array $arrayTask, int $page, ?string $orderBy): string
+	public function buildList(int $page, ?string $sortBy, ?string $orderBy): string
     {
-
         if ($_SESSION['admin']) {
-            $content = '<div><a href="/?route=auth/logout">Logout</a></div>';
+            $content = '<div class="buttons"><button class="button"><a href="/?route=auth/logout">Logout</a></button></div>';
         } else {
             $content = '<div class="buttons"><button class="button"><a href="/?route=task/create">Create task</a></button>';
             $content .= '<button class="button"><a href="/?route=auth/login">Login</a></button></div>';
@@ -45,9 +48,13 @@ class Builder
 
         $content .= $this->buildSorting($page, $orderBy);
 
-        foreach ($arrayTask as $task) {
+        $pager = $this->createPager($page, $sortBy, $orderBy);
+
+        foreach ($pager->getCurrentPageResults() as $task) {
             $content .= $this->buildTask($task);
         }
+
+        $content .= $this->buildPagination($pager, $sortBy, $orderBy);
 
 		return $content;
 	}
@@ -82,6 +89,26 @@ class Builder
     }
 
     /**
+     * @param int $page
+     * @param string|null $sortBy
+     * @param string|null $orderBy
+     *
+     * @return Pagerfanta
+     */
+    private function createPager(int $page, ?string $sortBy, ?string $orderBy): Pagerfanta
+    {
+        $dotenv = new Dotenv();
+        $dotenv->load(dirname(__DIR__).'/../.env');
+
+        $tasks = (new TaskRepository())->getList($sortBy, $orderBy);
+        $pager = new Pagerfanta(new ArrayAdapter($tasks));
+        $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
+        $pager->setCurrentPage($page);
+
+        return $pager;
+    }
+
+    /**
      * @param Task $task
      *
      * @return string
@@ -110,7 +137,7 @@ class Builder
         $link = '';
 
         if ($_SESSION['admin']) {
-            $link = '<a href="?route='.$this->base.strtolower($this->controller).'/edit/'.$hash.'">Edit task</a><br/>';
+            $link = '<button><a href="?route='.$this->base.strtolower($this->controller).'/edit/'.$hash.'">Edit task</a></button>';
         }
 
         return $link;
@@ -126,9 +153,29 @@ class Builder
         $link = '';
 
         if ($_SESSION['admin']) {
-            $link = '<a href="?route='.$this->base.strtolower($this->controller).'/done/'.$hash.'">Done task</a><br/>';
+            $link = '<button><a href="?route='.$this->base.strtolower($this->controller).'/done/'.$hash.'">Done task</a></button>';
         }
 
         return $link;
+    }
+
+    /**
+     * @param Pagerfanta $pager
+     * @param string|null $sortBy
+     * @param string|null $orderBy
+     *
+     * @return string
+     */
+    private function buildPagination(Pagerfanta $pager, ?string $sortBy, ?string $orderBy): string
+    {
+        $routeGenerator = function($page) use ($sortBy, $orderBy)
+        {
+            $sortBy = $sortBy ? '&sortBy='.$sortBy : '';
+            $orderBy = $orderBy ? '&orderBy='.$orderBy : '';
+
+            return '/?route=task/list&page='.$page.$sortBy.$orderBy;
+        };
+
+        return '<div class="pages">'.(new DefaultView())->render($pager, $routeGenerator).'</div>';
     }
 }
