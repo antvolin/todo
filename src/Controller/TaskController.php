@@ -2,13 +2,9 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\TaskManager;
 use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TemplateBuilder;
-use BeeJeeMVC\Lib\RepositoryInterface;
-use BeeJeeMVC\Model\Email;
-use BeeJeeMVC\Model\Task;
-use BeeJeeMVC\Model\Text;
-use BeeJeeMVC\Model\UserName;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,18 +18,25 @@ class TaskController
     private $request;
 
     /**
-     * @var RepositoryInterface
+     * @var TaskManager
      */
-    private $repository;
+    private $taskManager;
 
     /**
-     * @param RepositoryInterface $repository
-     * @param Request $request
+     * @var Template
      */
-    public function __construct(RepositoryInterface $repository, Request $request)
+    private $template;
+
+    /**
+     * @param TaskManager $taskManager
+     * @param Request $request
+     * @param Template $template
+     */
+    public function __construct(TaskManager $taskManager, Request $request, Template $template)
     {
         $this->request = $request;
-        $this->repository = $repository;
+        $this->taskManager = $taskManager;
+        $this->template = $template;
     }
 
     public function list(): void
@@ -45,19 +48,19 @@ class TaskController
         $builder = new TemplateBuilder();
         $content = $builder->buildList($page, $sortBy, $orderBy);
 
-        echo (new Template())->render('list', ['content' => $content]);
+        echo $this->template->render('list', ['content' => $content]);
     }
 
     public function create(): void
     {
         if ('POST' !== $this->request->getMethod()) {
-            echo (new Template())->render('form_create');
+            echo $this->template->render('form_create');
 
             return;
         }
 
         if ($_SESSION['admin']) {
-            echo (new Template())->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+            echo $this->template->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
 
             return;
         }
@@ -67,57 +70,53 @@ class TaskController
         $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
         try {
-            $task = $this->repository->save(new Task(new UserName($userName), new Email($email), new Text($text)));
+            $this->taskManager->save($userName, $email, $text);
 
-            echo (new Template())->render('created', ['content' => 'Task #'.$task->getId().' created!']);
+            echo $this->template->render('created');
         } catch (InvalidArgumentException $exception) {
-            echo (new Template())->render('form_create', ['error' => $exception->getMessage()]);
+            echo $this->template->render('form_create', ['error' => $exception->getMessage()]);
         }
     }
 
     public function edit(): void
     {
         if ('POST' !== $this->request->getMethod()) {
-            echo (new Template())->render('form_edit', ['hash' => func_get_args()[0]]);
+            echo $this->template->render('form_edit', ['hash' => func_get_args()[0]]);
 
             return;
         }
         if (!$_SESSION['admin']) {
-            echo (new Template())->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+            echo $this->template->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
 
             return;
         }
 
-        $hash = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
+        $id = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
         $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
         try {
-            $task = $this->repository->getById($hash);
-            $task->edit($text);
-            $this->repository->save($task);
+            $this->taskManager->edit($id, $text);
 
-            echo (new Template())->render('edited', ['content' => 'Task #'.$task->getId().' edited!']);
+            echo $this->template->render('edited');
         } catch (InvalidArgumentException $exception) {
-            echo (new Template())->render('edit_error', ['error' => $exception->getMessage()]);
+            echo $this->template->render('edit_error', ['error' => $exception->getMessage()]);
         }
     }
 
     public function done(): void
     {
         if (!$_SESSION['admin']) {
-            echo (new Template())->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+            echo $this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
 
             return;
         }
 
         try {
-            $task = $this->repository->getById(func_get_args()[0]);
-            $task->done();
-            $this->repository->save($task);
+            $this->taskManager->done(func_get_args()[0]);
 
-            echo (new Template())->render('done', ['content' => 'Task #'.$task->getId().' done!']);
+            echo $this->template->render('done');
         } catch (InvalidArgumentException $exception) {
-            echo (new Template())->render('done_error', ['error' => $exception->getMessage()]);
+            echo $this->template->render('done_error', ['error' => $exception->getMessage()]);
         }
     }
 }

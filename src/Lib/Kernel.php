@@ -9,6 +9,8 @@ class Kernel
 	public function process(): void
     {
         $request = Request::createFromGlobals();
+        $template = new Template();
+        $taskManager = new TaskManager(new TaskFileRepository());
 
 		if (!empty($request->query->get('route'))) {
             $controller = null;
@@ -18,9 +20,9 @@ class Kernel
 
 			if (class_exists($controllerName)) {
 			    if ('task' === $name) {
-                    $controller = new $controllerName(new TaskFileRepository(), $request);
+                    $controller = new $controllerName($taskManager, $request, $template);
                 } else {
-                    $controller = new $controllerName($request);
+                    $controller = new $controllerName($request, $template);
                 }
 			}
 

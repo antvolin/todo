@@ -76,13 +76,9 @@ class TaskFileRepository implements RepositoryInterface
 
     /**
      * @param Task $task
-     *
-     * @return Task
      */
-    public function save(Task $task): Task
+    public function save(Task $task)
     {
         file_put_contents($this->taskFolderPath.$task->getId(), serialize($task));
-
-        return $task;
     }
 }

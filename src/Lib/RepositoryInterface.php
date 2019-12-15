@@ -23,8 +23,6 @@ interface RepositoryInterface
 
     /**
      * @param Task $task
-     *
-     * @return Task
      */
-    public function save(Task $task): Task;
+    public function save(Task $task);
 }

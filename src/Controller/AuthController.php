@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthController
@@ -11,28 +12,34 @@ class AuthController
      */
     private $request;
 
-    public function __construct(Request $request)
+    /**
+     * @var Template
+     */
+    private $template;
+
+    public function __construct(Request $request, Template $template)
     {
         $this->request = $request;
+        $this->template = $template;
     }
 
     public function login(): void
     {
-        if ('POST' === $this->request->getMethod()) {
-            $user = $this->request->get('user');
-            $password = $this->request->request->getInt('password');
+        if ('POST' !== $this->request->getMethod()) {
+            echo $this->template->render('form_login');
 
-            if ('admin' === $user && 123 === $password) {
-                $_SESSION['admin'] = true;
+            return;
+        }
 
-                include_once(dirname(__DIR__).'/View/login_success.html');
-            } else {
-                $error = 'The entered data is not correct!';
+        $user = $this->request->get('user');
+        $password = $this->request->request->getInt('password');
 
-                include_once(dirname(__DIR__) . '/View/form_login.html');
-            }
+        if ('admin' === $user && 123 === $password) {
+            $_SESSION['admin'] = true;
+
+            echo $this->template->render('login_success');
         } else {
-            include_once(dirname(__DIR__) . '/View/form_login.html');
+            echo $this->template->render('form_login', ['error' => 'The entered data is not correct!']);
         }
     }
 
@@ -42,6 +49,6 @@ class AuthController
             unset($_SESSION['admin']);
         }
 
-        include_once(dirname(__DIR__).'/View/logout_success.html');
+        echo $this->template->render('logout_success');
     }
 }
