@@ -99,7 +99,8 @@ class TaskRepository
 
         if ($task) {
             $task->edit($newText);
-            file_put_contents($this->taskFolderPath.$hash, serialize($task));
+            rename($this->taskFolderPath.$hash, $this->taskFolderPath.$task->getHash());
+            file_put_contents($this->taskFolderPath.$task->getHash(), serialize($task));
         }
 
         return $task;
