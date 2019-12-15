@@ -3,6 +3,7 @@
 namespace BeeJeeMVC\Lib;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class Kernel
@@ -36,7 +37,9 @@ class Kernel
             $action = array_shift($urlParts);
 
 			if (method_exists($controller, $action)) {
-				$controller->$action(...$urlParts)->send();
+                /** @var Response $response */
+			    $response = $controller->$action(...$urlParts);
+                $response->send();
 			}
 		}
 	}
