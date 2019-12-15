@@ -36,7 +36,7 @@ class Kernel
             $action = array_shift($urlParts);
 
 			if (method_exists($controller, $action)) {
-				echo $controller->$action(...$urlParts);
+				$controller->$action(...$urlParts)->send();
 			}
 		}
 	}
