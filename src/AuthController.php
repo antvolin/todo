@@ -7,24 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthController
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $base;
-
-    /**
      * @var Request
      */
     private $request;
 
     public function __construct()
     {
-        $this->base = '/';
-        $this->name = 'Page';
         $this->request = Request::createFromGlobals();
     }
 
@@ -37,11 +25,7 @@ class AuthController
             if ('admin' === $user && 123 === $password) {
                 $_SESSION['admin'] = true;
 
-                $repo = new TaskRepository();
-                $builder = new Builder($this->name, $this->base);
-                $content = $builder->buildList($repo->getList());
-
-                include_once('list.html');
+                include_once('login_success.html');
             } else {
                 $error = 'The entered data is not correct!';
 
@@ -58,10 +42,6 @@ class AuthController
             unset($_SESSION['admin']);
         }
 
-        $repo = new TaskRepository();
-        $builder = new Builder($this->name, $this->base);
-        $content = $builder->buildList($repo->getList());
-
-        include_once('list.html');
+        include_once('logout_success.html');
     }
 }

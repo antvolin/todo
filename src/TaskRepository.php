@@ -31,11 +31,30 @@ class TaskRepository
     }
 
     /**
-     * @return Task[]
+     * @param string|null $sortBy
+     * @param string|null $orderBy
+     *
+     * @return array
      */
-    public function getList(): array
+    public function getList(?string $sortBy = null, ?string $orderBy = null): array
     {
-        return $this->taskList;
+        $list = $this->taskList;
+
+        if ($sortBy && $orderBy) {
+            $method = 'get'.ucfirst($sortBy);
+
+            if ('ASC' === $orderBy) {
+                uasort($list, function (Task $a, Task $b) use ($method) {
+                    return strcmp($a->$method(), $b->$method());
+                });
+            } else {
+                uasort($list, function (Task $b, Task $a) use ($method) {
+                    return strcmp($a->$method(), $b->$method());
+                });
+            }
+        }
+
+        return $list;
     }
 
     /**

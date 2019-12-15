@@ -8,7 +8,7 @@ use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\DefaultView;
 
-class PageController
+class TaskController
 {
     /**
      * @var string
@@ -28,35 +28,32 @@ class PageController
     public function __construct()
     {
         $this->base = '/';
-        $this->name = 'Page';
+        $this->name = 'Task';
         $this->request = Request::createFromGlobals();
     }
 
     public function list(): void
     {
-        $repo = new TaskRepository();
+        $page = !$this->request->get('page') ? : 1;
+        $sortBy = $this->request->get('sortBy');
+        $orderBy = $this->request->get('orderBy');
 
-        $adapter = new ArrayAdapter($repo->getList());
-        $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(3);
+        $tasks = (new TaskRepository())->getList($sortBy, $orderBy);
+        $pager = new Pagerfanta(new ArrayAdapter($tasks));
+        $pager->setMaxPerPage(3);
+        $pager->setCurrentPage($page);
 
-        if ($this->request->get('p')) {
-            $pagerfanta->setCurrentPage($this->request->get('p'));
-        }
+        $routeGenerator = function($page) use ($sortBy, $orderBy)
+        {
+            $sortBy = $sortBy ? '&sortBy='.$sortBy : '';
+            $orderBy = $orderBy ? '&orderBy='.$orderBy : '';
 
-        $nbResults = $pagerfanta->getNbResults();
-        $currentPageResults = $pagerfanta->getCurrentPageResults();
-
-        $routeGenerator = function($page) {
-            return '/?route=page/list&p='.$page;
+            return '/?route=task/list&page='.$page.$sortBy.$orderBy;
         };
-
-        $view = new DefaultView();
-        $options = array('proximity' => 3);
-        $html = $view->render($pagerfanta, $routeGenerator, $options);
+        $html = (new DefaultView())->render($pager, $routeGenerator);
 
         $builder = new Builder($this->name, $this->base);
-        $content = $builder->buildList($currentPageResults);
+        $content = $builder->buildList($pager->getCurrentPageResults(), $page, $orderBy);
 
         include_once('list.html');
     }
@@ -65,13 +62,13 @@ class PageController
     {
         if ('POST' === $this->request->getMethod()) {
             if (!$_SESSION['admin']) {
-                $userName = $this->request->get('user_name');
+                $userName = $this->request->get('userName');
                 $email = $this->request->get('email');
                 $text = $this->request->get('text');
 
                 try {
-                    $taskRepo = new TaskRepository();
-                    $content = 'Task #' . $taskRepo->create($userName, $email, $text) . 'created!';
+                    $task = (new TaskRepository())->create($userName, $email, $text);
+                    $content = 'Task #'.$task.'created!';
 
                     include_once('created.html');
                 } catch (InvalidArgumentException $exception) {
@@ -94,11 +91,9 @@ class PageController
         if ('POST' === $this->request->getMethod()) {
             if ($_SESSION['admin']) {
                 $hash = $this->request->get('hash');
-                $text = $this->request->get('text');
+                $key = $this->request->get('text');
 
-                $taskRepo = new TaskRepository();
-
-                $taskRepo->edit($hash, $text);
+                (new TaskRepository())->edit($hash, $key);
 
                 include_once('edited.html');
             } else {
@@ -116,9 +111,7 @@ class PageController
     public function done(): void
     {
         if ($_SESSION['admin']) {
-            $taskRepo = new TaskRepository();
-
-            $taskRepo->done(func_get_args()[0]);
+            (new TaskRepository())->done(func_get_args()[0]);
 
             include_once('done.html');
         } else {
