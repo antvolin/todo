@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Tests\HashGenerator;
 
-use BeeJeeMVC\HashGenerator;
+use BeeJeeMVC\Lib\HashGenerator;
 use PHPUnit\Framework\TestCase;
 
 class HashGeneratorTest extends TestCase

@@ -1,0 +1,12 @@
+.content {
+    margin-bottom: 10px;
+}
+.button {
+    margin: 10px;
+}
+.buttons .error {
+    margin-top: 10px;
+}
+.error {
+    color: red;
+}

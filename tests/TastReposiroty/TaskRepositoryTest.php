@@ -2,13 +2,13 @@
 
 namespace BeeJeeMVC\Tests\TaskRepository;
 
-use BeeJeeMVC\AllowedStatuses;
-use BeeJeeMVC\Email;
-use BeeJeeMVC\HashGenerator;
-use BeeJeeMVC\Task;
-use BeeJeeMVC\TaskRepository;
-use BeeJeeMVC\Text;
-use BeeJeeMVC\UserName;
+use BeeJeeMVC\Lib\AllowedStatuses;
+use BeeJeeMVC\Lib\HashGenerator;
+use BeeJeeMVC\Lib\TaskRepository;
+use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Task;
+use BeeJeeMVC\Model\Text;
+use BeeJeeMVC\Model\UserName;
 use PHPUnit\Framework\TestCase;
 
 class TaskRepositoryTest extends TestCase

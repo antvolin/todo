@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Email;
 
-use BeeJeeMVC\Email;
+use BeeJeeMVC\Model\Email;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

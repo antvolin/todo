@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Create task</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="/css/bootstrap-grid.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+	<div class="error">
+		<?php echo ($error ?? ''); ?>
+	</div>
+	<form action="/?route=task/create" method="post">
+		<div class="row">
+			<div class="col">
+				<p>
+					<label for="userName">User name</label>
+					<br/>
+					<input id="userName" type="text" name="userName">
+				</p>
+				<p>
+					<label for="email">Email</label>
+					<br/>
+					<input id="email" type="email" name="email">
+				</p>
+				<p>
+					<label for="text">Text</label>
+					<br/>
+					<input id="text" type="text" name="text">
+				</p>
+			</div>
+		</div>
+		<input type="submit">
+	</form>
+</div>
+</body>
+</html>

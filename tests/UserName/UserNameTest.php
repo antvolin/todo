@@ -2,9 +2,9 @@
 
 namespace BeeJeeMVC\Tests\UserName;
 
+use BeeJeeMVC\Model\UserName;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use BeeJeeMVC\UserName;
 
 class UserNameTest extends TestCase
 {

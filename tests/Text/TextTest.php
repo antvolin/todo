@@ -2,9 +2,9 @@
 
 namespace BeeJeeMVC\Tests\Text;
 
+use BeeJeeMVC\Model\Text;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use BeeJeeMVC\Text;
 
 class TextTest extends TestCase
 {

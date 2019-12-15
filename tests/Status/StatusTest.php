@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Status;
 
-use BeeJeeMVC\Status;
+use BeeJeeMVC\Model\Status;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

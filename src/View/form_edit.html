@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Task edit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="/css/bootstrap-grid.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+	<div class="error">
+		<?php echo ($error ?? ''); ?>
+	</div>
+	<form action="/?route=task/edit" method="post">
+		<div class="row">
+			<div class="col">
+				<p>
+					<label for="text">Text</label>
+					<br/>
+					<input id="text" type="text" name="text">
+				</p>
+				<p>
+					<input type="hidden" name="hash" value="<?php echo $hash; ?>">
+				</p>
+				<p>
+					<input type="submit">
+				</p>
+			</div>
+		</div>
+	</form>
+</div>
+</body>
+</html>

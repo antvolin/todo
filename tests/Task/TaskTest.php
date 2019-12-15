@@ -2,11 +2,11 @@
 
 namespace BeeJeeMVC\Tests\Text;
 
-use BeeJeeMVC\AllowedStatuses;
-use BeeJeeMVC\Email;
-use BeeJeeMVC\Task;
-use BeeJeeMVC\Text;
-use BeeJeeMVC\UserName;
+use BeeJeeMVC\Lib\AllowedStatuses;
+use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Task;
+use BeeJeeMVC\Model\Text;
+use BeeJeeMVC\Model\UserName;
 use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
