@@ -2,8 +2,7 @@
 
 namespace BeeJeeMVC\Model;
 
-use BeeJeeMVC\Lib\AllowedStatuses;
-use BeeJeeMVC\Lib\HashGenerator;
+use BeeJeeMVC\Lib\IdGenerator;
 
 class Task
 {
@@ -23,19 +22,19 @@ class Task
     private $text;
 
     /**
-     * @var Status
+     * @var bool
      */
-    private $editStatus;
+    private $edited = false;
 
     /**
-     * @var Status
+     * @var bool
      */
-    private $doneStatus;
+    private $done = false;
 
     /**
      * @var string
      */
-    private $hash;
+    private $id;
 
     /**
      * @param UserName $userName
@@ -47,15 +46,15 @@ class Task
         $this->userName = $userName;
         $this->email = $email;
         $this->text = $text;
-        $this->hash = (new HashGenerator())->generateHash($this->userName, $this->email, $this->text);
+        $this->id = (new IdGenerator())->generateId($this->userName, $this->email, $this->text);
     }
 
     /**
      * @return string
      */
-    public function __toString(): string
+    public function getId(): string
     {
-        return $this->hash;
+        return $this->id;
     }
 
     /**
@@ -85,31 +84,48 @@ class Task
     /**
      * @return string
      */
+    public function getEdited(): string
+    {
+        return $this->edited;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDone(): string
+    {
+        return $this->done;
+    }
+
+    /**
+     * @return string
+     */
     public function getStatus(): string
     {
-        return $this->editStatus.$this->doneStatus;
+        $status = '';
+
+        if ($this->edited) {
+            $status .= ' edited ';
+        }
+
+        if ($this->done) {
+            $status .= ' done ';
+        }
+
+        return $status;
     }
 
     /**
      * @param string $text
-     *
-     * @return $this
      */
-    public function edit(string $text): self
+    public function edit(string $text): void
     {
         $this->text = new Text($text);
-        $this->editStatus = new Status(AllowedStatuses::EDITED_STATUS);
-
-        return $this;
+        $this->edited = true;
     }
 
-    /**
-     * @return $this
-     */
-    public function done(): self
+    public function done(): void
     {
-        $this->doneStatus = new Status(AllowedStatuses::DONE_STATUS);
-
-        return $this;
+        $this->done = true;
     }
 }

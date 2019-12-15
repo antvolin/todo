@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Controller;
 
-use BeeJeeMVC\Lib\Builder;
+use BeeJeeMVC\Lib\TemplateBuilder;
 use BeeJeeMVC\Lib\RepositoryInterface;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Task;
@@ -17,16 +17,6 @@ class TaskController
     private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
 
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $base;
-
-    /**
      * @var Request
      */
     private $request;
@@ -36,11 +26,13 @@ class TaskController
      */
     private $repository;
 
-    public function __construct(RepositoryInterface $repository)
+    /**
+     * @param RepositoryInterface $repository
+     * @param Request $request
+     */
+    public function __construct(RepositoryInterface $repository, Request $request)
     {
-        $this->base = '/';
-        $this->name = 'Task';
-        $this->request = Request::createFromGlobals();
+        $this->request = $request;
         $this->repository = $repository;
     }
 
@@ -50,7 +42,7 @@ class TaskController
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
-        $builder = new Builder($this->name, $this->base);
+        $builder = new TemplateBuilder();
         $content = $builder->buildList($page, $sortBy, $orderBy);
 
         include_once(dirname(__DIR__).'/View/list.html');
@@ -66,7 +58,7 @@ class TaskController
 
                 try {
                     $task = $this->repository->save(new Task(new UserName($userName), new Email($email), new Text($text)));
-                    $content = 'Task #'.$task.' created!';
+                    $content = 'Task #'.$task->getId().' created!';
                     include_once(dirname(__DIR__).'/View/created.html');
                 } catch (InvalidArgumentException $exception) {
                     $error = $exception->getMessage();
@@ -85,14 +77,15 @@ class TaskController
     {
         if ('POST' === $this->request->getMethod()) {
             if ($_SESSION['admin']) {
-                $hash = $this->request->request->filter('hash', null, FILTER_SANITIZE_SPECIAL_CHARS);
+                $hash = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
                 $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
                 try {
                     $task = $this->repository->getById($hash);
-                    $this->repository->save($task->edit($text));
+                    $task->edit($text);
+                    $this->repository->save($task);
 
-                    $content = 'Task #'.$task.' edited!';
+                    $content = 'Task #'.$task->getId().' edited!';
                     include_once(dirname(__DIR__).'/View/edited.html');
                 } catch (InvalidArgumentException $exception) {
                     $error = $exception->getMessage();
@@ -113,9 +106,10 @@ class TaskController
         if ($_SESSION['admin']) {
             try {
                 $task = $this->repository->getById(func_get_args()[0]);
-                $this->repository->save($task->done());
+                $task->done();
+                $this->repository->save($task);
 
-                $content = 'Task #'.$task.' done!';
+                $content = 'Task #'.$task->getId().' done!';
                 include_once(dirname(__DIR__).'/View/done.html');
             } catch (InvalidArgumentException $exception) {
                 $error = $exception->getMessage();

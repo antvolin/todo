@@ -32,11 +32,6 @@ class TaskRepositoryTest extends TestCase
     protected $task;
 
     /**
-     * @var string
-     */
-    protected $hash;
-
-    /**
      * @var TaskFileRepository
      */
     protected $taskRepository;

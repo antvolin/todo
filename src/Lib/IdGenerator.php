@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib;
 
-class HashGenerator
+class IdGenerator
 {
     /**
      * @param string $userName
@@ -11,7 +11,7 @@ class HashGenerator
      *
      * @return string
      */
-    public function generateHash(string $userName, string $email, string $text): string
+    public function generateId(string $userName, string $email, string $text): string
     {
         return hash('md5', $userName.$email.$text);
     }

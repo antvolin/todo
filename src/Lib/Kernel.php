@@ -2,6 +2,8 @@
 
 namespace BeeJeeMVC\Lib;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class Kernel
 {
 	public function process(): void
@@ -13,10 +15,12 @@ class Kernel
 			$controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst($name).'Controller';
 
 			if (class_exists($controllerName)) {
+                $request = Request::createFromGlobals();
+
 			    if ('task' === $name) {
-                    $controller = new $controllerName(new TaskFileRepository());
+                    $controller = new $controllerName(new TaskFileRepository(), $request);
                 } else {
-                    $controller = new $controllerName();
+                    $controller = new $controllerName($request);
                 }
 			}
 

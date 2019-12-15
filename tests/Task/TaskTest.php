@@ -2,7 +2,6 @@
 
 namespace BeeJeeMVC\Tests\Text;
 
-use BeeJeeMVC\Lib\AllowedStatuses;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
@@ -59,7 +58,7 @@ class TaskTest extends TestCase
         $this->task->edit($newText);
         $this->assertEquals($newText, $this->task->getText());
 
-        $this->assertEquals(AllowedStatuses::EDITED_STATUS, $this->task->getStatus());
+        $this->assertEquals(true, $this->task->getEdited());
     }
 
     /**
@@ -68,6 +67,6 @@ class TaskTest extends TestCase
     public function shouldBeDone(): void
     {
         $this->task->done();
-        $this->assertEquals(AllowedStatuses::DONE_STATUS, $this->task->getStatus());
+        $this->assertEquals(true, $this->task->getDone());
     }
 }

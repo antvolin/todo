@@ -6,8 +6,6 @@ use InvalidArgumentException;
 
 class Text
 {
-    public const FIELD_NAME = 'Text';
-
     /**
      * @var string
      */
@@ -19,9 +17,7 @@ class Text
     public function __construct(string $value)
     {
         if (!$value) {
-            $msg = 'Text value cannot be empty.';
-
-            throw new InvalidArgumentException($msg);
+            throw new InvalidArgumentException('Text value cannot be empty.');
         }
 
         $this->value = $value;
@@ -31,14 +27,6 @@ class Text
      * @return string
      */
     public function __toString()
-    {
-        return $this->getValue();
-    }
-
-    /**
-     * @return string
-     */
-    private function getValue(): string
     {
         return $this->value;
     }

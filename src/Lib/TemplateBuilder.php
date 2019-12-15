@@ -8,28 +8,8 @@ use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\DefaultView;
 use Symfony\Component\Dotenv\Dotenv;
 
-class Builder
+class TemplateBuilder
 {
-    /**
-     * @var string
-     */
-	private $controller;
-
-    /**
-     * @var string
-     */
-    private $base;
-
-    /**
-     * @param string $name
-     * @param string $base
-     */
-	public function __construct(string $name, string $base)
-	{
-		$this->controller = $name;
-        $this->base = $base;
-	}
-
     /**
      * @param int $page
      * @param string|null $sortBy
@@ -123,16 +103,13 @@ class Builder
      */
 	private function buildTask(Task $task): string
     {
-		$content =
-			'<div id="'.$task.'" class="row">
-				<div class="col-sm">'.$task->getUserName().'</div>
-				<div class="col-sm">'.$task->getEmail().'</div>
-				<div class="col-sm">'.$task->getText().'</div>
-				<div class="col-sm">'.$task->getStatus().'</div>'.
-                '<div class="col-sm">'.$this->createEditLink($task).$this->createDoneLink($task).'</div>'.
-			'</div>';
-
-		return $content;
+        return '<div id="'.$task->getId().'" class="row">
+            <div class="col-sm">'.$task->getUserName().'</div>
+            <div class="col-sm">'.$task->getEmail().'</div>
+            <div class="col-sm">'.$task->getText().'</div>
+            <div class="col-sm">'.$task->getStatus().'</div>'.
+            '<div class="col-sm">'.$this->createEditLink($task->getId()).$this->createDoneLink($task->getId()).'</div>'.
+        '</div>';
 	}
 
     /**
@@ -145,7 +122,7 @@ class Builder
         $link = '';
 
         if ($_SESSION['admin']) {
-            $link = '<button><a href="?route='.$this->base.strtolower($this->controller).'/edit/'.$hash.'">Edit task</a></button>';
+            $link = '<button><a href="?route=/task/edit/'.$hash.'">Edit task</a></button>';
         }
 
         return $link;
@@ -161,7 +138,7 @@ class Builder
         $link = '';
 
         if ($_SESSION['admin']) {
-            $link = '<button><a href="?route='.$this->base.strtolower($this->controller).'/done/'.$hash.'">Done task</a></button>';
+            $link = '<button><a href="?route=/task/done/'.$hash.'">Done task</a></button>';
         }
 
         return $link;
@@ -176,8 +153,7 @@ class Builder
      */
     private function buildPagination(Pagerfanta $pager, ?string $sortBy, ?string $orderBy): string
     {
-        $routeGenerator = function(int $page) use ($sortBy, $orderBy)
-        {
+        $routeGenerator = function (int $page) use ($sortBy, $orderBy) {
             return '/?route=task/list&page='.$page.'&sortBy='.$sortBy.'&orderBy='.$orderBy;
         };
 

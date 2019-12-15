@@ -17,9 +17,7 @@ class UserName
     public function __construct(string $value)
     {
         if (!$value) {
-            $msg = 'User name value cannot be empty.';
-
-            throw new InvalidArgumentException($msg);
+            throw new InvalidArgumentException('User name value cannot be empty.');
         }
 
         $this->value = $value;
@@ -29,14 +27,6 @@ class UserName
      * @return string
      */
     public function __toString()
-    {
-        return $this->getValue();
-    }
-
-    /**
-     * @return string
-     */
-    private function getValue(): string
     {
         return $this->value;
     }

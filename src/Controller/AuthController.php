@@ -11,16 +11,16 @@ class AuthController
      */
     private $request;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->request = Request::createFromGlobals();
+        $this->request = $request;
     }
 
     public function login(): void
     {
         if ('POST' === $this->request->getMethod()) {
             $user = $this->request->get('user');
-            $password = (int) $this->request->get('password');
+            $password = $this->request->request->getInt('password');
 
             if ('admin' === $user && 123 === $password) {
                 $_SESSION['admin'] = true;
