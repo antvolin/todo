@@ -45,79 +45,79 @@ class TaskController
         $builder = new TemplateBuilder();
         $content = $builder->buildList($page, $sortBy, $orderBy);
 
-        echo (new Template())->render('list');
+        echo (new Template())->render('list', ['content' => $content]);
     }
 
     public function create(): void
     {
-        if ('POST' === $this->request->getMethod()) {
-            if (!$_SESSION['admin']) {
-                $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
-                $email = $this->request->request->filter('email', null, FILTER_SANITIZE_SPECIAL_CHARS);
-                $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
+        if ('POST' !== $this->request->getMethod()) {
+            echo (new Template())->render('form_create');
 
-                try {
-                    $task = $this->repository->save(new Task(new UserName($userName), new Email($email), new Text($text)));
-                    $content = 'Task #'.$task->getId().' created!';
-                    include_once(dirname(__DIR__).'/View/created.html');
-                } catch (InvalidArgumentException $exception) {
-                    $error = $exception->getMessage();
-                    include_once(dirname(__DIR__).'/View/form_create.html');
-                }
-            } else {
-                $error = self::NOT_ENOUGH_RIGHTS_MSG;
-                include_once(dirname(__DIR__).'/View/form_create.html');
-            }
-        } else {
-            include_once(dirname(__DIR__).'/View/form_create.html');
+            return;
+        }
+
+        if ($_SESSION['admin']) {
+            echo (new Template())->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+
+            return;
+        }
+
+        $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = $this->request->request->filter('email', null, FILTER_SANITIZE_SPECIAL_CHARS);
+        $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        try {
+            $task = $this->repository->save(new Task(new UserName($userName), new Email($email), new Text($text)));
+
+            echo (new Template())->render('created', ['content' => 'Task #'.$task->getId().' created!']);
+        } catch (InvalidArgumentException $exception) {
+            echo (new Template())->render('form_create', ['error' => $exception->getMessage()]);
         }
     }
 
     public function edit(): void
     {
-        if ('POST' === $this->request->getMethod()) {
-            if ($_SESSION['admin']) {
-                $hash = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
-                $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
+        if ('POST' !== $this->request->getMethod()) {
+            echo (new Template())->render('form_edit', ['hash' => func_get_args()[0]]);
 
-                try {
-                    $task = $this->repository->getById($hash);
-                    $task->edit($text);
-                    $this->repository->save($task);
+            return;
+        }
+        if (!$_SESSION['admin']) {
+            echo (new Template())->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
 
-                    $content = 'Task #'.$task->getId().' edited!';
-                    include_once(dirname(__DIR__).'/View/edited.html');
-                } catch (InvalidArgumentException $exception) {
-                    $error = $exception->getMessage();
-                    include_once(dirname(__DIR__).'/View/edit_error.html');
-                }
-            } else {
-                $error = self::NOT_ENOUGH_RIGHTS_MSG;
-                include_once(dirname(__DIR__).'/View/edit_error.html');
-            }
-        } else {
-            $hash = func_get_args()[0];
-            include_once(dirname(__DIR__).'/View/form_edit.html');
+            return;
+        }
+
+        $hash = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
+        $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        try {
+            $task = $this->repository->getById($hash);
+            $task->edit($text);
+            $this->repository->save($task);
+
+            echo (new Template())->render('edited', ['content' => 'Task #'.$task->getId().' edited!']);
+        } catch (InvalidArgumentException $exception) {
+            echo (new Template())->render('edit_error', ['error' => $exception->getMessage()]);
         }
     }
 
     public function done(): void
     {
-        if ($_SESSION['admin']) {
-            try {
-                $task = $this->repository->getById(func_get_args()[0]);
-                $task->done();
-                $this->repository->save($task);
+        if (!$_SESSION['admin']) {
+            echo (new Template())->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
 
-                $content = 'Task #'.$task->getId().' done!';
-                include_once(dirname(__DIR__).'/View/done.html');
-            } catch (InvalidArgumentException $exception) {
-                $error = $exception->getMessage();
-                include_once(dirname(__DIR__).'/View/done_error.html');
-            }
-        } else {
-            $error = self::NOT_ENOUGH_RIGHTS_MSG;
-            include_once(dirname(__DIR__).'/View/done_error.html');
+            return;
+        }
+
+        try {
+            $task = $this->repository->getById(func_get_args()[0]);
+            $task->done();
+            $this->repository->save($task);
+
+            echo (new Template())->render('done', ['content' => 'Task #'.$task->getId().' done!']);
+        } catch (InvalidArgumentException $exception) {
+            echo (new Template())->render('done_error', ['error' => $exception->getMessage()]);
         }
     }
 }

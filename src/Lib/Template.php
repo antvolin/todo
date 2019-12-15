@@ -6,12 +6,15 @@ class Template
 {
     /**
      * @param string $viewName
+     * @param array $args
      *
-     * @return false|string
+     * @return string
      */
-    public function render(string $viewName)
+    public function render(string $viewName, array $args = []): string
     {
         ob_start();
+
+        extract($args, EXTR_OVERWRITE);
 
         include_once(dirname(__DIR__).'/View/'.$viewName.'.html');
 
