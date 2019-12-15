@@ -1,4 +1,5 @@
 /vendor/
+/src/tasks/
 
 ###> symfony/phpunit-bridge ###
 .phpunit

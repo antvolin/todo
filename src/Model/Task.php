@@ -89,7 +89,7 @@ class Task
      */
     public function getStatus(): string
     {
-        return $this->editStatus.$this->doneStatus;
+        return $this->editStatus.' '.$this->doneStatus;
     }
 
     /**

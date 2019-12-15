@@ -6,6 +6,7 @@ use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
+use Symfony\Component\Dotenv\Dotenv;
 
 class TaskRepository
 {
@@ -14,15 +15,16 @@ class TaskRepository
      */
     private $taskList;
 
+    /**
+     * @var string
+     */
+    private $taskFolderPath;
+
     public function __construct()
     {
-        $this->taskList = [
-            '17f072526080bf7daa7b742c1dd94ec8' => new Task(new UserName('test1'), new Email('test@test.com'), new Text('text1')),
-            'f928bb3caaf876878d8dc172324bfd3acreated' => new Task(new UserName('test2'), new Email('test@test.com'), new Text('text2')),
-            '853c962407c926a5a16479438bf45c40created' => new Task(new UserName('test1'), new Email('test@test.com'), new Text('tttt')),
-            '5949b6e77c7cedeeeac18f12e38fbb6fcreated' => new Task(new UserName('test1'), new Email('test@test.com'), new Text('asdasd')),
-            '2daebe4112efe83e565aecb9c2632238created' => new Task(new UserName('test2'), new Email('test@test.com'), new Text('asdasd')),
-        ];
+        $env = new Dotenv();
+        $env->load(dirname(__DIR__).'/../.env');
+        $this->taskFolderPath = dirname(__DIR__).$_ENV['TASK_FOLDER_NAME'];
     }
 
     /**
@@ -32,7 +34,9 @@ class TaskRepository
      */
     public function getByHash(string $hash): ?Task
     {
-        return $this->taskList[$hash] ?? null;
+        $file = file_get_contents($this->taskFolderPath.$hash);
+
+        return unserialize($file, ['allowed_classes' => true]) ?? null;
     }
 
     /**
@@ -43,23 +47,27 @@ class TaskRepository
      */
     public function getList(?string $sortBy = null, ?string $orderBy = null): array
     {
-        $list = $this->taskList;
+        $files = glob($this->taskFolderPath.'*');
+        $tasks = [];
+        foreach ($files as $file) {
+            $tasks[basename($file)] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
+        }
 
         if ($sortBy && $orderBy) {
             $method = 'get'.ucfirst($sortBy);
 
             if (Sorting::ASC === $orderBy) {
-                uasort($list, function (Task $a, Task $b) use ($method) {
+                uasort($tasks, function (Task $a, Task $b) use ($method) {
                     return strcmp($a->$method(), $b->$method());
                 });
             } else {
-                uasort($list, function (Task $b, Task $a) use ($method) {
+                uasort($tasks, function (Task $b, Task $a) use ($method) {
                     return strcmp($a->$method(), $b->$method());
                 });
             }
         }
 
-        return $list;
+        return $tasks;
     }
 
     /**
@@ -74,7 +82,7 @@ class TaskRepository
         $task = new Task(new UserName($userName), new Email($email), new Text($text));
         $hash = (new HashGenerator())->generateHash($userName, $email, $text);
 
-        $this->taskList[$hash] = $task;
+        file_put_contents($this->taskFolderPath.$hash, serialize($task));
 
         return $task;
     }
@@ -91,7 +99,7 @@ class TaskRepository
 
         if ($task) {
             $task->edit($newText);
-            $this->taskList[$task->getHash()] = $task;
+            file_put_contents($this->taskFolderPath.$hash, serialize($task));
         }
 
         return $task;
@@ -108,7 +116,7 @@ class TaskRepository
 
         if ($task) {
             $task->done();
-            $this->taskList[$task->getHash()] = $task;
+            file_put_contents($this->taskFolderPath.$hash, serialize($task));
         }
 
         return $task;
