@@ -34,7 +34,7 @@ class TaskController
 
     public function list(): void
     {
-        $page = !$this->request->get('page') ? : 1;
+        $page = $this->request->get('page') ? : 1;
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
@@ -50,7 +50,7 @@ class TaskController
 
             return '/?route=task/list&page='.$page.$sortBy.$orderBy;
         };
-        $html = (new DefaultView())->render($pager, $routeGenerator);
+        $pages = (new DefaultView())->render($pager, $routeGenerator);
 
         $builder = new Builder($this->name, $this->base);
         $content = $builder->buildList($pager->getCurrentPageResults(), $page, $orderBy);
@@ -99,7 +99,7 @@ class TaskController
             } else {
                 $error = 'Insufficient rights for this operation!';
 
-                include_once('edited_error.html');
+                include_once('edit_error.html');
             }
         } else {
             $hash = func_get_args()[0];
