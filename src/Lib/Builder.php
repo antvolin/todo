@@ -108,7 +108,7 @@ class Builder
         $env = new Dotenv();
         $env->load(dirname(__DIR__).'/../.env');
 
-        $tasks = (new TaskRepository())->getList($sortBy, $orderBy);
+        $tasks = (new TaskFileRepository())->getList($sortBy, $orderBy);
         $pager = new Pagerfanta(new ArrayAdapter($tasks));
         $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
         $pager->setCurrentPage($page);
@@ -123,15 +123,13 @@ class Builder
      */
 	private function buildTask(Task $task): string
     {
-        $hash = $task->getHash();
-
 		$content =
-			'<div id="'.$hash.'" class="row">
+			'<div id="'.$task.'" class="row">
 				<div class="col-sm">'.$task->getUserName().'</div>
 				<div class="col-sm">'.$task->getEmail().'</div>
 				<div class="col-sm">'.$task->getText().'</div>
 				<div class="col-sm">'.$task->getStatus().'</div>'.
-                '<div class="col-sm">'.$this->createEditLink($hash).$this->createDoneLink($hash).'</div>'.
+                '<div class="col-sm">'.$this->createEditLink($task).$this->createDoneLink($task).'</div>'.
 			'</div>';
 
 		return $content;

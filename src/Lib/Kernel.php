@@ -2,17 +2,22 @@
 
 namespace BeeJeeMVC\Lib;
 
-class Router
+class Kernel
 {
 	public function process(): void
     {
 		if (isset($_GET['route']) && !empty($_GET['route'])) {
             $controller = null;
 			$urlParts = explode('/', trim($_GET['route'], '/'));
-			$controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst(strtolower(array_shift($urlParts))).'Controller';
+			$name = strtolower(array_shift($urlParts));
+			$controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst($name).'Controller';
 
 			if (class_exists($controllerName)) {
-				$controller = new $controllerName();
+			    if ('task' === $name) {
+                    $controller = new $controllerName(new TaskFileRepository());
+                } else {
+                    $controller = new $controllerName();
+                }
 			}
 
             $action = array_shift($urlParts);

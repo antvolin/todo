@@ -59,8 +59,7 @@ class TaskTest extends TestCase
         $this->task->edit($newText);
         $this->assertEquals($newText, $this->task->getText());
 
-        $editStatus = (new AllowedStatuses())->getEditStatus();
-        $this->assertEquals($editStatus, $this->task->getStatus());
+        $this->assertEquals(AllowedStatuses::EDITED_STATUS, $this->task->getStatus());
     }
 
     /**
@@ -68,8 +67,7 @@ class TaskTest extends TestCase
      */
     public function shouldBeDone(): void
     {
-        $doneStatus = (new AllowedStatuses())->getDoneStatus();
         $this->task->done();
-        $this->assertEquals($doneStatus, $this->task->getStatus());
+        $this->assertEquals(AllowedStatuses::DONE_STATUS, $this->task->getStatus());
     }
 }

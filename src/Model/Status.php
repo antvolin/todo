@@ -17,7 +17,7 @@ class Status
      */
     public function __construct(string $value)
     {
-        if (!in_array($value, (new AllowedStatuses())->getAllowedStatuses(), true)) {
+        if (!in_array($value, AllowedStatuses::ALLOWED_STATUSES, true)) {
             $msg = 'Status value not allowed.';
 
             throw new InvalidArgumentException($msg);

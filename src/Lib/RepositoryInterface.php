@@ -1,0 +1,30 @@
+<?php
+
+namespace BeeJeeMVC\Lib;
+
+use BeeJeeMVC\Model\Task;
+
+interface RepositoryInterface
+{
+    /**
+     * @param string $id
+     *
+     * @return Task
+     */
+    public function getById(string $id): Task;
+
+    /**
+     * @param string|null $sortBy
+     * @param string|null $orderBy
+     *
+     * @return array
+     */
+    public function getList(?string $sortBy = null, ?string $orderBy = null): array;
+
+    /**
+     * @param Task $task
+     *
+     * @return Task
+     */
+    public function save(Task $task): Task;
+}

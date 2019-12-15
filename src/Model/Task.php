@@ -33,6 +33,11 @@ class Task
     private $doneStatus;
 
     /**
+     * @var string
+     */
+    private $hash;
+
+    /**
      * @param UserName $userName
      * @param Email $email
      * @param Text $text
@@ -42,6 +47,7 @@ class Task
         $this->userName = $userName;
         $this->email = $email;
         $this->text = $text;
+        $this->hash = (new HashGenerator())->generateHash($this->userName, $this->email, $this->text);
     }
 
     /**
@@ -49,15 +55,7 @@ class Task
      */
     public function __toString(): string
     {
-        return $this->getHash();
-    }
-
-    /**
-     * @return string
-     */
-    public function getHash(): string
-    {
-        return (new HashGenerator())->generateHash($this->userName, $this->email, $this->text);
+        return $this->hash;
     }
 
     /**
@@ -89,22 +87,29 @@ class Task
      */
     public function getStatus(): string
     {
-        return $this->editStatus.' '.$this->doneStatus;
+        return $this->editStatus.$this->doneStatus;
     }
 
     /**
      * @param string $text
+     *
+     * @return $this
      */
-    public function edit(string $text): void
+    public function edit(string $text): self
     {
         $this->text = new Text($text);
-        $editStatus = (new AllowedStatuses())->getEditStatus();
-        $this->editStatus = new Status($editStatus);
+        $this->editStatus = new Status(AllowedStatuses::EDITED_STATUS);
+
+        return $this;
     }
 
-    public function done(): void
+    /**
+     * @return $this
+     */
+    public function done(): self
     {
-        $doneStatus = (new AllowedStatuses())->getDoneStatus();
-        $this->doneStatus = new Status($doneStatus);
+        $this->doneStatus = new Status(AllowedStatuses::DONE_STATUS);
+
+        return $this;
     }
 }

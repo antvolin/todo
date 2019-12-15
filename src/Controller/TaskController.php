@@ -3,7 +3,11 @@
 namespace BeeJeeMVC\Controller;
 
 use BeeJeeMVC\Lib\Builder;
-use BeeJeeMVC\Lib\TaskRepository;
+use BeeJeeMVC\Lib\RepositoryInterface;
+use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Task;
+use BeeJeeMVC\Model\Text;
+use BeeJeeMVC\Model\UserName;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,11 +31,17 @@ class TaskController
      */
     private $request;
 
-    public function __construct()
+    /**
+     * @var RepositoryInterface
+     */
+    private $repository;
+
+    public function __construct(RepositoryInterface $repository)
     {
         $this->base = '/';
         $this->name = 'Task';
         $this->request = Request::createFromGlobals();
+        $this->repository = $repository;
     }
 
     public function list(): void
@@ -55,7 +65,7 @@ class TaskController
                 $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
                 try {
-                    $task = (new TaskRepository())->create($userName, $email, $text);
+                    $task = $this->repository->save(new Task(new UserName($userName), new Email($email), new Text($text)));
                     $content = 'Task #'.$task.' created!';
                     include_once(dirname(__DIR__).'/View/created.html');
                 } catch (InvalidArgumentException $exception) {
@@ -79,7 +89,9 @@ class TaskController
                 $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
                 try {
-                    $task = (new TaskRepository())->edit($hash, $text);
+                    $task = $this->repository->getById($hash);
+                    $this->repository->save($task->edit($text));
+
                     $content = 'Task #'.$task.' edited!';
                     include_once(dirname(__DIR__).'/View/edited.html');
                 } catch (InvalidArgumentException $exception) {
@@ -100,7 +112,9 @@ class TaskController
     {
         if ($_SESSION['admin']) {
             try {
-                $task = (new TaskRepository())->done(func_get_args()[0]);
+                $task = $this->repository->getById(func_get_args()[0]);
+                $this->repository->save($task->done());
+
                 $content = 'Task #'.$task.' done!';
                 include_once(dirname(__DIR__).'/View/done.html');
             } catch (InvalidArgumentException $exception) {

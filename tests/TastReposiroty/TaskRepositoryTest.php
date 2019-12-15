@@ -2,9 +2,7 @@
 
 namespace BeeJeeMVC\Tests\TaskRepository;
 
-use BeeJeeMVC\Lib\AllowedStatuses;
-use BeeJeeMVC\Lib\HashGenerator;
-use BeeJeeMVC\Lib\TaskRepository;
+use BeeJeeMVC\Lib\TaskFileRepository;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
@@ -39,7 +37,7 @@ class TaskRepositoryTest extends TestCase
     protected $hash;
 
     /**
-     * @var TaskRepository
+     * @var TaskFileRepository
      */
     protected $taskRepository;
 
@@ -48,14 +46,9 @@ class TaskRepositoryTest extends TestCase
         $this->userName = new UserName('test user name');
         $this->email = new Email('test@test.test');
         $this->text = new Text('test text');
-        $this->taskRepository = new TaskRepository();
+        $this->taskRepository = new TaskFileRepository();
 
-        $userName = $this->userName;
-        $email = $this->email;
-        $text = $this->text;
-
-        $this->task = $this->taskRepository->create($this->userName, $this->email, $this->text);
-        $this->hash = (new HashGenerator())->generateHash($userName, $email, $text);
+        $this->task = $this->taskRepository->save(new Task(new UserName($this->userName), new Email($this->email), new Text($this->text)));
     }
 
     /**
@@ -66,31 +59,5 @@ class TaskRepositoryTest extends TestCase
         $this->assertEquals($this->userName, $this->task->getUserName());
         $this->assertEquals($this->email, $this->task->getEmail());
         $this->assertEquals($this->text, $this->task->getText());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBeEdited(): void
-    {
-        $newText = 'test new task text';
-        $this->task->edit($newText);
-        $task = $this->taskRepository->getByHash($this->hash);
-        $this->assertEquals($newText, $task->getText());
-
-        $statusEdit = (new AllowedStatuses())->getEditStatus();
-        $this->assertEquals($statusEdit, $task->getStatus());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBeDone(): void
-    {
-        $this->task->done();
-        $task = $this->taskRepository->getByHash($this->hash);
-        $statusDone = (new AllowedStatuses())->getDoneStatus();
-
-        $this->assertEquals($statusDone, $task->getStatus());
     }
 }
