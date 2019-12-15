@@ -39,7 +39,7 @@ class TaskController
         $this->template = $template;
     }
 
-    public function list(): void
+    public function list(): string
     {
         $page = $this->request->get('page', 1);
         $sortBy = $this->request->get('sortBy');
@@ -48,21 +48,17 @@ class TaskController
         $builder = new TemplateBuilder();
         $content = $builder->buildList($page, $sortBy, $orderBy);
 
-        echo $this->template->render('list', ['content' => $content]);
+        return $this->template->render('list', ['content' => $content]);
     }
 
-    public function create(): void
+    public function create(): ?string
     {
         if ('POST' !== $this->request->getMethod()) {
-            echo $this->template->render('form_create');
-
-            return;
+            return $this->template->render('form_create');
         }
 
-        if ($_SESSION['admin']) {
-            echo $this->template->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
-
-            return;
+        if ($this->request->getSession()->get('admin')) {
+            return $this->template->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
         }
 
         $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -72,23 +68,20 @@ class TaskController
         try {
             $this->taskManager->save($userName, $email, $text);
 
-            echo $this->template->render('created');
+            return $this->template->render('created');
         } catch (InvalidArgumentException $exception) {
-            echo $this->template->render('form_create', ['error' => $exception->getMessage()]);
+            return $this->template->render('form_create', ['error' => $exception->getMessage()]);
         }
     }
 
-    public function edit(): void
+    public function edit(): ?string
     {
         if ('POST' !== $this->request->getMethod()) {
-            echo $this->template->render('form_edit', ['hash' => func_get_args()[0]]);
-
-            return;
+            return $this->template->render('form_edit', ['hash' => func_get_args()[0]]);
         }
-        if (!$_SESSION['admin']) {
-            echo $this->template->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
 
-            return;
+        if (!$this->request->getSession()->get('admin')) {
+            return $this->template->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
         }
 
         $id = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -97,26 +90,24 @@ class TaskController
         try {
             $this->taskManager->edit($id, $text);
 
-            echo $this->template->render('edited');
+            return $this->template->render('edited');
         } catch (InvalidArgumentException $exception) {
-            echo $this->template->render('edit_error', ['error' => $exception->getMessage()]);
+            return $this->template->render('edit_error', ['error' => $exception->getMessage()]);
         }
     }
 
-    public function done(): void
+    public function done(): ?string
     {
-        if (!$_SESSION['admin']) {
-            echo $this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
-
-            return;
+        if (!$this->request->getSession()->get('admin')) {
+            return $this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
         }
 
         try {
             $this->taskManager->done(func_get_args()[0]);
 
-            echo $this->template->render('done');
+            return $this->template->render('done');
         } catch (InvalidArgumentException $exception) {
-            echo $this->template->render('done_error', ['error' => $exception->getMessage()]);
+            return $this->template->render('done_error', ['error' => $exception->getMessage()]);
         }
     }
 }

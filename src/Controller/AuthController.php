@@ -23,32 +23,36 @@ class AuthController
         $this->template = $template;
     }
 
-    public function login(): void
+    /**
+     * @return string
+     */
+    public function login(): ?string
     {
         if ('POST' !== $this->request->getMethod()) {
-            echo $this->template->render('form_login');
-
-            return;
+            return $this->template->render('form_login');
         }
 
         $user = $this->request->get('user');
         $password = $this->request->request->getInt('password');
 
         if ('admin' === $user && 123 === $password) {
-            $_SESSION['admin'] = true;
+            $this->request->getSession()->set('admin', true);
 
-            echo $this->template->render('login_success');
-        } else {
-            echo $this->template->render('form_login', ['error' => 'The entered data is not correct!']);
+            return $this->template->render('login_success');
         }
+
+        return $this->template->render('form_login', ['error' => 'The entered data is not correct!']);
     }
 
-    public function logout(): void
+    /**
+     * @return string
+     */
+    public function logout(): string
     {
-        if ($_SESSION['admin']) {
-            unset($_SESSION['admin']);
+        if ($this->request->getSession()->get('admin')) {
+            $this->request->getSession()->remove('admin');
         }
 
-        echo $this->template->render('logout_success');
+        return $this->template->render('logout_success');
     }
 }

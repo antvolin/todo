@@ -117,7 +117,7 @@ class TemplateBuilder
      *
      * @return string
      */
-	private function getStatus(Task $task)
+	private function getStatus(Task $task): string
     {
         $status = '';
 
