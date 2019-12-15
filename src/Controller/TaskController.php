@@ -7,6 +7,7 @@ use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TemplateBuilder;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController
 {
@@ -46,7 +47,10 @@ class TaskController
         $this->templateBuilder = $templateBuilder;
     }
 
-    public function list(): string
+    /**
+     * @return Response
+     */
+    public function list(): Response
     {
         $page = $this->request->get('page', 1);
         $sortBy = $this->request->get('sortBy');
@@ -54,17 +58,20 @@ class TaskController
 
         $content = $this->templateBuilder->buildList($page, $sortBy, $orderBy);
 
-        return $this->template->render('list', ['content' => $content]);
+        return new Response($this->template->render('list', ['content' => $content]));
     }
 
-    public function create(): ?string
+    /**
+     * @return Response
+     */
+    public function create(): ?Response
     {
         if ('POST' !== $this->request->getMethod()) {
-            return $this->template->render('form_create');
+            return new Response($this->template->render('form_create'));
         }
 
         if ($this->request->getSession()->get('admin')) {
-            return $this->template->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+            return new Response($this->template->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
         }
 
         $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -74,20 +81,23 @@ class TaskController
         try {
             $this->taskManager->save($userName, $email, $text);
 
-            return $this->template->render('created');
+            return new Response($this->template->render('created'));
         } catch (InvalidArgumentException $exception) {
-            return $this->template->render('form_create', ['error' => $exception->getMessage()]);
+            return new Response($this->template->render('form_create', ['error' => $exception->getMessage()]));
         }
     }
 
-    public function edit(): ?string
+    /**
+     * @return Response
+     */
+    public function edit(): Response
     {
         if ('POST' !== $this->request->getMethod()) {
-            return $this->template->render('form_edit', ['hash' => func_get_args()[0]]);
+            return new Response($this->template->render('form_edit', ['hash' => func_get_args()[0]]));
         }
 
         if (!$this->request->getSession()->get('admin')) {
-            return $this->template->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+            return new Response($this->template->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
         }
 
         $id = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -96,24 +106,27 @@ class TaskController
         try {
             $this->taskManager->edit($id, $text);
 
-            return $this->template->render('edited');
+            return new Response($this->template->render('edited'));
         } catch (InvalidArgumentException $exception) {
-            return $this->template->render('edit_error', ['error' => $exception->getMessage()]);
+            return new Response($this->template->render('edit_error', ['error' => $exception->getMessage()]));
         }
     }
 
-    public function done(): ?string
+    /**
+     * @return Response
+     */
+    public function done(): Response
     {
         if (!$this->request->getSession()->get('admin')) {
-            return $this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]);
+            return new Response($this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
         }
 
         try {
             $this->taskManager->done(func_get_args()[0]);
 
-            return $this->template->render('done');
+            return new Response($this->template->render('done'));
         } catch (InvalidArgumentException $exception) {
-            return $this->template->render('done_error', ['error' => $exception->getMessage()]);
+            return new Response($this->template->render('done_error', ['error' => $exception->getMessage()]));
         }
     }
 }

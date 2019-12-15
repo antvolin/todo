@@ -4,6 +4,7 @@ namespace BeeJeeMVC\Controller;
 
 use BeeJeeMVC\Lib\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController
 {
@@ -28,12 +29,12 @@ class AuthController
     }
 
     /**
-     * @return string
+     * @return Response
      */
-    public function login(): ?string
+    public function login(): Response
     {
         if ('POST' !== $this->request->getMethod()) {
-            return $this->template->render('form_login');
+            return new Response($this->template->render('form_login'));
         }
 
         $user = $this->request->get('user');
@@ -42,21 +43,21 @@ class AuthController
         if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
             $_SESSION['admin'] = true;
 
-            return $this->template->render('login_success');
+            return new Response($this->template->render('login_success'));
         }
 
-        return $this->template->render('form_login', ['error' => 'The entered data is not correct!']);
+        return new Response($this->template->render('form_login', ['error' => 'The entered data is not correct!']));
     }
 
     /**
-     * @return string
+     * @return Response
      */
-    public function logout(): string
+    public function logout(): Response
     {
         if ($this->request->getSession()->get('admin')) {
             unset($_SESSION['admin']);
         }
 
-        return $this->template->render('logout_success');
+        return new Response($this->template->render('logout_success'));
     }
 }
