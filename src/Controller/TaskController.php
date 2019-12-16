@@ -6,6 +6,7 @@ use BeeJeeMVC\Lib\TaskManager;
 use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TemplateBuilder;
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,9 +63,9 @@ class TaskController
     }
 
     /**
-     * @return Response
+     * @return RedirectResponse|Response
      */
-    public function create(): ?Response
+    public function create()
     {
         if ('POST' !== $this->request->getMethod()) {
             return new Response($this->template->render('form_create'));
@@ -80,17 +81,17 @@ class TaskController
 
         try {
             $this->taskManager->save($userName, $email, $text);
-
-            return new Response($this->template->render('created'));
         } catch (InvalidArgumentException $exception) {
             return new Response($this->template->render('form_create', ['error' => $exception->getMessage()]));
         }
+
+        return new RedirectResponse('/?route=task/list');
     }
 
     /**
-     * @return Response
+     * @return RedirectResponse|Response
      */
-    public function edit(): Response
+    public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
             return new Response($this->template->render('form_edit', ['hash' => func_get_args()[0]]));
@@ -105,17 +106,17 @@ class TaskController
 
         try {
             $this->taskManager->edit($id, $text);
-
-            return new Response($this->template->render('edited'));
         } catch (InvalidArgumentException $exception) {
             return new Response($this->template->render('edit_error', ['error' => $exception->getMessage()]));
         }
+
+        return new RedirectResponse('/?route=task/list');
     }
 
     /**
-     * @return Response
+     * @return RedirectResponse|Response
      */
-    public function done(): Response
+    public function done()
     {
         if (!$this->request->getSession()->get('admin')) {
             return new Response($this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
@@ -123,10 +124,10 @@ class TaskController
 
         try {
             $this->taskManager->done(func_get_args()[0]);
-
-            return new Response($this->template->render('done'));
         } catch (InvalidArgumentException $exception) {
             return new Response($this->template->render('done_error', ['error' => $exception->getMessage()]));
         }
+
+        return new RedirectResponse('/?route=task/list');
     }
 }

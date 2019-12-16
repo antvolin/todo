@@ -3,6 +3,7 @@
 namespace BeeJeeMVC\Controller;
 
 use BeeJeeMVC\Lib\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,35 +30,35 @@ class AuthController
     }
 
     /**
-     * @return Response
+     * @return RedirectResponse|Response
      */
-    public function login(): Response
+    public function login()
     {
         if ('POST' !== $this->request->getMethod()) {
             return new Response($this->template->render('form_login'));
         }
 
         $user = $this->request->get('user');
-        $password = $this->request->request->getInt('password');
+        $password = $this->request->get('password');
 
         if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
             $_SESSION['admin'] = true;
 
-            return new Response($this->template->render('login_success'));
+            return new RedirectResponse('/?route=task/list');
         }
 
         return new Response($this->template->render('form_login', ['error' => 'The entered data is not correct!']));
     }
 
     /**
-     * @return Response
+     * @return RedirectResponse
      */
-    public function logout(): Response
+    public function logout()
     {
         if ($this->request->getSession()->get('admin')) {
             unset($_SESSION['admin']);
         }
 
-        return new Response($this->template->render('logout_success'));
+        return new RedirectResponse('/?route=task/list');
     }
 }
