@@ -57,10 +57,10 @@ class TemplateBuilder
 	private function buildButtons(): string
     {
         if ($this->isAdmin) {
-            $content = '<div class="buttons"><button class="button"><a href="/?route=auth/logout">Logout</a></button></div>';
+            $content = '<div class="buttons"><button class="button"><a href="/auth/logout">Logout</a></button></div>';
         } else {
-            $content = '<div class="buttons"><button class="button"><a href="/?route=task/create">Create task</a></button>';
-            $content .= '<button class="button"><a href="/?route=auth/login">Login</a></button></div>';
+            $content = '<div class="buttons"><button class="button"><a href="/task/create">Create task</a></button>';
+            $content .= '<button class="button"><a href="/auth/login">Login</a></button></div>';
         }
 
         return $content;
@@ -77,9 +77,9 @@ class TemplateBuilder
         $orderBy = $this->getNextOrder($orderBy);
 
         return '<div class="row">
-            <div class="col-sm"><a href="/?route=task/list&page='.$page.'&sortBy=userName&orderBy='.$orderBy.'">User name</a></div>
-            <div class="col-sm"><a href="/?route=task/list&page='.$page.'&sortBy=email&orderBy='.$orderBy.'">Email</a></div>
-            <div class="col-sm"><a href="/?route=task/list&page='.$page.'&sortBy=text&orderBy='.$orderBy.'">Text</a></div>
+            <div class="col-sm"><a href="/task/list&page='.$page.'&sortBy=userName&orderBy='.$orderBy.'">User name</a></div>
+            <div class="col-sm"><a href="/task/list&page='.$page.'&sortBy=email&orderBy='.$orderBy.'">Email</a></div>
+            <div class="col-sm"><a href="/task/list&page='.$page.'&sortBy=text&orderBy='.$orderBy.'">Text</a></div>
             <div class="col-sm">Status</div>
             <div class="col-sm"></div>
         </div>';
@@ -157,7 +157,7 @@ class TemplateBuilder
         $link = '';
 
         if ($this->isAdmin) {
-            $link = '<button><a href="?route=/task/edit/'.$hash.'">Edit</a></button>';
+            $link = '<button><a href="/task/edit/'.$hash.'">Edit</a></button>';
         }
 
         return $link;
@@ -173,7 +173,7 @@ class TemplateBuilder
         $link = '';
 
         if ($this->isAdmin) {
-            $link = '<button><a href="?route=/task/done/'.$hash.'">Done</a></button>';
+            $link = '<button><a href="/task/done/'.$hash.'">Done</a></button>';
         }
 
         return $link;
@@ -189,7 +189,7 @@ class TemplateBuilder
     private function buildPagination(Pagerfanta $pager, ?string $sortBy, ?string $orderBy): string
     {
         $routeGenerator = function (int $page) use ($sortBy, $orderBy) {
-            return '/?route=task/list&page='.$page.'&sortBy='.$sortBy.'&orderBy='.$orderBy;
+            return '/task/list&page='.$page.'&sortBy='.$sortBy.'&orderBy='.$orderBy;
         };
 
         return '<div class="pages">'.(new DefaultView())->render($pager, $routeGenerator).'</div>';

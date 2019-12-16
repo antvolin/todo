@@ -22,27 +22,25 @@ class Kernel
         $isAdmin = $request->getSession()->get('admin', false);
         $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin);
 
-		if (!empty($request->query->get('route'))) {
-            $controller = null;
-			$urlParts = explode('/', trim($request->query->get('route'), '/'));
-			$name = strtolower(array_shift($urlParts));
-			$controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst($name).'Controller';
+        $controller = null;
+        $urlParts = explode('/', trim($request->getPathInfo(), '/'));
+        $name = strtolower(array_shift($urlParts));
+        $controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst($name).'Controller';
 
-			if (class_exists($controllerName)) {
-			    if ('task' === $name) {
-                    $controller = new $controllerName($taskManager, $request, $template, $templateBuilder);
-                } else {
-                    $controller = new $controllerName($request, $template);
-                }
-			}
+        if (class_exists($controllerName)) {
+            if ('task' === $name) {
+                $controller = new $controllerName($taskManager, $request, $template, $templateBuilder);
+            } else {
+                $controller = new $controllerName($request, $template);
+            }
+        }
 
-            $action = array_shift($urlParts);
+        $action = array_shift($urlParts);
 
-			if (method_exists($controller, $action)) {
-                /** @var Response $response */
-			    $response = $controller->$action(...$urlParts);
-                $response->send();
-			}
-		}
+        if (method_exists($controller, $action)) {
+            /** @var Response $response */
+            $response = $controller->$action(...$urlParts);
+            $response->send();
+        }
 	}
 }

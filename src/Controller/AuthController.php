@@ -44,7 +44,7 @@ class AuthController
         if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
             $this->request->getSession()->set('admin', true);
 
-            return new RedirectResponse('/?route=task/list');
+            return new RedirectResponse('/task/list');
         }
 
         return new Response($this->template->render('form_login', ['error' => 'The entered data is not correct!']));
@@ -59,6 +59,6 @@ class AuthController
             $this->request->getSession()->remove('admin');
         }
 
-        return new RedirectResponse('/?route=task/list');
+        return new RedirectResponse('/task/list');
     }
 }

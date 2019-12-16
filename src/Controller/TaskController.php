@@ -86,7 +86,7 @@ class TaskController
             return new Response($this->template->render('form_create', ['error' => $exception->getMessage()]));
         }
 
-        return new RedirectResponse('/?route=task/list');
+        return new RedirectResponse('/task/list');
     }
 
     /**
@@ -111,7 +111,7 @@ class TaskController
             return new Response($this->template->render('edit_error', ['error' => $exception->getMessage()]));
         }
 
-        return new RedirectResponse('/?route=task/list');
+        return new RedirectResponse('/task/list');
     }
 
     /**
@@ -129,6 +129,6 @@ class TaskController
             return new Response($this->template->render('done_error', ['error' => $exception->getMessage()]));
         }
 
-        return new RedirectResponse('/?route=task/list');
+        return new RedirectResponse('/task/list');
     }
 }

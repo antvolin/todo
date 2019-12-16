@@ -52,7 +52,7 @@ class TaskFileRepository implements TaskRepositoryInterface
     public function getList(?string $sortBy = null, ?string $orderBy = null): array
     {
         $tasks = [];
-        
+
         foreach (glob($this->taskFolderPath.'*') as $file) {
             $tasks[basename($file)] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
         }
