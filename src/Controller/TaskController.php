@@ -99,7 +99,9 @@ class TaskController
     public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
-            return new Response($this->template->render('form_edit', ['hash' => func_get_args()[0]]));
+            $args = ['hash' => func_get_args()[0], 'text' => func_get_args()[1]];
+
+            return new Response($this->template->render('form_edit', $args));
         }
 
         if (!$this->request->getSession()->get('admin')) {

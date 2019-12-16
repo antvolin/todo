@@ -132,7 +132,7 @@ class TemplateBuilder
             <div class="col-sm-2">'.$task->getEmail().'</div>
             <div class="col-sm-4">'.$task->getText().'</div>
             <div class="col-sm-2">'.$this->getStatus($task).'</div>'.
-            '<div class="col-sm-2">'.$this->createEditLink($task->getId()).$this->createDoneLink($task->getId()).'</div>'.
+            '<div class="col-sm-2">'.$this->createEditLink($task->getId(), $task->getText()).$this->createDoneLink($task->getId()).'</div>'.
         '</div>';
 	}
 
@@ -157,15 +157,16 @@ class TemplateBuilder
 
     /**
      * @param string $hash
+     * @param string $text
      *
      * @return string
      */
-	private function createEditLink(string $hash): string
+	private function createEditLink(string $hash, string $text): string
     {
         $link = '';
 
         if ($this->isAdmin) {
-            $link = '<button><a href="/task/edit/'.$hash.'">Edit</a></button>';
+            $link = '<button><a href="/task/edit/'.$hash.'/'.$text.'">Edit</a></button>';
         }
 
         return $link;
