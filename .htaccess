@@ -4,7 +4,7 @@
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} ^.*\.(css|ico)$ [NC]
-  RewriteRule ^(.*)$ /public/$1
+  RewriteRule ^(.*)$ public/$1
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !^.*\.(css|ico)$ [NC]
