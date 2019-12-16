@@ -157,7 +157,7 @@ class TemplateBuilder
         $link = '';
 
         if ($this->isAdmin) {
-            $link = '<button><a href="?route=/task/edit/'.$hash.'">Edit task</a></button>';
+            $link = '<button><a href="?route=/task/edit/'.$hash.'">Edit</a></button>';
         }
 
         return $link;
@@ -173,7 +173,7 @@ class TemplateBuilder
         $link = '';
 
         if ($this->isAdmin) {
-            $link = '<button><a href="?route=/task/done/'.$hash.'">Done task</a></button>';
+            $link = '<button><a href="?route=/task/done/'.$hash.'">Done</a></button>';
         }
 
         return $link;
