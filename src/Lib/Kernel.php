@@ -20,7 +20,8 @@ class Kernel
         $taskRepo = new TaskFileRepository($taskFolderPath);
         $taskManager = new TaskManager($taskRepo);
         $isAdmin = $request->getSession()->get('admin', false);
-        $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin);
+        $isCreated = $request->getSession()->get('isCreated', false);
+        $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin, $isCreated);
 
         $controller = null;
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));

@@ -60,6 +60,8 @@ class TaskController
 
         $content = $this->templateBuilder->buildList($page, $sortBy, $orderBy);
 
+        $this->request->getSession()->remove('isCreated');
+
         return new Response($this->template->render('list', ['content' => $content]));
     }
 
@@ -85,6 +87,8 @@ class TaskController
         } catch (InvalidArgumentException $exception) {
             return new Response($this->template->render('form_create', ['error' => $exception->getMessage()]));
         }
+
+        $this->request->getSession()->set('isCreated', true);
 
         return new RedirectResponse('/task/list');
     }

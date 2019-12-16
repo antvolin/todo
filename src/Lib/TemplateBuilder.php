@@ -20,13 +20,20 @@ class TemplateBuilder
     private $isAdmin;
 
     /**
+     * @var bool
+     */
+    private $isCreated;
+
+    /**
      * @param TaskRepositoryInterface $repository
      * @param bool $isAdmin
+     * @param bool $isCreated
      */
-    public function __construct(TaskRepositoryInterface $repository, bool $isAdmin)
+    public function __construct(TaskRepositoryInterface $repository, bool $isAdmin, bool $isCreated)
     {
         $this->repository = $repository;
         $this->isAdmin = $isAdmin;
+        $this->isCreated = $isCreated;
     }
 
     /**
@@ -38,7 +45,8 @@ class TemplateBuilder
      */
 	public function buildList(int $page, ?string $sortBy, ?string $orderBy): string
     {
-        $content = $this->buildButtons();
+        $content = $this->isCreated ? 'Task created!' : '';
+        $content .= $this->buildButtons();
         $content .= $this->buildSorting($page, $orderBy);
         $pager = $this->createPager($page, $sortBy, $orderBy);
 
