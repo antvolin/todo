@@ -6,7 +6,7 @@ use BeeJeeMVC\Model\Task;
 use LogicException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-class TaskFileTaskRepository implements TaskRepositoryInterface
+class TaskFileRepository implements TaskRepositoryInterface
 {
     /**
      * @var string

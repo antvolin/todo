@@ -10,9 +10,9 @@ use Pagerfanta\View\DefaultView;
 class TemplateBuilder
 {
     /**
-     * @var string
+     * @var TaskRepositoryInterface
      */
-    private $taskFolderPath;
+    private $repository;
 
     /**
      * @var bool
@@ -20,12 +20,12 @@ class TemplateBuilder
     private $isAdmin;
 
     /**
-     * @param string $taskFolderPath
+     * @param TaskRepositoryInterface $repository
      * @param bool $isAdmin
      */
-    public function __construct(string $taskFolderPath, bool $isAdmin)
+    public function __construct(TaskRepositoryInterface $repository, bool $isAdmin)
     {
-        $this->taskFolderPath = $taskFolderPath;
+        $this->repository = $repository;
         $this->isAdmin = $isAdmin;
     }
 
@@ -104,7 +104,7 @@ class TemplateBuilder
      */
     private function createPager(int $page, ?string $sortBy, ?string $orderBy): Pagerfanta
     {
-        $tasks = (new TaskFileTaskRepository($this->taskFolderPath))->getList($sortBy, $orderBy);
+        $tasks = $this->repository->getList($sortBy, $orderBy);
         $pager = new Pagerfanta(new ArrayAdapter($tasks));
         $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
         $pager->setCurrentPage($page);

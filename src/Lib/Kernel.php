@@ -17,9 +17,10 @@ class Kernel
 
         $template = new Template();
         $taskFolderPath = dirname(__DIR__).$_ENV['TASK_FOLDER_NAME'];
-        $taskManager = new TaskManager(new TaskFileTaskRepository($taskFolderPath));
+        $taskRepo = new TaskFileRepository($taskFolderPath);
+        $taskManager = new TaskManager($taskRepo);
         $isAdmin = $request->getSession()->get('admin', false);
-        $templateBuilder = new TemplateBuilder($taskFolderPath, $isAdmin);
+        $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin);
 
 		if (!empty($request->query->get('route'))) {
             $controller = null;
