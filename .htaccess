@@ -5,10 +5,10 @@
   RewriteRule .htaccess - [F]
 
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_URI} ^.*\.(css|ico)$ [NC]
+  RewriteCond %{REQUEST_URI} \.(css|ico)$ [NC]
   RewriteRule ^(.*)$ public/$1 [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_URI} !^.*\.(css|ico)$ [NC]
-  RewriteRule ^(.*)$ public/index.php [L,QSA]
+  RewriteCond %{REQUEST_URI} !\.(css|ico)$ [NC]
+  RewriteRule .* public/index.php [L,QSA]
 </IfModule>
