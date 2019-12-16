@@ -75,7 +75,7 @@ class TaskController
         }
 
         if ($this->request->getSession()->get('admin')) {
-            return new Response($this->template->render('form_create', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
+            return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
         }
 
         $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -103,7 +103,7 @@ class TaskController
         }
 
         if (!$this->request->getSession()->get('admin')) {
-            return new Response($this->template->render('edit_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
+            return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
         }
 
         $id = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -124,7 +124,7 @@ class TaskController
     public function done()
     {
         if (!$this->request->getSession()->get('admin')) {
-            return new Response($this->template->render('done_error', ['error' => self::NOT_ENOUGH_RIGHTS_MSG]));
+            return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
         }
 
         try {

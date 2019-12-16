@@ -53,7 +53,7 @@ class AuthController
     /**
      * @return RedirectResponse
      */
-    public function logout()
+    public function logout(): RedirectResponse
     {
         if ($this->request->getSession()->get('admin')) {
             $this->request->getSession()->remove('admin');
