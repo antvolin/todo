@@ -85,9 +85,9 @@ class TemplateBuilder
         $orderBy = $this->getNextOrder($orderBy);
 
         return '<div class="row">
-            <div class="col-sm-2"><a href="/task/list&page='.$page.'&sortBy=userName&orderBy='.$orderBy.'">User name</a></div>
-            <div class="col-sm-2"><a href="/task/list&page='.$page.'&sortBy=email&orderBy='.$orderBy.'">Email</a></div>
-            <div class="col-sm-4"><a href="/task/list&page='.$page.'&sortBy=text&orderBy='.$orderBy.'">Text</a></div>
+            <div class="col-sm-2"><a href="/task/list?page='.$page.'&sortBy=userName&orderBy='.$orderBy.'">User name</a></div>
+            <div class="col-sm-2"><a href="/task/list?page='.$page.'&sortBy=email&orderBy='.$orderBy.'">Email</a></div>
+            <div class="col-sm-4"><a href="/task/list?page='.$page.'&sortBy=text&orderBy='.$orderBy.'">Text</a></div>
             <div class="col-sm-2">Status</div>
             <div class="col-sm-2"></div>
         </div>';
