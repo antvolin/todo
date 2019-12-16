@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Lib;
 
+use BeeJeeMVC\Controller\TaskController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -34,6 +35,8 @@ class Kernel
             } else {
                 $controller = new $controllerName($request, $template);
             }
+        } else {
+            $controller = new TaskController($taskManager, $request, $template, $templateBuilder);
         }
 
         $action = array_shift($urlParts);
@@ -41,7 +44,10 @@ class Kernel
         if (method_exists($controller, $action)) {
             /** @var Response $response */
             $response = $controller->$action(...$urlParts);
-            $response->send();
+        } else {
+            $response = $controller->list();
         }
+
+        $response->send();
 	}
 }
