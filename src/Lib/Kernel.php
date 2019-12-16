@@ -16,7 +16,7 @@ class Kernel
         $request->setSession($session);
 
         $template = new Template();
-        $taskFolderPath = dirname(__DIR__).$_ENV['TASK_FOLDER_NAME'];
+        $taskFolderPath = dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'];
         $taskRepo = new TaskFileRepository($taskFolderPath);
         $taskManager = new TaskManager($taskRepo);
         $isAdmin = $request->getSession()->get('admin', false);

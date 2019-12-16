@@ -5,6 +5,7 @@ namespace BeeJeeMVC\Controller;
 use BeeJeeMVC\Lib\TaskManager;
 use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TemplateBuilder;
+use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -124,7 +125,7 @@ class TaskController
 
         try {
             $this->taskManager->done(func_get_args()[0]);
-        } catch (InvalidArgumentException $exception) {
+        } catch (Exception $exception) {
             return new Response($this->template->render('done_error', ['error' => $exception->getMessage()]));
         }
 
