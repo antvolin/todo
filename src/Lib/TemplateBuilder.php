@@ -85,11 +85,11 @@ class TemplateBuilder
         $orderBy = $this->getNextOrder($orderBy);
 
         return '<div class="row">
-            <div class="col-sm"><a href="/task/list&page='.$page.'&sortBy=userName&orderBy='.$orderBy.'">User name</a></div>
-            <div class="col-sm"><a href="/task/list&page='.$page.'&sortBy=email&orderBy='.$orderBy.'">Email</a></div>
-            <div class="col-sm"><a href="/task/list&page='.$page.'&sortBy=text&orderBy='.$orderBy.'">Text</a></div>
-            <div class="col-sm">Status</div>
-            <div class="col-sm"></div>
+            <div class="col-sm-2"><a href="/task/list&page='.$page.'&sortBy=userName&orderBy='.$orderBy.'">User name</a></div>
+            <div class="col-sm-2"><a href="/task/list&page='.$page.'&sortBy=email&orderBy='.$orderBy.'">Email</a></div>
+            <div class="col-sm-4"><a href="/task/list&page='.$page.'&sortBy=text&orderBy='.$orderBy.'">Text</a></div>
+            <div class="col-sm-2">Status</div>
+            <div class="col-sm-2"></div>
         </div>';
     }
 
@@ -128,11 +128,11 @@ class TemplateBuilder
 	private function buildTask(Task $task): string
     {
         return '<div id="'.$task->getId().'" class="row">
-            <div class="col-sm">'.$task->getUserName().'</div>
-            <div class="col-sm">'.$task->getEmail().'</div>
-            <div class="col-sm">'.$task->getText().'</div>
-            <div class="col-sm">'.$this->getStatus($task).'</div>'.
-            '<div class="col-sm">'.$this->createEditLink($task->getId()).$this->createDoneLink($task->getId()).'</div>'.
+            <div class="col-sm-2">'.$task->getUserName().'</div>
+            <div class="col-sm-2">'.$task->getEmail().'</div>
+            <div class="col-sm-4">'.$task->getText().'</div>
+            <div class="col-sm-2">'.$this->getStatus($task).'</div>'.
+            '<div class="col-sm-2">'.$this->createEditLink($task->getId()).$this->createDoneLink($task->getId()).'</div>'.
         '</div>';
 	}
 
@@ -197,9 +197,9 @@ class TemplateBuilder
     private function buildPagination(Pagerfanta $pager, ?string $sortBy, ?string $orderBy): string
     {
         $routeGenerator = function (int $page) use ($sortBy, $orderBy) {
-            return '/task/list&page='.$page.'&sortBy='.$sortBy.'&orderBy='.$orderBy;
+            return '/task/list?page='.$page.'&sortBy='.$sortBy.'&orderBy='.$orderBy;
         };
 
-        return '<div class="pages">'.(new DefaultView())->render($pager, $routeGenerator).'</div>';
+        return '<div class="pagerfanta">'.(new DefaultView())->render($pager, $routeGenerator).'</div>';
     }
 }
