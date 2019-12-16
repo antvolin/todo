@@ -42,7 +42,7 @@ class AuthController
         $password = $this->request->get('password');
 
         if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
-            $_SESSION['admin'] = true;
+            $this->request->getSession()->set('admin', true);
 
             return new RedirectResponse('/?route=task/list');
         }
@@ -56,7 +56,7 @@ class AuthController
     public function logout()
     {
         if ($this->request->getSession()->get('admin')) {
-            unset($_SESSION['admin']);
+            $this->request->getSession()->remove('admin');
         }
 
         return new RedirectResponse('/?route=task/list');

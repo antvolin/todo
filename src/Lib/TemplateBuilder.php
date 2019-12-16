@@ -15,11 +15,18 @@ class TemplateBuilder
     private $taskFolderPath;
 
     /**
-     * @param string $taskFolderPath
+     * @var bool
      */
-    public function __construct(string $taskFolderPath)
+    private $isAdmin;
+
+    /**
+     * @param string $taskFolderPath
+     * @param bool $isAdmin
+     */
+    public function __construct(string $taskFolderPath, bool $isAdmin)
     {
         $this->taskFolderPath = $taskFolderPath;
+        $this->isAdmin = $isAdmin;
     }
 
     /**
@@ -49,7 +56,7 @@ class TemplateBuilder
      */
 	private function buildButtons(): string
     {
-        if ($_SESSION['admin']) {
+        if ($this->isAdmin) {
             $content = '<div class="buttons"><button class="button"><a href="/?route=auth/logout">Logout</a></button></div>';
         } else {
             $content = '<div class="buttons"><button class="button"><a href="/?route=task/create">Create task</a></button>';
@@ -149,7 +156,7 @@ class TemplateBuilder
     {
         $link = '';
 
-        if ($_SESSION['admin']) {
+        if ($this->isAdmin) {
             $link = '<button><a href="?route=/task/edit/'.$hash.'">Edit task</a></button>';
         }
 
@@ -165,7 +172,7 @@ class TemplateBuilder
     {
         $link = '';
 
-        if ($_SESSION['admin']) {
+        if ($this->isAdmin) {
             $link = '<button><a href="?route=/task/done/'.$hash.'">Done task</a></button>';
         }
 
