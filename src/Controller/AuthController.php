@@ -3,12 +3,15 @@
 namespace BeeJeeMVC\Controller;
 
 use BeeJeeMVC\Lib\Template;
+use BeeJeeMVC\Lib\TokenManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController
 {
+    private const ATTEMPT_TO_USE_CSRF_ATTACK = 'Attempt to use csrf attack!';
+
     /**
      * @var Request
      */
@@ -20,13 +23,20 @@ class AuthController
     private $template;
 
     /**
+     * @var string
+     */
+    private $token;
+
+    /**
      * @param Request $request
      * @param Template $template
+     * @param string $token
      */
-    public function __construct(Request $request, Template $template)
+    public function __construct(Request $request, Template $template, string $token)
     {
         $this->request = $request;
         $this->template = $template;
+        $this->token = $token;
     }
 
     /**
@@ -35,7 +45,13 @@ class AuthController
     public function login()
     {
         if ('POST' !== $this->request->getMethod()) {
-            return new Response($this->template->render('form_login'));
+            $args = ['token' => $this->token];
+
+            return new Response($this->template->render('form_login', $args));
+        }
+
+        if (!(new TokenManager())->checkToken($this->request->get('csrf-token'), $this->request)) {
+            return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
         $user = $this->request->get('user');
@@ -47,7 +63,9 @@ class AuthController
             return new RedirectResponse('/task/list');
         }
 
-        return new Response($this->template->render('form_login', ['error' => 'The entered data is not correct!']));
+        $args = ['error' => 'The entered data is not correct!', 'token' => $this->token];
+
+        return new Response($this->template->render('form_login', $args));
     }
 
     /**

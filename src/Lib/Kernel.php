@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Lib;
 
+use BeeJeeMVC\Controller\AuthController;
 use BeeJeeMVC\Controller\TaskController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,26 +18,18 @@ class Kernel
         $request->setSession($session);
 
         $template = new Template();
-        $taskFolderPath = dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'];
-        $taskRepo = new TaskFileRepository($taskFolderPath);
-        $taskManager = new TaskManager($taskRepo);
-        $isAdmin = $request->getSession()->get('admin', false);
-        $isCreated = $request->getSession()->get('isCreated', false);
-        $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin, $isCreated);
-
-        $controller = null;
+        $taskRepo = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME']);
+        $token = (new TokenManager())->generateToken($request, $_ENV['TOKEN_SALT']);
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));
-        $name = strtolower(array_shift($urlParts));
-        $controllerName = 'BeeJeeMVC\\Controller\\'.ucfirst($name).'Controller';
 
-        if (class_exists($controllerName)) {
-            if ('task' === $name) {
-                $controller = new $controllerName($taskManager, $request, $template, $templateBuilder);
-            } else {
-                $controller = new $controllerName($request, $template);
-            }
+        if ('auth' === strtolower(array_shift($urlParts))) {
+            $controller = new AuthController($request, $template, $token);
         } else {
-            $controller = new TaskController($taskManager, $request, $template, $templateBuilder);
+            $taskManager = new TaskManager($taskRepo);
+            $isAdmin = $request->getSession()->get('admin', false);
+            $isCreated = $request->getSession()->get('isCreated', false);
+            $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin, $isCreated);
+            $controller = new TaskController($taskManager, $request, $template, $templateBuilder, $token);
         }
 
         $action = array_shift($urlParts);

@@ -5,6 +5,7 @@ namespace BeeJeeMVC\Controller;
 use BeeJeeMVC\Lib\TaskManager;
 use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TemplateBuilder;
+use BeeJeeMVC\Lib\TokenManager;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class TaskController
 {
     private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
+    private const ATTEMPT_TO_USE_CSRF_ATTACK = 'Attempt to use csrf attack!';
 
     /**
      * @var Request
@@ -36,17 +38,29 @@ class TaskController
     private $templateBuilder;
 
     /**
+     * @var string
+     */
+    private $token;
+
+    /**
      * @param TaskManager $taskManager
      * @param Request $request
      * @param Template $template
      * @param TemplateBuilder $templateBuilder
+     * @param string $token
      */
-    public function __construct(TaskManager $taskManager, Request $request, Template $template, TemplateBuilder $templateBuilder)
+    public function __construct(
+        TaskManager $taskManager,
+        Request $request,
+        Template $template,
+        TemplateBuilder $templateBuilder,
+        string $token)
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
         $this->template = $template;
         $this->templateBuilder = $templateBuilder;
+        $this->token = $token;
     }
 
     /**
@@ -57,12 +71,12 @@ class TaskController
         $page = $this->request->get('page', 1);
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
-
         $content = $this->templateBuilder->buildList($page, $sortBy, $orderBy);
+        $args = ['content' => $content];
 
         $this->request->getSession()->remove('isCreated');
 
-        return new Response($this->template->render('list', ['content' => $content]));
+        return new Response($this->template->render('list', $args));
     }
 
     /**
@@ -71,11 +85,17 @@ class TaskController
     public function create()
     {
         if ('POST' !== $this->request->getMethod()) {
-            return new Response($this->template->render('form_create'));
+            $args = ['token' => $this->token];
+
+            return new Response($this->template->render('form_create', $args));
         }
 
         if ($this->request->getSession()->get('admin')) {
             return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
+        }
+
+        if (!(new TokenManager())->checkToken($this->request->get('csrf-token'), $this->request)) {
+            return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
         $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -85,7 +105,9 @@ class TaskController
         try {
             $this->taskManager->save($userName, $email, $text);
         } catch (InvalidArgumentException $exception) {
-            return new Response($this->template->render('form_create', ['error' => $exception->getMessage()]));
+            $args = ['error' => $exception->getMessage(), 'token' => $this->token];
+
+            return new Response($this->template->render('form_create', $args));
         }
 
         $this->request->getSession()->set('isCreated', true);
@@ -99,7 +121,7 @@ class TaskController
     public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
-            $args = ['hash' => func_get_args()[0], 'text' => func_get_args()[1]];
+            $args = ['hash' => func_get_args()[0], 'text' => func_get_args()[1], 'token' => $this->token];
 
             return new Response($this->template->render('form_edit', $args));
         }
@@ -108,13 +130,19 @@ class TaskController
             return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
         }
 
+        if (!(new TokenManager())->checkToken($this->request->get('csrf-token'), $this->request)) {
+            return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
+        }
+
         $id = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
         $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
 
         try {
             $this->taskManager->edit($id, $text);
         } catch (InvalidArgumentException $exception) {
-            return new Response($this->template->render('edit_error', ['error' => $exception->getMessage()]));
+            $args = ['error' => $exception->getMessage()];
+
+            return new Response($this->template->render('edit_error', $args));
         }
 
         return new RedirectResponse('/task/list');
@@ -132,7 +160,9 @@ class TaskController
         try {
             $this->taskManager->done(func_get_args()[0]);
         } catch (Exception $exception) {
-            return new Response($this->template->render('done_error', ['error' => $exception->getMessage()]));
+            $args = ['error' => $exception->getMessage()];
+
+            return new Response($this->template->render('done_error', $args));
         }
 
         return new RedirectResponse('/task/list');

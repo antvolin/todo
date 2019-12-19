@@ -28,9 +28,14 @@
 					<br/>
 					<input id="text" required maxlength="2000" type="text" name="text">
 				</p>
+				<p>
+					<input type="hidden" name="csrf-token" value="<?php echo $token; ?>">
+				</p>
+				<p>
+					<input type="submit">
+				</p>
 			</div>
 		</div>
-		<input type="submit">
 	</form>
 </div>
 </body>

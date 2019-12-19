@@ -24,6 +24,9 @@
 					<input id="password" required maxlength="20" type="text" name="password">
 				</p>
 				<p>
+					<input type="hidden" name="csrf-token" value="<?php echo $token; ?>">
+				</p>
+				<p>
 					<input type="submit">
 				</p>
 			</div>
