@@ -38,29 +38,29 @@ class TaskController
     private $templateBuilder;
 
     /**
-     * @var string
+     * @var TokenManager
      */
-    private $token;
+    private $tokenManager;
 
     /**
      * @param TaskManager $taskManager
      * @param Request $request
      * @param Template $template
      * @param TemplateBuilder $templateBuilder
-     * @param string $token
+     * @param TokenManager $tokenManager
      */
     public function __construct(
         TaskManager $taskManager,
         Request $request,
         Template $template,
         TemplateBuilder $templateBuilder,
-        string $token)
+        TokenManager $tokenManager)
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
         $this->template = $template;
         $this->templateBuilder = $templateBuilder;
-        $this->token = $token;
+        $this->tokenManager = $tokenManager;
     }
 
     /**
@@ -85,7 +85,7 @@ class TaskController
     public function create()
     {
         if ('POST' !== $this->request->getMethod()) {
-            $args = ['token' => $this->token];
+            $args = ['token' => $this->tokenManager->getToken()];
 
             return new Response($this->template->render('form_create', $args));
         }
@@ -94,7 +94,7 @@ class TaskController
             return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
         }
 
-        if (!(new TokenManager())->checkToken($this->request->get('csrf-token'), $this->request)) {
+        if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
             return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
@@ -105,7 +105,7 @@ class TaskController
         try {
             $this->taskManager->save($userName, $email, $text);
         } catch (InvalidArgumentException $exception) {
-            $args = ['error' => $exception->getMessage(), 'token' => $this->token];
+            $args = ['error' => $exception->getMessage(), 'token' => $this->tokenManager->getToken()];
 
             return new Response($this->template->render('form_create', $args));
         }
@@ -121,7 +121,7 @@ class TaskController
     public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
-            $args = ['hash' => func_get_args()[0], 'text' => func_get_args()[1], 'token' => $this->token];
+            $args = ['hash' => func_get_args()[0], 'text' => func_get_args()[1], 'token' => $this->tokenManager->getToken()];
 
             return new Response($this->template->render('form_edit', $args));
         }
@@ -130,7 +130,7 @@ class TaskController
             return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
         }
 
-        if (!(new TokenManager())->checkToken($this->request->get('csrf-token'), $this->request)) {
+        if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
             return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 

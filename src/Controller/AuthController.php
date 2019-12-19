@@ -23,20 +23,20 @@ class AuthController
     private $template;
 
     /**
-     * @var string
+     * @var TokenManager
      */
-    private $token;
+    private $tokenManager;
 
     /**
      * @param Request $request
      * @param Template $template
-     * @param string $token
+     * @param TokenManager $tokenManager
      */
-    public function __construct(Request $request, Template $template, string $token)
+    public function __construct(Request $request, Template $template, TokenManager $tokenManager)
     {
         $this->request = $request;
         $this->template = $template;
-        $this->token = $token;
+        $this->tokenManager = $tokenManager;
     }
 
     /**
@@ -45,12 +45,12 @@ class AuthController
     public function login()
     {
         if ('POST' !== $this->request->getMethod()) {
-            $args = ['token' => $this->token];
+            $args = ['token' => $this->tokenManager->getToken()];
 
             return new Response($this->template->render('form_login', $args));
         }
 
-        if (!(new TokenManager())->checkToken($this->request->get('csrf-token'), $this->request)) {
+        if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
             return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
@@ -63,7 +63,7 @@ class AuthController
             return new RedirectResponse('/task/list');
         }
 
-        $args = ['error' => 'The entered data is not correct!', 'token' => $this->token];
+        $args = ['error' => 'The entered data is not correct!', 'token' => $this->tokenManager->getToken()];
 
         return new Response($this->template->render('form_login', $args));
     }

@@ -19,17 +19,28 @@ class Kernel
 
         $template = new Template();
         $taskRepo = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME']);
-        $token = (new TokenManager())->generateToken($request, $_ENV['TOKEN_SALT']);
+
+        if (!$request->getSession()->get('secret')) {
+            $secret = (new SecretGenerator())->generateSecret();
+
+            $request->getSession()->set('secret', $secret);
+        } else {
+            $secret = $request->getSession()->get('secret');
+        }
+
+        $tokenManager = new TokenManager();
+        $tokenManager->generateToken($_ENV['TOKEN_SALT'], $secret);
+
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));
 
         if ('auth' === strtolower(array_shift($urlParts))) {
-            $controller = new AuthController($request, $template, $token);
+            $controller = new AuthController($request, $template, $tokenManager);
         } else {
             $taskManager = new TaskManager($taskRepo);
             $isAdmin = $request->getSession()->get('admin', false);
             $isCreated = $request->getSession()->get('isCreated', false);
             $templateBuilder = new TemplateBuilder($taskRepo, $isAdmin, $isCreated);
-            $controller = new TaskController($taskManager, $request, $template, $templateBuilder, $token);
+            $controller = new TaskController($taskManager, $request, $template, $templateBuilder, $tokenManager);
         }
 
         $action = array_shift($urlParts);

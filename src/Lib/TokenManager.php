@@ -2,47 +2,51 @@
 
 namespace BeeJeeMVC\Lib;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class TokenManager
 {
     /**
-     * @param Request $request
-     * @param string $salt
-     *
+     * @var string
+     */
+    private $token;
+
+    /**
      * @return string
      */
-    public function generateToken(Request $request, string $salt): string
+    public function getToken(): string
     {
-        if (!$request->getSession()->get('secret')) {
-            $secret = $this->generateSecret();
+        return $this->token;
+    }
 
-            $request->getSession()->set('secret', $secret);
-        } else {
-            $secret = $request->getSession()->get('secret');
-        }
-
-        return $salt.':'.md5($salt.':'.$secret);
+    /**
+     * @param string $salt
+     * @param string $secret
+     */
+    public function generateToken(string $salt, string $secret): void
+    {
+        $this->token = $this->generate($salt, $secret);
     }
 
     /**
      * @param string $token
-     * @param Request $request
+     * @param string $secret
      *
      * @return bool
      */
-    public function checkToken(string $token, Request $request): bool
+    public function checkToken(string $token, string $secret): bool
     {
         $salt = explode(':', $token)[0];
 
-        return $token === $salt.':'.md5($salt.':'.$request->getSession()->get('secret'));
+        return $token === $this->generate($salt, $secret);
     }
 
     /**
+     * @param string $salt
+     * @param string $secret
+     *
      * @return string
      */
-    private function generateSecret(): string
+    private function generate(string $salt, string $secret): string
     {
-        return md5($_ENV['TOKEN_SECRET'].uniqid('secret', true));
+        return $salt.':'.md5($salt.':'.$secret);
     }
 }
