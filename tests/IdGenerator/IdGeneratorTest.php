@@ -18,6 +18,6 @@ class IdGeneratorTest extends TestCase
 
         $id = (new IdGenerator)->generateId($userName, $email, $text);
 
-        $this->assertEquals(hash('md5', 'test user nametest@test.testtest text'), $id);
+        $this->assertEquals(hash('md5', $userName.$email.$text), $id);
     }
 }
