@@ -2,11 +2,11 @@
 
 namespace BeeJeeMVC\Controller;
 
-use BeeJeeMVC\Lib\Template;
 use BeeJeeMVC\Lib\TokenManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class AuthController
 {
@@ -18,36 +18,40 @@ class AuthController
     private $request;
 
     /**
-     * @var Template
-     */
-    private $template;
-
-    /**
      * @var TokenManager
      */
     private $tokenManager;
 
     /**
-     * @param Request $request
-     * @param Template $template
-     * @param TokenManager $tokenManager
+     * @var Environment
      */
-    public function __construct(Request $request, Template $template, TokenManager $tokenManager)
+    private $template;
+
+    /**
+     * @param Request $request
+     * @param TokenManager $tokenManager
+     * @param Environment $template
+     */
+    public function __construct(Request $request, TokenManager $tokenManager, Environment $template)
     {
         $this->request = $request;
-        $this->template = $template;
         $this->tokenManager = $tokenManager;
+        $this->template = $template;
     }
 
     /**
      * @return RedirectResponse|Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function login()
     {
         if ('POST' !== $this->request->getMethod()) {
             $args = ['token' => $this->tokenManager->getToken()];
 
-            return new Response($this->template->render('form_login', $args));
+            return new Response($this->template->render('form_login.html.twig', $args));
         }
 
         if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
@@ -63,9 +67,9 @@ class AuthController
             return new RedirectResponse('/task/list');
         }
 
-        $args = ['error' => 'The entered data is not correct!', 'token' => $this->tokenManager->getToken()];
+        $params = ['error' => 'The entered data is not correct!', 'token' => $this->tokenManager->getToken()];
 
-        return new Response($this->template->render('form_login', $args));
+        return new Response($this->template->render('form_login.html.twig', $params));
     }
 
     /**

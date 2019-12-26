@@ -1,0 +1,20 @@
+<div id="{{ task.id }}" class="row task">
+    <div class="col-sm-2">{{ task.userName }}</div>
+    <div class="col-sm-2">{{ task.email }}</div>
+    <div class="col-sm-4">{{ task.text }}</div>
+    <div class="col-sm-2">
+        {% if task.isEdited %} edited {% endif %}{% if task.isDone %} done {% endif %}
+    </div>
+    <div class="col-sm-2">
+        {% if isAdmin %}
+            <div class="buttons">
+                <button>
+                    <a href="/task/edit/{{ task.id }}/{{ task.text }}">Edit</a>
+                </button>
+                <button>
+                    <a href="/task/done/{{ task.id }}">Done</a>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>

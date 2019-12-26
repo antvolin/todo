@@ -18,12 +18,12 @@ class TokenManager
     }
 
     /**
-     * @param string $salt
      * @param string $secret
+     * @param string|null $salt
      */
-    public function generateToken(string $salt, string $secret): void
+    public function generateToken(string $secret, ?string $salt = null): void
     {
-        $this->token = $this->generate($salt, $secret);
+        $this->token = $this->generate($salt ?: $_ENV['TOKEN_SALT'], $secret);
     }
 
     /**

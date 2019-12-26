@@ -10,16 +10,27 @@ use BeeJeeMVC\Model\UserName;
 class TaskManager
 {
     /**
-     * @var TaskRepositoryInterface
+     * @var EntityRepositoryInterface
      */
     private $repository;
 
     /**
-     * @param TaskRepositoryInterface $repository
+     * @param EntityRepositoryInterface $repository
      */
-    public function __construct(TaskRepositoryInterface $repository)
+    public function __construct(EntityRepositoryInterface $repository)
     {
         $this->repository = $repository;
+    }
+
+    /**
+     * @param string|null $sortBy
+     * @param string|null $orderBy
+     *
+     * @return array|\Traversable
+     */
+    public function getList(?string $sortBy, ?string $orderBy)
+    {
+        return $this->repository->getList($sortBy, $orderBy);
     }
 
     /**

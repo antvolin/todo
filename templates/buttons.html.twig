@@ -1,0 +1,17 @@
+<div class="row buttons">
+    <div class="col-sm-2">
+        <button class="button">
+            <a href="/task/create">Create task</a>
+        </button>
+    </div>
+    <div class="col-sm-8"></div>
+    <div class="col-sm-2">
+        <button class="button">
+            {% if isAdmin %}
+                <a href="/auth/logout">Logout</a>
+            {% else %}
+                <a href="/auth/login">Login</a>
+            {% endif %}
+        </button>
+    </div>
+</div>

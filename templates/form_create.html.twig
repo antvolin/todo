@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Create task</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link href="/css/bootstrap-grid.min.css" rel="stylesheet" />
-</head>
-<body>
-<div class="container">
-	<div class="error">
-		<?php echo ($error ?? ''); ?>
-	</div>
+{% extends "base.html.twig" %}
+
+{% block title %}Task create{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="/css/styles.css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+	{% include 'error.html.twig' %}
 	<form action="/task/create" method="post">
 		<div class="row">
 			<div class="col">
@@ -29,7 +26,7 @@
 					<input id="text" required maxlength="2000" type="text" name="text">
 				</p>
 				<p>
-					<input type="hidden" name="csrf-token" value="<?php echo $token; ?>">
+					<input type="hidden" name="csrf-token" value="{{ token }}">
 				</p>
 				<p>
 					<input type="submit">
@@ -37,6 +34,4 @@
 			</div>
 		</div>
 	</form>
-</div>
-</body>
-</html>
+{% endblock %}

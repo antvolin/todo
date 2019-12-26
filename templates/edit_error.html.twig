@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Task edit error{% endblock %}
+{% block content %}
+	{% include 'error.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
+		(function(){setTimeout("window.location.href = '/task/list'", 2000);})();
+	</script>
+{% endblock %}

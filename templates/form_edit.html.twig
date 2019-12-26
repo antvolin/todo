@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Task edit{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="/css/styles.css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+	{% include 'error.html.twig' %}
+	<form action="/task/edit" method="post">
+		<div class="row">
+			<div class="col">
+				<p>
+					<label for="text">Text</label>
+					<br/>
+					<input id="text" required maxlength="2000" type="text" name="text" value="{{ text }}">
+				</p>
+				<p>
+					<input type="hidden" name="id" value="{{ id }}">
+				</p>
+				<p>
+					<input type="hidden" name="csrf-token" value="{{ token }}">
+				</p>
+				<p>
+					<input type="submit">
+				</p>
+			</div>
+		</div>
+	</form>
+{% endblock %}

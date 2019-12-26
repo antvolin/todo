@@ -2,15 +2,16 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\Paginator;
+use BeeJeeMVC\Lib\Sorting;
 use BeeJeeMVC\Lib\TaskManager;
-use BeeJeeMVC\Lib\Template;
-use BeeJeeMVC\Lib\TemplateBuilder;
 use BeeJeeMVC\Lib\TokenManager;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class TaskController
 {
@@ -28,70 +29,97 @@ class TaskController
     private $taskManager;
 
     /**
-     * @var Template
-     */
-    private $template;
-
-    /**
-     * @var TemplateBuilder
-     */
-    private $templateBuilder;
-
-    /**
      * @var TokenManager
      */
     private $tokenManager;
 
     /**
-     * @param TaskManager $taskManager
+     * @var Paginator
+     */
+    private $paginator;
+
+    /**
+     * @var Sorting
+     */
+    private $sorting;
+
+    /**
+     * @var Environment
+     */
+    private $template;
+
+    /**
      * @param Request $request
-     * @param Template $template
-     * @param TemplateBuilder $templateBuilder
+     * @param TaskManager $taskManager
      * @param TokenManager $tokenManager
+     * @param Paginator $paginator
+     * @param Sorting $sorting
+     * @param Environment $template
      */
     public function __construct(
-        TaskManager $taskManager,
         Request $request,
-        Template $template,
-        TemplateBuilder $templateBuilder,
-        TokenManager $tokenManager)
+        TaskManager $taskManager,
+        TokenManager $tokenManager,
+        Paginator $paginator,
+        Sorting $sorting,
+        Environment $template
+    )
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
-        $this->template = $template;
-        $this->templateBuilder = $templateBuilder;
         $this->tokenManager = $tokenManager;
+        $this->paginator = $paginator;
+        $this->sorting = $sorting;
+        $this->template = $template;
     }
 
     /**
      * @return Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function list(): Response
     {
         $page = $this->request->get('page', 1);
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
-        $content = $this->templateBuilder->buildList($page, $sortBy, $orderBy);
-        $args = ['content' => $content];
+
+        $tasks = $this->taskManager->getList($sortBy, $orderBy);
+        $this->paginator->createPager($page, $tasks);
+
+        $params = [
+            'isAdmin' => $this->request->getSession()->get('admin', false),
+            'isCreated' => $this->request->getSession()->get('isCreated', false),
+            'page' => $page,
+            'orderBy' => $this->sorting->getNextOrderBy($orderBy),
+            'tasks' => $this->paginator->getCurrentPageTasks(),
+            'pagination' => $this->paginator->getPagination($sortBy, $orderBy),
+        ];
 
         $this->request->getSession()->remove('isCreated');
 
-        return new Response($this->template->render('list', $args));
+        return new Response($this->template->render('list.html.twig', $params));
     }
 
     /**
      * @return RedirectResponse|Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function create()
     {
+        $token = $this->tokenManager->getToken();
+
         if ('POST' !== $this->request->getMethod()) {
-            $args = ['token' => $this->tokenManager->getToken()];
+            $params = [
+                'token' => $token,
+            ];
 
-            return new Response($this->template->render('form_create', $args));
-        }
-
-        if ($this->request->getSession()->get('admin')) {
-            return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
+            return new Response($this->template->render('form_create.html.twig', $params));
         }
 
         if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
@@ -105,9 +133,13 @@ class TaskController
         try {
             $this->taskManager->save($userName, $email, $text);
         } catch (InvalidArgumentException $exception) {
-            $args = ['error' => $exception->getMessage(), 'token' => $this->tokenManager->getToken()];
+            $msg = $exception->getMessage();
+            $params = [
+                'error' => $msg,
+                'token' => $token,
+            ];
 
-            return new Response($this->template->render('form_create', $args));
+            return new Response($this->template->render('form_create.html.twig', $params));
         }
 
         $this->request->getSession()->set('isCreated', true);
@@ -117,13 +149,22 @@ class TaskController
 
     /**
      * @return RedirectResponse|Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
-            $args = ['hash' => func_get_args()[0], 'text' => func_get_args()[1], 'token' => $this->tokenManager->getToken()];
+            $token = $this->tokenManager->getToken();
+            $params = [
+                'id' => func_get_args()[0],
+                'text' => urldecode(func_get_args()[1]),
+                'token' => $token,
+            ];
 
-            return new Response($this->template->render('form_edit', $args));
+            return new Response($this->template->render('form_edit.html.twig', $params));
         }
 
         if (!$this->request->getSession()->get('admin')) {
@@ -140,9 +181,11 @@ class TaskController
         try {
             $this->taskManager->edit($id, $text);
         } catch (InvalidArgumentException $exception) {
-            $args = ['error' => $exception->getMessage()];
+            $params = [
+                'error' => $exception->getMessage(),
+            ];
 
-            return new Response($this->template->render('edit_error', $args));
+            return new Response($this->template->render('edit_error', $params));
         }
 
         return new RedirectResponse('/task/list');
@@ -150,6 +193,10 @@ class TaskController
 
     /**
      * @return RedirectResponse|Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function done()
     {
@@ -160,9 +207,11 @@ class TaskController
         try {
             $this->taskManager->done(func_get_args()[0]);
         } catch (Exception $exception) {
-            $args = ['error' => $exception->getMessage()];
+            $params = [
+                'error' => $exception->getMessage(),
+            ];
 
-            return new Response($this->template->render('done_error', $args));
+            return new Response($this->template->render('done_error.html.twig', $params));
         }
 
         return new RedirectResponse('/task/list');
