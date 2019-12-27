@@ -26,9 +26,7 @@ class Kernel
         $tokenManager->generateToken($this->initSecretKey($request));
         $token = $tokenManager->getToken();
 
-        $handler = new FilterRequestHandler();
-        $handler->setNext(new AccessRequestHandler($tokenManager));
-        $handler->handle($request);
+        (new FilterRequestHandler())->setNext(new AccessRequestHandler($tokenManager))->handle($request);
 
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));
 

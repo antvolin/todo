@@ -8,22 +8,14 @@ class FilterRequestHandler extends RequestHandler
 {
     /**
      * @param Request $request
-     *
-     * @return bool
      */
-    protected function processing(Request $request): bool
+    protected function processing(Request $request): void
     {
-        $processed = false;
-
         if ($request->request->count()) {
             foreach ($request->request->keys() as $key) {
                 $value = $request->request->filter($key, null, FILTER_SANITIZE_SPECIAL_CHARS);
                 $request->request->set($key, $value);
             }
-
-            $processed = true;
         }
-
-        return $processed;
     }
 }

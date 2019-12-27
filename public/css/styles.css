@@ -31,7 +31,6 @@ a {
 }
 .sorting, .buttons {
     height: 40px;
-    margin-top: 15px;
 }
 .task {
     height: 110px;
@@ -41,21 +40,10 @@ a {
 }
 .control-button {
     margin-bottom: 3px;
-    width: 80px;
+    width: 90px;
 }
 .task:hover {
     background: #ccf;
-}
-/*.hovered-buttons {*/
-    /*text-align: center;*/
-/*}*/
-/*.pagerfanta, .task, .sorting {*/
-    /*vertical-align: middle;*/
-    /*line-height: 50px;*/
-    /*text-align: center;*/
-/*}*/
-.error {
-    color: red;
 }
 
 .pagerfanta {
@@ -65,25 +53,24 @@ a {
 .pagerfanta a,
 .pagerfanta span {
     display: inline-block;
-    border: 1px solid blue;
-    color: blue;
+    border: 1px solid #007bff;
     margin-right: .2em;
-    padding: .25em .35em;
+    padding: .50em .70em;
 }
 .pagerfanta a {
     text-decoration: none;
 }
 .pagerfanta a:hover {
-    background: #ccf;
+    background: #007bff;
 }
 .pagerfanta .dots {
     border-width: 0;
 }
 .pagerfanta .current {
-    background: #ccf;
+    background: #007bff;
     font-weight: bold;
 }
 .pagerfanta .disabled {
-    border-color: #ccf;
-    color: #ccf;
+    border-color: grey;
+    color: grey;
 }

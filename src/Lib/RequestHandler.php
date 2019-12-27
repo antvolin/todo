@@ -25,24 +25,18 @@ abstract class RequestHandler
 
     /**
      * @param Request $request
-     *
-     * @return bool
      */
-    public function handle(Request $request): bool
+    public function handle(Request $request): void
     {
-        $processed = $this->processing($request);
+        $this->processing($request);
 
-        if (!$processed && $this->next) {
-            $processed = $this->next->handle($request);
+        if ($this->next) {
+            $this->next->handle($request);
         }
-
-        return $processed;
     }
 
     /**
      * @param Request $request
-     *
-     * @return bool
      */
-    abstract protected function processing(Request $request): bool;
+    abstract protected function processing(Request $request): void;
 }
