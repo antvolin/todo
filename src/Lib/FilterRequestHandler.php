@@ -6,6 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FilterRequestHandler extends RequestHandler
 {
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
     protected function processing(Request $request): bool
     {
         $processed = false;

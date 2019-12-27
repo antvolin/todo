@@ -39,5 +39,10 @@ abstract class RequestHandler
         return $processed;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
     abstract protected function processing(Request $request): bool;
 }

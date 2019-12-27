@@ -22,13 +22,18 @@ class AccessRequestHandler extends RequestHandler
         $this->tokenManager = $tokenManager;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
     protected function processing(Request $request): bool
     {
         $processed = true;
         $token = $request->get('csrf-token');
         $secret = $request->getSession()->get('secret');
 
-        if (!$this->tokenManager->checkToken($token, $secret)) {
+        if ($token && !$this->tokenManager->checkToken($token, $secret)) {
             throw new AccessDeniedHttpException(self::ATTEMPT_TO_USE_CSRF_ATTACK);
         }
 
