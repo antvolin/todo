@@ -22,19 +22,21 @@ class Kernel
         $request = Request::createFromGlobals();
         $request->setSession($this->initSession());
 
-        $handler = new FilterRequestHandler();
-        $handler->handle($request);
-
         $tokenManager = new TokenManager();
         $tokenManager->generateToken($this->initSecretKey($request));
+        $token = $tokenManager->getToken();
+
+        $handler = new FilterRequestHandler();
+        $handler->setNext(new AccessRequestHandler($tokenManager));
+        $handler->handle($request);
 
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));
 
         if ('auth' === strtolower(array_shift($urlParts))) {
-            $controller = new AuthController($request, $tokenManager, $this->createTemplate());
+            $controller = new AuthController($request, $token, $this->createTemplate());
         } else {
             $taskRepo = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME']);
-            $controller = new TaskController($request, new TaskManager($taskRepo), $tokenManager, new Paginator(), new Sorting(), $this->createTemplate());
+            $controller = new TaskController($request, new TaskManager($taskRepo), $token, new Paginator(), new Sorting(), $this->createTemplate());
         }
 
         if (method_exists($controller, $action = array_shift($urlParts))) {

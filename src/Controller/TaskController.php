@@ -5,7 +5,6 @@ namespace BeeJeeMVC\Controller;
 use BeeJeeMVC\Lib\Paginator;
 use BeeJeeMVC\Lib\Sorting;
 use BeeJeeMVC\Lib\TaskManager;
-use BeeJeeMVC\Lib\TokenManager;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +15,6 @@ use Twig\Environment;
 class TaskController
 {
     private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
-    private const ATTEMPT_TO_USE_CSRF_ATTACK = 'Attempt to use csrf attack!';
 
     /**
      * @var Request
@@ -29,9 +27,9 @@ class TaskController
     private $taskManager;
 
     /**
-     * @var TokenManager
+     * @var string
      */
-    private $tokenManager;
+    private $token;
 
     /**
      * @var Paginator
@@ -51,7 +49,7 @@ class TaskController
     /**
      * @param Request $request
      * @param TaskManager $taskManager
-     * @param TokenManager $tokenManager
+     * @param string $token
      * @param Paginator $paginator
      * @param Sorting $sorting
      * @param Environment $template
@@ -59,7 +57,7 @@ class TaskController
     public function __construct(
         Request $request,
         TaskManager $taskManager,
-        TokenManager $tokenManager,
+        string $token,
         Paginator $paginator,
         Sorting $sorting,
         Environment $template
@@ -67,7 +65,7 @@ class TaskController
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
-        $this->tokenManager = $tokenManager;
+        $this->token = $token;
         $this->paginator = $paginator;
         $this->sorting = $sorting;
         $this->template = $template;
@@ -112,24 +110,17 @@ class TaskController
      */
     public function create()
     {
-
-        $token = $this->tokenManager->getToken();
-
         if ('POST' !== $this->request->getMethod()) {
-            $params = ['token' => $token];
+            $params = ['token' => $this->token];
 
             return new Response($this->template->render('form_create.html.twig', $params));
-        }
-
-        if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
-            return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
         try {
             $this->taskManager->save($this->request->get('userName'), $this->request->get('email'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
             $msg = $exception->getMessage();
-            $params = ['error' => $msg, 'token' => $token];
+            $params = ['error' => $msg, 'token' => $this->token];
 
             return new Response($this->template->render('form_create.html.twig', $params));
         }
@@ -149,13 +140,12 @@ class TaskController
     public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
-            $token = $this->tokenManager->getToken();
             $id = func_get_args()[0];
 
             $params = [
                 'id' => $id,
                 'text' => $this->taskManager->getById($id)->getText(),
-                'token' => $token,
+                'token' => $this->token,
             ];
 
             return new Response($this->template->render('form_edit.html.twig', $params));
@@ -163,10 +153,6 @@ class TaskController
 
         if (!$this->request->getSession()->get('admin')) {
             return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
-        }
-
-        if (!$this->tokenManager->checkToken($this->request->get('csrf-token'), $this->request->getSession()->get('secret'))) {
-            return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
         try {
@@ -198,9 +184,7 @@ class TaskController
         try {
             $this->taskManager->done(func_get_args()[0]);
         } catch (Exception $exception) {
-            $params = [
-                'error' => $exception->getMessage(),
-            ];
+            $params = ['error' => $exception->getMessage()];
 
             return new Response($this->template->render('done_error.html.twig', $params));
         }
