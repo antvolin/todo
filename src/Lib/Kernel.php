@@ -22,6 +22,9 @@ class Kernel
         $request = Request::createFromGlobals();
         $request->setSession($this->initSession());
 
+        $handler = new FilterRequestHandler();
+        $handler->handle($request);
+
         $tokenManager = new TokenManager();
         $tokenManager->generateToken($this->initSecretKey($request));
 

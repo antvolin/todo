@@ -112,12 +112,11 @@ class TaskController
      */
     public function create()
     {
+
         $token = $this->tokenManager->getToken();
 
         if ('POST' !== $this->request->getMethod()) {
-            $params = [
-                'token' => $token,
-            ];
+            $params = ['token' => $token];
 
             return new Response($this->template->render('form_create.html.twig', $params));
         }
@@ -126,18 +125,11 @@ class TaskController
             return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
-        $userName = $this->request->request->filter('userName', null, FILTER_SANITIZE_SPECIAL_CHARS);
-        $email = $this->request->request->filter('email', null, FILTER_SANITIZE_SPECIAL_CHARS);
-        $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
-
         try {
-            $this->taskManager->save($userName, $email, $text);
+            $this->taskManager->save($this->request->get('userName'), $this->request->get('email'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
             $msg = $exception->getMessage();
-            $params = [
-                'error' => $msg,
-                'token' => $token,
-            ];
+            $params = ['error' => $msg, 'token' => $token];
 
             return new Response($this->template->render('form_create.html.twig', $params));
         }
@@ -158,9 +150,11 @@ class TaskController
     {
         if ('POST' !== $this->request->getMethod()) {
             $token = $this->tokenManager->getToken();
+            $id = func_get_args()[0];
+
             $params = [
-                'id' => func_get_args()[0],
-                'text' => urldecode(func_get_args()[1]),
+                'id' => $id,
+                'text' => $this->taskManager->getById($id)->getText(),
                 'token' => $token,
             ];
 
@@ -175,11 +169,8 @@ class TaskController
             return new Response(self::ATTEMPT_TO_USE_CSRF_ATTACK, Response::HTTP_FORBIDDEN);
         }
 
-        $id = $this->request->request->filter('id', null, FILTER_SANITIZE_SPECIAL_CHARS);
-        $text = $this->request->request->filter('text', null, FILTER_SANITIZE_SPECIAL_CHARS);
-
         try {
-            $this->taskManager->edit($id, $text);
+            $this->taskManager->edit($this->request->get('id'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
             $params = [
                 'error' => $exception->getMessage(),

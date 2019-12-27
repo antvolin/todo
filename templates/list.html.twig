@@ -8,7 +8,9 @@
 
 {% block content %}
 	{% if isCreated %}
-		Task created!
+		<div class="msg">
+			Task created!
+		</div>
 	{% endif %}
 	{% include 'buttons.html.twig' %}
 	{% include 'sorting.html.twig' %}

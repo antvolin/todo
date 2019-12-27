@@ -10,16 +10,26 @@ use BeeJeeMVC\Model\UserName;
 class TaskManager
 {
     /**
-     * @var EntityRepositoryInterface
+     * @var TaskRepositoryInterface
      */
     private $repository;
 
     /**
-     * @param EntityRepositoryInterface $repository
+     * @param TaskRepositoryInterface $repository
      */
-    public function __construct(EntityRepositoryInterface $repository)
+    public function __construct(TaskRepositoryInterface $repository)
     {
         $this->repository = $repository;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return Task
+     */
+    public function getById(string $id): Task
+    {
+        return $this->repository->getById($id);
     }
 
     /**

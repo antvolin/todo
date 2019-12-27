@@ -6,7 +6,7 @@ use BeeJeeMVC\Model\Task;
 use LogicException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-class TaskFileRepository implements EntityRepositoryInterface
+class TaskFileRepository implements TaskRepositoryInterface
 {
     /**
      * @var string
@@ -22,13 +22,13 @@ class TaskFileRepository implements EntityRepositoryInterface
     }
 
     /**
-     * @param string $hash
+     * @param string $id
      *
      * @return Task
      */
-    public function getById(string $hash): Task
+    public function getById(string $id): Task
     {
-        $file = file_get_contents($this->taskFolderPath.$hash);
+        $file = file_get_contents($this->taskFolderPath.$id);
 
         if (false === $file) {
             throw new FileNotFoundException('Invalid task id!');
@@ -37,7 +37,7 @@ class TaskFileRepository implements EntityRepositoryInterface
         $task = unserialize($file, ['allowed_classes' => true]);
 
         if (!$task) {
-            throw new LogicException('Failed to produce unserialize task!');
+            throw new LogicException('Failed to produce un serialize task!');
         }
 
         return $task;
@@ -62,11 +62,11 @@ class TaskFileRepository implements EntityRepositoryInterface
 
             if (Sorting::ASC === $orderBy) {
                 uasort($tasks, function (Task $a, Task $b) use ($method) {
-                    return strcmp($a->$method(), $b->$method());
+                    return strcmp(strtolower($a->$method()), strtolower($b->$method()));
                 });
             } else {
                 uasort($tasks, function (Task $b, Task $a) use ($method) {
-                    return strcmp($a->$method(), $b->$method());
+                    return strcmp(strtolower($a->$method()), strtolower($b->$method()));
                 });
             }
         }

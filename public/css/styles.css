@@ -1,28 +1,66 @@
-.content {
-    margin-bottom: 10px;
+.status {
+    margin: auto;
 }
-.button {
-    margin: 10px;
-}
-.buttons, .error, .pages {
-    margin-top: 10px;
-}
-.tasks {
-    height: 150px;
-}
-.task, .sorting {
-    height: 50px;
-}
-.pagerfanta, .task, .sorting {
-    vertical-align: middle;
-    line-height: 50px;
+.status, .msg {
+    color: #28a745;
     text-align: center;
 }
+.msg {
+    text-align: center;
+}
+.content {
+    padding: 20px;
+}
+.row {
+    margin-right: 0;
+}
+a {
+    text-decoration: none;
+}
+.right-button {
+    float: right;
+}
+.left-button {
+    float: left;
+}
+.tasks {
+    height: 330px;
+}
+.sorting {
+    margin-bottom: 15px;
+}
+.sorting, .buttons {
+    height: 40px;
+    margin-top: 15px;
+}
+.task {
+    height: 110px;
+}
+.text {
+    font-size: 12px;
+}
+.control-button {
+    margin-bottom: 3px;
+    width: 80px;
+}
+.task:hover {
+    background: #ccf;
+}
+/*.hovered-buttons {*/
+    /*text-align: center;*/
+/*}*/
+/*.pagerfanta, .task, .sorting {*/
+    /*vertical-align: middle;*/
+    /*line-height: 50px;*/
+    /*text-align: center;*/
+/*}*/
 .error {
     color: red;
 }
 
 .pagerfanta {
+    text-align: center;
+    margin-top: 15px;
 }
 .pagerfanta a,
 .pagerfanta span {

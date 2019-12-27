@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Model\Task;
 
-interface EntityRepositoryInterface
+interface TaskRepositoryInterface
 {
     /**
      * @param string $id

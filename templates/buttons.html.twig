@@ -1,17 +1,19 @@
-<div class="row buttons">
-    <div class="col-sm-2">
-        <button class="button">
-            <a href="/task/create">Create task</a>
-        </button>
+<div class="buttons row">
+    <div class="col-sm-11 left-button">
+        <a href="/task/create">
+            <button class="left-button btn btn-success control-button">create</button>
+        </a>
     </div>
-    <div class="col-sm-8"></div>
-    <div class="col-sm-2">
-        <button class="button">
-            {% if isAdmin %}
-                <a href="/auth/logout">Logout</a>
-            {% else %}
-                <a href="/auth/login">Login</a>
-            {% endif %}
-        </button>
+    <div class="col-sm-1 right-button">
+        {% if isAdmin %}
+            <a href="/auth/logout">
+                <button class="left-button btn btn-danger control-button">logout</button>
+            </a>
+        {% else %}
+            <a href="/auth/login">
+                <button class="left-button btn btn-success control-button">login</button>
+            </a>
+        {% endif %}
     </div>
 </div>
+<br/>

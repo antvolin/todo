@@ -1,13 +1,25 @@
 <div class="row sorting">
     <div class="col-sm-2">
-        <a href="/task/list?page={{ page }}&sortBy=userName&orderBy={{ orderBy }}">User name</a>
+        <div class="hovered-buttons">
+            <a href="/task/list?page={{ page }}&sortBy=userName&orderBy={{ orderBy }}">
+                <button class="btn btn-primary control-button">name &uarr;&darr;</button>
+            </a>
+        </div>
     </div>
-    <div class="col-sm-2">
-        <a href="/task/list?page={{ page }}&sortBy=email&orderBy={{ orderBy }}">Email</a>
+    <div class="col-sm-3">
+        <div class="hovered-buttons">
+            <a href="/task/list?page={{ page }}&sortBy=email&orderBy={{ orderBy }}">
+                <button class="btn btn-primary control-button">email &uarr;&darr;</button>
+            </a>
+        </div>
     </div>
-    <div class="col-sm-4">
-        <a href="/task/list?page={{ page }}&sortBy=text&orderBy={{ orderBy }}">Text</a>
+    <div class="col-sm-5">
+        <div class="hovered-buttons">
+            <a href="/task/list?page={{ page }}&sortBy=text&orderBy={{ orderBy }}">
+                <button class="btn btn-primary control-button">text &uarr;&darr;</button>
+            </a>
+        </div>
     </div>
-    <div class="col-sm-2">Status</div>
-    <div class="col-sm-2"></div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-1"></div>
 </div>
