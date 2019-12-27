@@ -14,8 +14,6 @@ use Twig\Environment;
 
 class TaskController
 {
-    private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
-
     /**
      * @var Request
      */
@@ -151,10 +149,6 @@ class TaskController
             return new Response($this->template->render('form_edit.html.twig', $params));
         }
 
-        if (!$this->request->getSession()->get('admin')) {
-            return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
-        }
-
         try {
             $this->taskManager->edit($this->request->get('id'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
@@ -177,10 +171,6 @@ class TaskController
      */
     public function done()
     {
-        if (!$this->request->getSession()->get('admin')) {
-            return new Response(self::NOT_ENOUGH_RIGHTS_MSG, Response::HTTP_FORBIDDEN);
-        }
-
         try {
             $this->taskManager->done(func_get_args()[0]);
         } catch (Exception $exception) {
