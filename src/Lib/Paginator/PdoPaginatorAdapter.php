@@ -30,6 +30,6 @@ class PdoPaginatorAdapter implements PaginatorAdapterInterface
      */
     public function getSlice($offset, $length)
     {
-        array_slice($this->rows, $offset, $length);
+        return array_slice($this->rows, $offset, $length);
     }
 }
