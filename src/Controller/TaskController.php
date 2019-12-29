@@ -83,12 +83,7 @@ class TaskController
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
-        $tasks = $this->taskManager->getList($page, $sortBy, $orderBy);
-        $this->adapter->setData($tasks);
-        $taskCount = $this->taskManager->getCountRows();
-        $this->adapter->setCountRows($taskCount);
-        $paginator = new PagerfantaPaginator($this->adapter);
-        $paginator->create($page);
+        $paginator = $this->createPaginator($page, $sortBy, $orderBy);
 
         $params = [
             'isAdmin' => $this->request->getSession()->get('admin', false),
@@ -102,6 +97,25 @@ class TaskController
         $this->request->getSession()->remove('isCreated');
 
         return new Response($this->template->render('list.html.twig', $params));
+    }
+
+    /**
+     * @param int $page
+     * @param string|null $sortBy
+     * @param string|null $orderBy
+     *
+     * @return PagerfantaPaginator
+     */
+    private function createPaginator(int $page, ?string $sortBy, ?string $orderBy): PagerfantaPaginator
+    {
+        $tasks = $this->taskManager->getList($page, $sortBy, $orderBy);
+        $this->adapter->setData($tasks);
+        $taskCount = $this->taskManager->getCountRows();
+        $this->adapter->setCountRows($taskCount);
+        $paginator = new PagerfantaPaginator($this->adapter);
+        $paginator->create($page);
+
+        return $paginator;
     }
 
     /**
