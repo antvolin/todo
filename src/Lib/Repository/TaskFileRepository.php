@@ -1,7 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace BeeJeeMVC\Lib\Repository;
 
+use BeeJeeMVC\Lib\Sorting;
 use BeeJeeMVC\Model\Task;
 use LogicException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;

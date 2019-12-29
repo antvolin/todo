@@ -1,24 +1,24 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace BeeJeeMVC\Lib\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class RequestHandler
+abstract class RequestHandler implements RequestHandlerInterface
 {
     /**
      * @var RequestHandler
      */
-    protected $next;
+    protected $nextHandler;
 
     /**
      * @param RequestHandler $handler
      *
      * @return RequestHandler
      */
-    public function setNext(RequestHandler $handler): RequestHandler
+    public function setNextHandler(RequestHandler $handler): RequestHandler
     {
-        $this->next = $handler;
+        $this->nextHandler = $handler;
 
         return $handler;
     }
@@ -30,8 +30,8 @@ abstract class RequestHandler
     {
         $this->processing($request);
 
-        if ($this->next) {
-            $this->next->handle($request);
+        if ($this->nextHandler) {
+            $this->nextHandler->handle($request);
         }
     }
 

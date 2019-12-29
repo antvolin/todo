@@ -2,7 +2,8 @@
 
 namespace BeeJeeMVC\Controller;
 
-use BeeJeeMVC\Lib\Paginator;
+use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
+use BeeJeeMVC\Lib\Paginator\PdoPaginatorAdapter;
 use BeeJeeMVC\Lib\Sorting;
 use BeeJeeMVC\Lib\TaskManager;
 use Exception;
@@ -30,11 +31,6 @@ class TaskController
     private $token;
 
     /**
-     * @var Paginator
-     */
-    private $paginator;
-
-    /**
      * @var Sorting
      */
     private $sorting;
@@ -48,7 +44,6 @@ class TaskController
      * @param Request $request
      * @param TaskManager $taskManager
      * @param string $token
-     * @param Paginator $paginator
      * @param Sorting $sorting
      * @param Environment $template
      */
@@ -56,7 +51,6 @@ class TaskController
         Request $request,
         TaskManager $taskManager,
         string $token,
-        Paginator $paginator,
         Sorting $sorting,
         Environment $template
     )
@@ -64,7 +58,6 @@ class TaskController
         $this->request = $request;
         $this->taskManager = $taskManager;
         $this->token = $token;
-        $this->paginator = $paginator;
         $this->sorting = $sorting;
         $this->template = $template;
     }
@@ -83,15 +76,18 @@ class TaskController
         $orderBy = $this->request->get('orderBy');
 
         $tasks = $this->taskManager->getList($sortBy, $orderBy);
-        $this->paginator->createPager($page, $tasks);
+        $adapter = new PdoPaginatorAdapter();
+        $adapter->setRows($tasks);
+        $paginator = new PagerfantaPaginator($adapter);
+        $paginator->create($page);
 
         $params = [
             'isAdmin' => $this->request->getSession()->get('admin', false),
             'isCreated' => $this->request->getSession()->get('isCreated', false),
             'page' => $page,
             'orderBy' => $this->sorting->getNextOrderBy($orderBy),
-            'tasks' => $this->paginator->getCurrentPageTasks(),
-            'pagination' => $this->paginator->getPagination($sortBy, $orderBy),
+            'tasks' => $paginator->getCurrentPageResults(),
+            'pagination' => $paginator->getHtml($sortBy, $orderBy),
         ];
 
         $this->request->getSession()->remove('isCreated');
@@ -152,9 +148,7 @@ class TaskController
         try {
             $this->taskManager->edit($this->request->get('id'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
-            $params = [
-                'error' => $exception->getMessage(),
-            ];
+            $params = ['error' => $exception->getMessage()];
 
             return new Response($this->template->render('edit_error', $params));
         }

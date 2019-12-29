@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace BeeJeeMVC\Lib\Repository;
 
 use BeeJeeMVC\Model\Task;
 

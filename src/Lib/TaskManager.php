@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Lib;
 
+use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;

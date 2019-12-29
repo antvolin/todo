@@ -1,7 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace BeeJeeMVC\Lib\Handler;
 
+use BeeJeeMVC\Lib\TokenManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

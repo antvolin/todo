@@ -4,6 +4,13 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Controller\AuthController;
 use BeeJeeMVC\Controller\TaskController;
+use BeeJeeMVC\Lib\Handler\AccessRequestHandler;
+use BeeJeeMVC\Lib\Handler\FilterRequestHandler;
+use BeeJeeMVC\Lib\Handler\RoleRequestHandler;
+use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
+use BeeJeeMVC\Lib\Paginator\PdoPaginatorAdapter;
+use BeeJeeMVC\Lib\Repository\TaskFileRepository;
+use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -24,17 +31,24 @@ class Kernel
 
         $tokenManager = new TokenManager();
         $tokenManager->generateToken($this->initSecretKey($request));
-        $token = $tokenManager->getToken();
-
-        (new FilterRequestHandler())->setNext(new AccessRequestHandler($tokenManager))->setNext(new RoleRequestHandler())->handle($request);
+        $this->handleRequest($tokenManager, $request);
 
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));
 
         if ('auth' === strtolower(array_shift($urlParts))) {
-            $controller = new AuthController($request, $token, $this->createTemplate());
+            $controller = new AuthController(
+                $request,
+                $tokenManager->getToken(),
+                $this->createTemplate()
+            );
         } else {
-            $taskRepo = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME']);
-            $controller = new TaskController($request, new TaskManager($taskRepo), $token, new Paginator(), new Sorting(), $this->createTemplate());
+            $controller = new TaskController(
+                $request,
+                new TaskManager($this->createRepo()),
+                $tokenManager->getToken(),
+                new Sorting(),
+                $this->createTemplate()
+            );
         }
 
         if (method_exists($controller, $action = array_shift($urlParts))) {
@@ -46,6 +60,21 @@ class Kernel
 
         $response->send();
 	}
+
+    /**
+     * @param TokenManager $tokenManager
+     * @param Request $request
+     */
+	private function handleRequest(TokenManager $tokenManager, Request $request): void
+    {
+        $filterHandler = new FilterRequestHandler();
+        $accessHandler = new AccessRequestHandler($tokenManager);
+        $roleHandler = new RoleRequestHandler();
+
+        $handler = $filterHandler->setNextHandler($accessHandler)->setNextHandler($roleHandler);
+
+        $handler->handle($request);
+    }
 
     /**
      * @return Session
@@ -85,5 +114,21 @@ class Kernel
         }
 
         return $secret;
+    }
+
+    /**
+     * @return PaginatorAdapterInterface
+     */
+    private function createAdapter(): PaginatorAdapterInterface
+    {
+        return new PdoPaginatorAdapter();
+    }
+
+    /**
+     * @return TaskRepositoryInterface
+     */
+    private function createRepo(): TaskRepositoryInterface
+    {
+        return new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME']);
     }
 }
