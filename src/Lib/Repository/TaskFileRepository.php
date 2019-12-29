@@ -4,11 +4,17 @@ namespace BeeJeeMVC\Lib\Repository;
 
 use BeeJeeMVC\Lib\Sorting;
 use BeeJeeMVC\Model\Task;
+use FilesystemIterator;
 use LogicException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class TaskFileRepository implements TaskRepositoryInterface
 {
+    /**
+     * @var int
+     */
+    private $tasksPerPage;
+
     /**
      * @var string
      */
@@ -16,16 +22,16 @@ class TaskFileRepository implements TaskRepositoryInterface
 
     /**
      * @param string $taskFolderPath
+     * @param int $tasksPerPage
      */
-    public function __construct(string $taskFolderPath)
+    public function __construct(string $taskFolderPath, int $tasksPerPage)
     {
         $this->taskFolderPath = $taskFolderPath;
+        $this->tasksPerPage = $tasksPerPage;
     }
 
     /**
-     * @param string $id
-     *
-     * @return Task
+     * @inheritdoc
      */
     public function getById(string $id): Task
     {
@@ -45,12 +51,17 @@ class TaskFileRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param string|null $sortBy
-     * @param string|null $orderBy
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function getList(?string $sortBy = null, ?string $orderBy = null): array
+    public function getCountRows(): int
+    {
+        return iterator_count(new FilesystemIterator($this->taskFolderPath, FilesystemIterator::SKIP_DOTS));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getList(int $page, ?string $sortBy = null, ?string $orderBy = null): array
     {
         $tasks = [];
 
@@ -72,11 +83,11 @@ class TaskFileRepository implements TaskRepositoryInterface
             }
         }
 
-        return $tasks;
+        return array_slice($tasks, ($page - 1) * $this->tasksPerPage, $this->tasksPerPage);
     }
 
     /**
-     * @param Task $task
+     * @inheritdoc
      */
     public function save(Task $task): void
     {

@@ -8,7 +8,7 @@ use BeeJeeMVC\Lib\Handler\AccessRequestHandler;
 use BeeJeeMVC\Lib\Handler\FilterRequestHandler;
 use BeeJeeMVC\Lib\Handler\RoleRequestHandler;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
-use BeeJeeMVC\Lib\Paginator\PdoPaginatorAdapter;
+use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\TaskFileRepository;
 use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,6 +45,7 @@ class Kernel
             $controller = new TaskController(
                 $request,
                 new TaskManager($this->createRepo()),
+                $this->createAdapter(),
                 $tokenManager->getToken(),
                 new Sorting(),
                 $this->createTemplate()
@@ -121,7 +122,7 @@ class Kernel
      */
     private function createAdapter(): PaginatorAdapterInterface
     {
-        return new PdoPaginatorAdapter();
+        return new PaginatorAdapter();
     }
 
     /**
@@ -129,6 +130,6 @@ class Kernel
      */
     private function createRepo(): TaskRepositoryInterface
     {
-        return new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME']);
+        return new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'], $_ENV['TASKS_PER_PAGE']);
     }
 }

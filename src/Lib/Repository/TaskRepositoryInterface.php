@@ -14,12 +14,18 @@ interface TaskRepositoryInterface
     public function getById(string $id): Task;
 
     /**
+     * @return int
+     */
+    public function getCountRows(): int;
+
+    /**
+     * @param int $page
      * @param string|null $sortBy
      * @param string|null $orderBy
      *
      * @return array
      */
-    public function getList(?string $sortBy = null, ?string $orderBy = null): array;
+    public function getList(int $page, ?string $sortBy = null, ?string $orderBy = null): array;
 
     /**
      * @param Task $task

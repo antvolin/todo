@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Controller;
 
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
-use BeeJeeMVC\Lib\Paginator\PdoPaginatorAdapter;
+use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
 use BeeJeeMVC\Lib\Sorting;
 use BeeJeeMVC\Lib\TaskManager;
 use Exception;
@@ -26,6 +26,11 @@ class TaskController
     private $taskManager;
 
     /**
+     * @var PaginatorAdapterInterface
+     */
+    private $adapter;
+
+    /**
      * @var string
      */
     private $token;
@@ -43,6 +48,7 @@ class TaskController
     /**
      * @param Request $request
      * @param TaskManager $taskManager
+     * @param PaginatorAdapterInterface $adapter
      * @param string $token
      * @param Sorting $sorting
      * @param Environment $template
@@ -50,6 +56,7 @@ class TaskController
     public function __construct(
         Request $request,
         TaskManager $taskManager,
+        PaginatorAdapterInterface $adapter,
         string $token,
         Sorting $sorting,
         Environment $template
@@ -57,6 +64,7 @@ class TaskController
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
+        $this->adapter = $adapter;
         $this->token = $token;
         $this->sorting = $sorting;
         $this->template = $template;
@@ -75,10 +83,11 @@ class TaskController
         $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
 
-        $tasks = $this->taskManager->getList($sortBy, $orderBy);
-        $adapter = new PdoPaginatorAdapter();
-        $adapter->setRows($tasks);
-        $paginator = new PagerfantaPaginator($adapter);
+        $tasks = $this->taskManager->getList($page, $sortBy, $orderBy);
+        $this->adapter->setData($tasks);
+        $taskCount = $this->taskManager->getCountRows();
+        $this->adapter->setCountRows($taskCount);
+        $paginator = new PagerfantaPaginator($this->adapter);
         $paginator->create($page);
 
         $params = [

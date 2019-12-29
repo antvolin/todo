@@ -9,5 +9,10 @@ interface PaginatorAdapterInterface extends AdapterInterface
     /**
      * @param array $rows
      */
-    public function setRows(array $rows): void;
+    public function setData(array $rows): void;
+
+    /**
+     * @param int $countRows
+     */
+    public function setCountRows(int $countRows): void;
 }

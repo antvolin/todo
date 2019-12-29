@@ -34,14 +34,23 @@ class TaskManager
     }
 
     /**
+     * @param int $page
      * @param string|null $sortBy
      * @param string|null $orderBy
      *
-     * @return array|\Traversable
+     * @return array
      */
-    public function getList(?string $sortBy, ?string $orderBy)
+    public function getList(int $page, ?string $sortBy, ?string $orderBy): array
     {
-        return $this->repository->getList($sortBy, $orderBy);
+        return $this->repository->getList($page, $sortBy, $orderBy);
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountRows(): int
+    {
+        return $this->repository->getCountRows();
     }
 
     /**
