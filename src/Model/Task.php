@@ -2,10 +2,13 @@
 
 namespace BeeJeeMVC\Model;
 
-use BeeJeeMVC\Lib\IdGenerator;
-
 class Task
 {
+    /**
+     * @var int
+     */
+    private $id;
+
     /**
      * @var UserName
      */
@@ -32,11 +35,6 @@ class Task
     private $done = false;
 
     /**
-     * @var string
-     */
-    private $id;
-
-    /**
      * @param UserName $userName
      * @param Email $email
      * @param Text $text
@@ -46,13 +44,12 @@ class Task
         $this->userName = $userName;
         $this->email = $email;
         $this->text = $text;
-        $this->id = (new IdGenerator())->generateId($this->userName, $this->email, $this->text);
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
@@ -79,6 +76,14 @@ class Task
     public function getText(): Text
     {
         return $this->text;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     /**

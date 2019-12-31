@@ -9,13 +9,13 @@ use BeeJeeMVC\Model\Task;
 interface TaskRepositoryInterface
 {
     /**
-     * @param string $id
+     * @param int $taskId
      *
      * @return Task
      *
      * @throws TaskNotFoundException
      */
-    public function getById(string $id): Task;
+    public function getById(int $taskId): Task;
 
     /**
      * @return int
@@ -33,8 +33,9 @@ interface TaskRepositoryInterface
 
     /**
      * @param Task $task
+     * @param int|null $taskId
      *
      * @throws NotUniqueTaskFieldsException
      */
-    public function save(Task $task): void;
+    public function save(Task $task, ?int $taskId = null): void;
 }

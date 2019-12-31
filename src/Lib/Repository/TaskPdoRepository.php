@@ -37,17 +37,20 @@ class TaskPdoRepository implements TaskRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getById(string $id): Task
+    public function getById(int $id): Task
     {
-        $sth = $this->pdo->prepare('SELECT * FROM task WHERE id = ?;');
-        $sth->bindParam(1, $id);
+        $sth = $this->pdo->prepare('SELECT * FROM task WHERE id = :id;');
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
         $sth->execute();
 
         if (!$task = $sth->fetch(PDO::FETCH_ASSOC)) {
             throw new TaskNotFoundException();
         }
 
-        return new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
+        $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
+        $taskObj->setId($task['id']);
+
+        return $taskObj;
     }
 
     /**
@@ -65,19 +68,20 @@ class TaskPdoRepository implements TaskRepositoryInterface
     {
         $result = [];
 
-        $key = array_search($orderBy, Ordering::ALLOWED_ORDER_FIELDS, true);
-        $orderBy = Ordering::ALLOWED_ORDER_FIELDS[$key];
-        $order = $order === 'DESC' ? 'DESC' : 'ASC';
+        $orderBy = Ordering::getOrderBy($orderBy);
+        $order = Ordering::getOrder($order);
 
-        $sth = $this->pdo->prepare("SELECT * FROM task ORDER BY $orderBy $order LIMIT ? OFFSET ?;");
+        $sth = $this->pdo->prepare("SELECT * FROM task ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;");
         $limit = $this->tasksPerPage;
         $offset = $this->tasksPerPage * ($page - 1);
-        $sth->bindParam(1, $limit, PDO::PARAM_INT);
-        $sth->bindParam(2, $offset, PDO::PARAM_INT);
+        $sth->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $sth->bindParam(':offset', $offset, PDO::PARAM_INT);
         $sth->execute();
 
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $task) {
-            $result[$task['id']] = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
+            $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
+            $taskObj->setId($task['id']);
+            $result[$task['id']] = $taskObj;
         }
 
         return $result;
@@ -86,18 +90,22 @@ class TaskPdoRepository implements TaskRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function save(Task $task): void
+    public function save(Task $task, ?int $taskId = null): void
     {
-        $taskId = $task->getId();
         $userName = $task->getUserName();
         $email = $task->getEmail();
         $text = $task->getText();
 
-        $sth = $this->pdo->prepare('INSERT INTO task (id, user_name, email, text) VALUES(?, ?, ?, ?);');
-        $sth->bindParam(1, $taskId);
-        $sth->bindParam(2, $userName);
-        $sth->bindParam(3, $email);
-        $sth->bindParam(4, $text);
+        if ($taskId) {
+            $sth = $this->pdo->prepare('UPDATE task SET user_name = :userName, email = :email, text = :text WHERE id = :id;');
+            $sth->bindParam(':id', $taskId, PDO::PARAM_INT);
+        } else {
+            $sth = $this->pdo->prepare('INSERT INTO task (user_name, email, text) VALUES(:userName, :email, :text);');
+        }
+
+        $sth->bindParam(':userName', $userName);
+        $sth->bindParam(':email', $email);
+        $sth->bindParam(':text', $text);
 
         try {
             $sth->execute();

@@ -24,13 +24,13 @@ class TaskManager
     }
 
     /**
-     * @param string $id
+     * @param int $id
      *
      * @return Task
      *
      * @throws Exceptions\TaskNotFoundException
      */
-    public function getById(string $id): Task
+    public function getById(int $id): Task
     {
         return $this->repository->getById($id);
     }
@@ -68,26 +68,26 @@ class TaskManager
     }
 
     /**
-     * @param string $taskId
+     * @param int $taskId
      * @param string $text
      *
      * @throws Exceptions\NotUniqueTaskFieldsException
      * @throws Exceptions\TaskNotFoundException
      */
-    public function edit(string $taskId, string $text): void
+    public function edit(int $taskId, string $text): void
     {
         $task = $this->repository->getById($taskId);
         $task->edit($text);
-        $this->repository->save($task);
+        $this->repository->save($task, $taskId);
     }
 
     /**
-     * @param string $taskId
+     * @param int $taskId
      *
      * @throws Exceptions\NotUniqueTaskFieldsException
      * @throws Exceptions\TaskNotFoundException
      */
-    public function done(string $taskId): void
+    public function done(int $taskId): void
     {
         $task = $this->repository->getById($taskId);
         $task->done();
