@@ -50,10 +50,10 @@ class PagerfantaPaginator
     /**
      * @inheritdoc
      */
-    public function getHtml(?string $sortBy, ?string $orderBy): string
+    public function getHtml(?string $orderBy, ?string $order): string
     {
-        $routeGenerator = function (int $page) use ($sortBy, $orderBy) {
-            return sprintf('/task/list?page=%s&sortBy=%s&orderBy=%s', $page, $sortBy, $orderBy);
+        $routeGenerator = function (int $page) use ($orderBy, $order) {
+            return sprintf('/task/list?page=%s&orderBy=%s&order=%s', $page, $orderBy, $order);
         };
 
         return (new DefaultView())->render($this->paginator, $routeGenerator);

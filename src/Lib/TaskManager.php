@@ -27,6 +27,8 @@ class TaskManager
      * @param string $id
      *
      * @return Task
+     *
+     * @throws Exceptions\TaskNotFoundException
      */
     public function getById(string $id): Task
     {
@@ -35,14 +37,14 @@ class TaskManager
 
     /**
      * @param int $page
-     * @param string|null $sortBy
      * @param string|null $orderBy
+     * @param string|null $order
      *
      * @return array
      */
-    public function getList(int $page, ?string $sortBy, ?string $orderBy): array
+    public function getList(int $page, ?string $orderBy, ?string $order): array
     {
-        return $this->repository->getList($page, $sortBy, $orderBy);
+        return $this->repository->getList($page, $orderBy, $order);
     }
 
     /**
@@ -57,6 +59,8 @@ class TaskManager
      * @param string $userName
      * @param string $email
      * @param string $text
+     *
+     * @throws Exceptions\NotUniqueTaskFieldsException
      */
     public function save(string $userName, string $email, string $text): void
     {
@@ -66,6 +70,9 @@ class TaskManager
     /**
      * @param string $taskId
      * @param string $text
+     *
+     * @throws Exceptions\NotUniqueTaskFieldsException
+     * @throws Exceptions\TaskNotFoundException
      */
     public function edit(string $taskId, string $text): void
     {
@@ -76,6 +83,9 @@ class TaskManager
 
     /**
      * @param string $taskId
+     *
+     * @throws Exceptions\NotUniqueTaskFieldsException
+     * @throws Exceptions\TaskNotFoundException
      */
     public function done(string $taskId): void
     {

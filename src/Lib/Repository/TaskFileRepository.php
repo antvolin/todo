@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Repository;
 
-use BeeJeeMVC\Lib\Sorting;
+use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Model\Task;
 use FilesystemIterator;
 use LogicException;
@@ -61,7 +61,7 @@ class TaskFileRepository implements TaskRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getList(int $page, ?string $sortBy = null, ?string $orderBy = null): array
+    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         $tasks = [];
 
@@ -69,10 +69,10 @@ class TaskFileRepository implements TaskRepositoryInterface
             $tasks[basename($file)] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
         }
 
-        if ($sortBy && $orderBy) {
-            $method = 'get'.ucfirst($sortBy);
+        if ($orderBy && $order) {
+            $method = 'get'.ucfirst($orderBy);
 
-            if (Sorting::ASC === $orderBy) {
+            if (Ordering::ASC === $order) {
                 uasort($tasks, function (Task $a, Task $b) use ($method) {
                     return strcmp(strtolower($a->$method()), strtolower($b->$method()));
                 });

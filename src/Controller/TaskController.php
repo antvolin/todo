@@ -2,9 +2,11 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
+use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
-use BeeJeeMVC\Lib\Sorting;
+use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Lib\TaskManager;
 use Exception;
 use InvalidArgumentException;
@@ -36,9 +38,9 @@ class TaskController
     private $token;
 
     /**
-     * @var Sorting
+     * @var Ordering
      */
-    private $sorting;
+    private $ordering;
 
     /**
      * @var Environment
@@ -50,7 +52,7 @@ class TaskController
      * @param TaskManager $taskManager
      * @param PaginatorAdapterInterface $adapter
      * @param string $token
-     * @param Sorting $sorting
+     * @param Ordering $ordering
      * @param Environment $template
      */
     public function __construct(
@@ -58,7 +60,7 @@ class TaskController
         TaskManager $taskManager,
         PaginatorAdapterInterface $adapter,
         string $token,
-        Sorting $sorting,
+        Ordering $ordering,
         Environment $template
     )
     {
@@ -66,7 +68,7 @@ class TaskController
         $this->taskManager = $taskManager;
         $this->adapter = $adapter;
         $this->token = $token;
-        $this->sorting = $sorting;
+        $this->ordering = $ordering;
         $this->template = $template;
     }
 
@@ -80,18 +82,18 @@ class TaskController
     public function list(): Response
     {
         $page = $this->request->get('page', 1);
-        $sortBy = $this->request->get('sortBy');
         $orderBy = $this->request->get('orderBy');
+        $order = $this->request->get('order');
 
-        $paginator = $this->createPaginator($page, $sortBy, $orderBy);
+        $paginator = $this->createPaginator($page, $orderBy, $order);
 
         $params = [
             'isAdmin' => $this->request->getSession()->get('admin', false),
             'isCreated' => $this->request->getSession()->get('isCreated', false),
             'page' => $page,
-            'orderBy' => $this->sorting->getNextOrderBy($orderBy),
+            'order' => $this->ordering->getNextOrder($order),
             'tasks' => $paginator->getCurrentPageResults(),
-            'pagination' => $paginator->getHtml($sortBy, $orderBy),
+            'pagination' => $paginator->getHtml($orderBy, $order),
         ];
 
         $this->request->getSession()->remove('isCreated');
@@ -101,14 +103,14 @@ class TaskController
 
     /**
      * @param int $page
-     * @param string|null $sortBy
      * @param string|null $orderBy
+     * @param string|null $order
      *
      * @return PagerfantaPaginator
      */
-    private function createPaginator(int $page, ?string $sortBy, ?string $orderBy): PagerfantaPaginator
+    private function createPaginator(int $page, ?string $orderBy, ?string $order): PagerfantaPaginator
     {
-        $tasks = $this->taskManager->getList($page, $sortBy, $orderBy);
+        $tasks = $this->taskManager->getList($page, $orderBy, $order);
         $this->adapter->setData($tasks);
         $taskCount = $this->taskManager->getCountRows();
         $this->adapter->setCountRows($taskCount);
@@ -134,8 +136,8 @@ class TaskController
         }
 
         try {
-            $this->taskManager->save($this->request->get('userName'), $this->request->get('email'), $this->request->get('text'));
-        } catch (InvalidArgumentException $exception) {
+            $this->taskManager->save($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+        } catch (NotUniqueTaskFieldsException $exception) {
             $msg = $exception->getMessage();
             $params = ['error' => $msg, 'token' => $this->token];
 
@@ -150,6 +152,8 @@ class TaskController
     /**
      * @return RedirectResponse|Response
      *
+     * @throws NotUniqueTaskFieldsException
+     * @throws TaskNotFoundException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError

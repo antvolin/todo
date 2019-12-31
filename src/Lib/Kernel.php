@@ -10,6 +10,7 @@ use BeeJeeMVC\Lib\Handler\RoleRequestHandler;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\TaskFileRepository;
+use BeeJeeMVC\Lib\Repository\TaskPdoRepository;
 use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class Kernel
                 new TaskManager($this->createRepo()),
                 $this->createAdapter(),
                 $tokenManager->getToken(),
-                new Sorting(),
+                new Ordering(),
                 $this->createTemplate()
             );
         }
@@ -72,9 +73,8 @@ class Kernel
         $accessHandler = new AccessRequestHandler($tokenManager);
         $roleHandler = new RoleRequestHandler();
 
-        $handler = $filterHandler->setNextHandler($accessHandler)->setNextHandler($roleHandler);
-
-        $handler->handle($request);
+        $filterHandler->setNextHandler($accessHandler)->setNextHandler($roleHandler);
+        $filterHandler->handle($request);
     }
 
     /**
@@ -130,6 +130,16 @@ class Kernel
      */
     private function createRepo(): TaskRepositoryInterface
     {
-        return new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'], $_ENV['TASKS_PER_PAGE']);
+        $repoType = $_ENV['REPOSITORY'];
+        $taskPerPage = $_ENV['TASKS_PER_PAGE'];
+
+        if ('sqlite' === $repoType) {
+            $repo = new TaskPdoRepository($taskPerPage);
+        }
+        if ('file' === $repoType) {
+            $repo = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'], $taskPerPage);
+        }
+
+        return $repo;
     }
 }
