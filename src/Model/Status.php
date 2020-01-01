@@ -6,11 +6,11 @@ use InvalidArgumentException;
 
 class Status
 {
-    public const STATUS_EDITED = 'edited';
-    public const STATUS_DONE = 'done';
+    public const EDITED = 'edited';
+    public const DONE = 'done';
     private const ALLOWED_STATUSES = [
-        self::STATUS_EDITED,
-        self::STATUS_DONE,
+        self::EDITED,
+        self::DONE,
     ];
 
     /**

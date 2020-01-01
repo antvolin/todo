@@ -107,11 +107,11 @@ class Task
      */
     public function edit(string $text): void
     {
-        if (Status::STATUS_DONE == $this->status) {
+        if (Status::DONE == $this->status) {
             throw new CannotEditTaskException();
         }
 
-        $this->status = new Status(Status::STATUS_EDITED);
+        $this->status = new Status(Status::EDITED);
         $this->text = new Text($text);
     }
 
@@ -120,10 +120,10 @@ class Task
      */
     public function done(): void
     {
-        if (Status::STATUS_DONE == $this->status) {
+        if (Status::DONE == $this->status) {
             throw new CannotDoneTaskException();
         }
 
-        $this->status = new Status(Status::STATUS_DONE);
+        $this->status = new Status(Status::DONE);
     }
 }

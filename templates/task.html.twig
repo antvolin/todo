@@ -6,16 +6,18 @@
     <div class="col-sm-1">
         {% if isAdmin %}
             <div class="buttons">
-                <div class="hovered-buttons">
-                    <a href="/task/edit/{{ task.id }}">
-                        <button class="btn btn-primary control-button right-button">edit</button>
-                    </a>
-                </div>
-                <div class="hovered-buttons">
-                    <a href="/task/done/{{ task.id }}">
-                        <button class="btn btn-primary control-button right-button">done</button>
-                    </a>
-                </div>
+                {% if task.status != done %}
+                    <div class="hovered-buttons">
+                        <a href="/task/edit/{{ task.id }}">
+                            <button class="btn btn-primary control-button right-button">edit</button>
+                        </a>
+                    </div>
+                    <div class="hovered-buttons">
+                        <a href="/task/done/{{ task.id }}">
+                            <button class="btn btn-primary control-button right-button">done</button>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
     </div>

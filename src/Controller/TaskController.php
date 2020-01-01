@@ -8,6 +8,7 @@ use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Lib\TaskManager;
+use BeeJeeMVC\Model\Status;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -93,6 +94,8 @@ class TaskController
             'page' => $page,
             'order' => $this->ordering->getNextOrder($order),
             'tasks' => $paginator->getCurrentPageResults(),
+            'done' => Status::DONE,
+            'edited' => Status::EDITED,
             'pagination' => $paginator->getHtml($orderBy, $order),
         ];
 
@@ -157,6 +160,7 @@ class TaskController
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
+     * @throws \BeeJeeMVC\Lib\Exceptions\CannotEditTaskException
      */
     public function edit()
     {

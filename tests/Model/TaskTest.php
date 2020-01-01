@@ -61,7 +61,7 @@ class TaskTest extends TestCase
         $newText = 'new test text';
         $this->task->edit($newText);
         $this->assertEquals($newText, $this->task->getText());
-        $this->assertEquals(Status::STATUS_EDITED, $this->task->getStatus());
+        $this->assertEquals(Status::EDITED, $this->task->getStatus());
     }
 
     /**
@@ -72,7 +72,7 @@ class TaskTest extends TestCase
     public function notShouldBeEditableIfStatusDone(): void
     {
         $this->expectException(CannotEditTaskException::class);
-        $this->task->setStatus(new Status(Status::STATUS_DONE));
+        $this->task->setStatus(new Status(Status::DONE));
         $this->task->edit('new test text');
     }
 
@@ -84,7 +84,7 @@ class TaskTest extends TestCase
     public function shouldBeDone(): void
     {
         $this->task->done();
-        $this->assertEquals(Status::STATUS_DONE, $this->task->getStatus());
+        $this->assertEquals(Status::DONE, $this->task->getStatus());
     }
 
     /**
@@ -95,7 +95,7 @@ class TaskTest extends TestCase
     public function notShouldBeDoneIfStatusDone(): void
     {
         $this->expectException(CannotDoneTaskException::class);
-        $this->task->setStatus(new Status(Status::STATUS_DONE));
+        $this->task->setStatus(new Status(Status::DONE));
         $this->task->done();
     }
 }

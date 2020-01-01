@@ -50,7 +50,9 @@ class TaskPdoRepository implements TaskRepositoryInterface
 
         $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
         $taskObj->setId($task['id']);
-        $taskObj->setStatus(new Status($task['status']));
+        if ($task['status']) {
+            $taskObj->setStatus(new Status($task['status']));
+        }
 
         return $taskObj;
     }
@@ -83,7 +85,9 @@ class TaskPdoRepository implements TaskRepositoryInterface
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $task) {
             $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
             $taskObj->setId($task['id']);
-            $taskObj->setStatus(new Status($task['status']));
+            if ($task['status']) {
+                $taskObj->setStatus(new Status($task['status']));
+            }
             $result[$task['id']] = $taskObj;
         }
 
