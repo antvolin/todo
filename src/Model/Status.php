@@ -6,8 +6,8 @@ use InvalidArgumentException;
 
 class Status
 {
-    private const STATUS_EDITED = 'edited';
-    private const STATUS_DONE = 'done';
+    public const STATUS_EDITED = 'edited';
+    public const STATUS_DONE = 'done';
     private const ALLOWED_STATUSES = [
         self::STATUS_EDITED,
         self::STATUS_DONE,
@@ -33,7 +33,7 @@ class Status
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->value;
     }

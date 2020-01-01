@@ -30,7 +30,7 @@ class Db
 
     public function createTables(): void
     {
-        $this->pdo->exec('CREATE TABLE IF NOT EXISTS task (id INTEGER PRIMARY KEY, user_name TEXT, email TEXT, text TEXT, is_edited INTEGER, is_done INTEGER)');
+        $this->pdo->exec('CREATE TABLE IF NOT EXISTS task (id INTEGER PRIMARY KEY, user_name TEXT, email TEXT, text TEXT, status TEXT)');
         $this->pdo->exec('CREATE UNIQUE INDEX idx_task_user_name_email_text ON task (user_name, email, text);');
     }
 }

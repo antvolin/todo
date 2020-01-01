@@ -33,7 +33,7 @@ class TaskFileRepository implements TaskRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getById(string $id): Task
+    public function getById(int $id): Task
     {
         $file = file_get_contents($this->taskFolderPath.$id);
 
@@ -89,7 +89,7 @@ class TaskFileRepository implements TaskRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function save(Task $task): void
+    public function save(Task $task, ?int $taskId = null): void
     {
         file_put_contents($this->taskFolderPath.$task->getId(), serialize($task));
     }

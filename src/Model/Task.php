@@ -2,6 +2,9 @@
 
 namespace BeeJeeMVC\Model;
 
+use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
+use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
+
 class Task
 {
     /**
@@ -25,14 +28,9 @@ class Task
     private $text;
 
     /**
-     * @var bool
+     * @var Status
      */
-    private $edited = false;
-
-    /**
-     * @var bool
-     */
-    private $done = false;
+    private $status;
 
     /**
      * @param UserName $userName
@@ -79,6 +77,14 @@ class Task
     }
 
     /**
+     * @return Status|null
+     */
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    /**
      * @param int $id
      */
     public function setId(int $id): void
@@ -87,32 +93,37 @@ class Task
     }
 
     /**
-     * @return bool
+     * @param Status|null $status
      */
-    public function isEdited(): bool
+    public function setStatus(?Status $status): void
     {
-        return $this->edited;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDone(): bool
-    {
-        return $this->done;
+        $this->status = $status;
     }
 
     /**
      * @param string $text
+     *
+     * @throws CannotEditTaskException
      */
     public function edit(string $text): void
     {
+        if (Status::STATUS_DONE == $this->status) {
+            throw new CannotEditTaskException();
+        }
+
+        $this->status = new Status(Status::STATUS_EDITED);
         $this->text = new Text($text);
-        $this->edited = true;
     }
 
+    /**
+     * @throws CannotDoneTaskException
+     */
     public function done(): void
     {
-        $this->done = true;
+        if (Status::STATUS_DONE == $this->status) {
+            throw new CannotDoneTaskException();
+        }
+
+        $this->status = new Status(Status::STATUS_DONE);
     }
 }

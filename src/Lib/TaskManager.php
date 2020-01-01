@@ -73,6 +73,7 @@ class TaskManager
      *
      * @throws Exceptions\NotUniqueTaskFieldsException
      * @throws Exceptions\TaskNotFoundException
+     * @throws Exceptions\CannotEditTaskException
      */
     public function edit(int $taskId, string $text): void
     {
@@ -86,11 +87,12 @@ class TaskManager
      *
      * @throws Exceptions\NotUniqueTaskFieldsException
      * @throws Exceptions\TaskNotFoundException
+     * @throws Exceptions\CannotDoneTaskException
      */
     public function done(int $taskId): void
     {
         $task = $this->repository->getById($taskId);
         $task->done();
-        $this->repository->save($task);
+        $this->repository->save($task, $task->getId());
     }
 }

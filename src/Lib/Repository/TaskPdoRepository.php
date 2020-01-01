@@ -7,6 +7,7 @@ use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
 use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Status;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
@@ -49,6 +50,7 @@ class TaskPdoRepository implements TaskRepositoryInterface
 
         $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
         $taskObj->setId($task['id']);
+        $taskObj->setStatus(new Status($task['status']));
 
         return $taskObj;
     }
@@ -81,6 +83,7 @@ class TaskPdoRepository implements TaskRepositoryInterface
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $task) {
             $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
             $taskObj->setId($task['id']);
+            $taskObj->setStatus(new Status($task['status']));
             $result[$task['id']] = $taskObj;
         }
 
@@ -95,17 +98,19 @@ class TaskPdoRepository implements TaskRepositoryInterface
         $userName = $task->getUserName();
         $email = $task->getEmail();
         $text = $task->getText();
+        $status = $task->getStatus();
 
         if ($taskId) {
-            $sth = $this->pdo->prepare('UPDATE task SET user_name = :userName, email = :email, text = :text WHERE id = :id;');
+            $sth = $this->pdo->prepare('UPDATE task SET user_name = :userName, email = :email, text = :text, status = :status WHERE id = :id;');
             $sth->bindParam(':id', $taskId, PDO::PARAM_INT);
         } else {
-            $sth = $this->pdo->prepare('INSERT INTO task (user_name, email, text) VALUES(:userName, :email, :text);');
+            $sth = $this->pdo->prepare('INSERT INTO task (user_name, email, text, status) VALUES(:userName, :email, :text, :status);');
         }
 
         $sth->bindParam(':userName', $userName);
         $sth->bindParam(':email', $email);
         $sth->bindParam(':text', $text);
+        $sth->bindParam(':status', $status);
 
         try {
             $sth->execute();

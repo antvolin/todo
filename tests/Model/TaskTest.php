@@ -2,7 +2,10 @@
 
 namespace BeeJeeMVC\Tests\Text;
 
+use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
+use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
 use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Status;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
@@ -50,21 +53,49 @@ class TaskTest extends TestCase
 
     /**
      * @test
+     *
+     * @throws CannotEditTaskException
      */
     public function shouldBeEditable(): void
     {
         $newText = 'new test text';
         $this->task->edit($newText);
         $this->assertEquals($newText, $this->task->getText());
-        $this->assertEquals(true, $this->task->isEdited());
+        $this->assertEquals(Status::STATUS_EDITED, $this->task->getStatus());
     }
 
     /**
      * @test
+     *
+     * @throws CannotEditTaskException
+     */
+    public function notShouldBeEditableIfStatusDone(): void
+    {
+        $this->expectException(CannotEditTaskException::class);
+        $this->task->setStatus(new Status(Status::STATUS_DONE));
+        $this->task->edit('new test text');
+    }
+
+    /**
+     * @test
+     *
+     * @throws CannotDoneTaskException
      */
     public function shouldBeDone(): void
     {
         $this->task->done();
-        $this->assertEquals(true, $this->task->isDone());
+        $this->assertEquals(Status::STATUS_DONE, $this->task->getStatus());
+    }
+
+    /**
+     * @test
+     *
+     * @throws CannotDoneTaskException
+     */
+    public function notShouldBeDoneIfStatusDone(): void
+    {
+        $this->expectException(CannotDoneTaskException::class);
+        $this->task->setStatus(new Status(Status::STATUS_DONE));
+        $this->task->done();
     }
 }
