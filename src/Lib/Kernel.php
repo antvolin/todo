@@ -34,7 +34,7 @@ class Kernel
         $request->setSession($this->initSession());
 
         $tokenManager = new TokenManager();
-        $tokenManager->generateToken($this->initSecretKey($request));
+        $tokenManager->generateToken($this->initSecretKey($request), $_ENV['TOKEN_SALT']);
         $this->handleRequest($tokenManager, $request);
 
         $urlParts = explode('/', trim($request->getPathInfo(), '/'));
@@ -109,12 +109,10 @@ class Kernel
      */
 	private function initSecretKey(Request $request): string
     {
-        if (!$request->getSession()->get('secret')) {
+        if (!$secret = $request->getSession()->get('secret')) {
             $secret = (new SecretGenerator())->generateSecret();
 
             $request->getSession()->set('secret', $secret);
-        } else {
-            $secret = $request->getSession()->get('secret');
         }
 
         return $secret;
@@ -133,16 +131,15 @@ class Kernel
      */
     private function createRepo(): TaskRepositoryInterface
     {
-        $repoType = $_ENV['REPOSITORY'];
+        $repositoryType = $_ENV['REPOSITORY'];
         $taskPerPage = $_ENV['TASKS_PER_PAGE'];
 
-        if ('sqlite' === $repoType) {
-            $repo = new TaskPdoRepository($taskPerPage);
-        }
-        if ('file' === $repoType) {
-            $repo = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'], $taskPerPage);
+        if ('sqlite' === $repositoryType) {
+            $repository = new TaskPdoRepository($taskPerPage);
+        } else {
+            $repository = new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'], $taskPerPage);
         }
 
-        return $repo;
+        return $repository;
     }
 }

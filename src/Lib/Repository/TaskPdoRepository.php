@@ -76,7 +76,7 @@ class TaskPdoRepository implements TaskRepositoryInterface
         $orderBy = Ordering::getOrderBy($orderBy);
         $order = Ordering::getOrder($order);
 
-        $sth = $this->pdo->prepare('SELECT * FROM task ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;');
+        $sth = $this->pdo->prepare("SELECT * FROM task ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;");
         $limit = $this->tasksPerPage;
         $offset = $this->tasksPerPage * ($page - 1);
         $sth->bindParam(':limit', $limit, PDO::PARAM_INT);

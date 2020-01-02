@@ -19,11 +19,11 @@ class TokenManager
 
     /**
      * @param string $secret
-     * @param string|null $salt
+     * @param string $salt
      */
-    public function generateToken(string $secret, ?string $salt = null): void
+    public function generateToken(string $secret, string $salt): void
     {
-        $this->token = $this->generate($salt ?: $_ENV['TOKEN_SALT'], $secret);
+        $this->token = $this->generate($secret, $salt);
     }
 
     /**
@@ -36,7 +36,7 @@ class TokenManager
     {
         $salt = explode(':', $token)[0];
 
-        return $token === $this->generate($salt, $secret);
+        return $token === $this->generate($secret, $salt);
     }
 
     /**
@@ -45,7 +45,7 @@ class TokenManager
      *
      * @return string
      */
-    private function generate(string $salt, string $secret): string
+    private function generate(string $secret, string $salt): string
     {
         return $salt.':'.md5($salt.':'.$secret);
     }

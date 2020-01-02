@@ -10,7 +10,7 @@ class SecretGeneratorTest extends TestCase
     /**
      * @test
      */
-    public function tokenShouldBeGenerated(): void
+    public function secretShouldBeGenerated(): void
     {
         $generator = new SecretGenerator();
         $secretPrefix = uniqid($_ENV['TOKEN_SECRET_PREFIX'], true);
