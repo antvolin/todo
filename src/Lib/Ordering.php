@@ -10,6 +10,7 @@ class Ordering
         'user_name',
         'email',
         'text',
+        'status',
     ];
 
     /**

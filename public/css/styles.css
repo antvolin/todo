@@ -42,8 +42,16 @@ a {
     margin-bottom: 3px;
     width: 90px;
 }
-.task:hover {
-    background: #ccf;
+/*.task:hover {*/
+    /*background: #ccf;*/
+/*}*/
+.center {
+    margin: auto;
+}
+.modify-buttons {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 
 .pagerfanta {
