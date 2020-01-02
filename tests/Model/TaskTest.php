@@ -96,7 +96,7 @@ class TaskTest extends TestCase
      * @throws ForbiddenStatusException
      * @throws CannotBeEmptyException
      */
-    public function notShouldBeEditableIfStatusDone(): void
+    public function shouldBeNotEditableIfStatusDone(): void
     {
         $this->expectException(CannotEditTaskException::class);
         $this->task->setStatus(new Status(Status::DONE));
@@ -121,7 +121,7 @@ class TaskTest extends TestCase
      * @throws CannotDoneTaskException
      * @throws ForbiddenStatusException
      */
-    public function notShouldBeDoneIfStatusDone(): void
+    public function shouldBeNotDoneIfStatusDone(): void
     {
         $this->expectException(CannotDoneTaskException::class);
         $this->task->setStatus(new Status(Status::DONE));

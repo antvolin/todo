@@ -5,8 +5,12 @@ namespace BeeJeeMVC\Lib;
 class Ordering
 {
     public const ASC = 'ASC';
-    private const DESC = 'DESC';
-    private const ALLOWED_ORDER_FIELDS = [
+    public const DESC = 'DESC';
+    public const ALLOWED_ORDER_FIELDS = [
+        self::ASC,
+        self::DESC,
+    ];
+    public const ALLOWED_ORDER_BY_FIELDS = [
         'user_name',
         'email',
         'text',
@@ -20,9 +24,9 @@ class Ordering
      */
     public static function getOrderBy(?string $orderBy): string
     {
-        $key = array_search($orderBy, self::ALLOWED_ORDER_FIELDS, true);
+        $key = array_search($orderBy, self::ALLOWED_ORDER_BY_FIELDS, true);
 
-        return self::ALLOWED_ORDER_FIELDS[$key];
+        return self::ALLOWED_ORDER_BY_FIELDS[$key];
     }
 
     /**
@@ -40,7 +44,7 @@ class Ordering
      *
      * @return string
      */
-    public function getNextOrder(?string $order): string
+    public static function getNextOrder(?string $order): string
     {
         return !$order || self::ASC === $order ? self::DESC : self::ASC;
     }

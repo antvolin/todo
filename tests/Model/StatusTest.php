@@ -58,9 +58,12 @@ class StatusTest extends TestCase
      */
     public function validStatuses(): array
     {
-        return [
-            [Status::EDITED],
-            [Status::DONE],
-        ];
+        $data = [];
+
+        foreach (Status::ALLOWED_STATUSES as $status) {
+            $data[] = [$status];
+        }
+
+        return $data;
     }
 }

@@ -76,7 +76,15 @@ class TaskManager
      */
     public function save(string $userName, string $email, string $text): void
     {
-        $this->repository->save(new Task(new Id(), new UserName($userName), new Email($email), new Text($text), new Status()));
+        $this->repository->save(
+            new Task(
+                new Id(),
+                new UserName($userName),
+                new Email($email),
+                new Text($text),
+                new Status()
+            )
+        );
     }
 
     /**

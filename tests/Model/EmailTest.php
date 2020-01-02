@@ -38,14 +38,14 @@ class EmailTest extends TestCase
     /**
      * @test
      *
-     * @param $email
+     * @param string $email
      *
      * @dataProvider notValidEmails
      *
      * @throws CannotBeEmptyException
      * @throws NotValidEmailException
      */
-    public function shouldBeNotConstructableWithNotValidEmail($email): void
+    public function shouldBeNotConstructableWithNotValidEmail(string $email): void
     {
         $this->expectException(NotValidEmailException::class);
 

@@ -42,11 +42,6 @@ class TaskController
     private $token;
 
     /**
-     * @var Ordering
-     */
-    private $ordering;
-
-    /**
      * @var Environment
      */
     private $template;
@@ -56,7 +51,6 @@ class TaskController
      * @param TaskManager $taskManager
      * @param PaginatorAdapterInterface $adapter
      * @param string $token
-     * @param Ordering $ordering
      * @param Environment $template
      */
     public function __construct(
@@ -64,7 +58,6 @@ class TaskController
         TaskManager $taskManager,
         PaginatorAdapterInterface $adapter,
         string $token,
-        Ordering $ordering,
         Environment $template
     )
     {
@@ -72,7 +65,6 @@ class TaskController
         $this->taskManager = $taskManager;
         $this->adapter = $adapter;
         $this->token = $token;
-        $this->ordering = $ordering;
         $this->template = $template;
     }
 
@@ -98,7 +90,7 @@ class TaskController
             'isAdmin' => $this->request->getSession()->get('admin', false),
             'isCreated' => $this->request->getSession()->get('isCreated', false),
             'page' => $page,
-            'order' => $this->ordering->getNextOrder($order),
+            'order' => Ordering::getNextOrder($order),
             'tasks' => $paginator->getCurrentPageResults(),
             'pagination' => $paginator->getHtml($orderBy, $order),
         ];

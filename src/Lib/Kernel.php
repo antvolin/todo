@@ -51,7 +51,6 @@ class Kernel
                 new TaskManager($this->createRepo()),
                 $this->createAdapter(),
                 $tokenManager->getToken(),
-                new Ordering(),
                 $this->createTemplate()
             );
         }

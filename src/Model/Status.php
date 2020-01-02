@@ -8,7 +8,7 @@ class Status
 {
     public const EDITED = 'edited';
     public const DONE = 'done';
-    private const ALLOWED_STATUSES = [
+    public const ALLOWED_STATUSES = [
         self::EDITED,
         self::DONE,
     ];
