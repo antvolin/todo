@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Text;
+namespace BeeJeeMVC\Tests\Model;
 
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;

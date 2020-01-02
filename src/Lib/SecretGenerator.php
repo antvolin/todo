@@ -5,10 +5,16 @@ namespace BeeJeeMVC\Lib;
 class SecretGenerator
 {
     /**
+     * @param null $secretPrefix
+     *
      * @return string
      */
-    public function generateSecret(): string
+    public function generateSecret($secretPrefix = null): string
     {
-        return md5($_ENV['TOKEN_SECRET'].uniqid('secret', true));
+        if (!$secretPrefix) {
+            $secretPrefix = uniqid($_ENV['TOKEN_SECRET_PREFIX'], true);
+        }
+
+        return md5($_ENV['TOKEN_SECRET'].$secretPrefix);
     }
 }

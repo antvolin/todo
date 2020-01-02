@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Email;
+namespace BeeJeeMVC\Tests\Model;
 
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;

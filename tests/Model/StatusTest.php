@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Text;
+namespace BeeJeeMVC\Tests\Model;
 
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Model\Status;

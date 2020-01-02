@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\UserName;
+namespace BeeJeeMVC\Tests\Model;
 
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Model\UserName;
