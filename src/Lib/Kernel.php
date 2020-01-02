@@ -21,6 +21,9 @@ use Twig\Loader\FilesystemLoader;
 class Kernel
 {
     /**
+     * @throws Exceptions\CannotBeEmptyException
+     * @throws Exceptions\ForbiddenStatusException
+     * @throws Exceptions\NotValidEmailException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError

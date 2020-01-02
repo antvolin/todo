@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Model;
 
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
 use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
@@ -102,6 +103,7 @@ class Task
      *
      * @throws CannotEditTaskException
      * @throws ForbiddenStatusException
+     * @throws CannotBeEmptyException
      */
     public function edit(string $text): void
     {

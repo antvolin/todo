@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Lib;
 
 use PDO;
 
-class Db
+class DbManager
 {
     /**
      * @var PDO

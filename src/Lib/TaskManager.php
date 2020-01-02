@@ -30,6 +30,9 @@ class TaskManager
      *
      * @return Task
      *
+     * @throws Exceptions\CannotBeEmptyException
+     * @throws Exceptions\ForbiddenStatusException
+     * @throws Exceptions\NotValidEmailException
      * @throws Exceptions\TaskNotFoundException
      */
     public function getById(int $id): Task
@@ -43,6 +46,10 @@ class TaskManager
      * @param string|null $order
      *
      * @return array
+     *
+     * @throws Exceptions\CannotBeEmptyException
+     * @throws Exceptions\ForbiddenStatusException
+     * @throws Exceptions\NotValidEmailException
      */
     public function getList(int $page, ?string $orderBy, ?string $order): array
     {
@@ -63,6 +70,9 @@ class TaskManager
      * @param string $text
      *
      * @throws Exceptions\NotUniqueTaskFieldsException
+     * @throws Exceptions\CannotBeEmptyException
+     * @throws Exceptions\NotValidEmailException
+     * @throws Exceptions\ForbiddenStatusException
      */
     public function save(string $userName, string $email, string $text): void
     {
@@ -73,9 +83,12 @@ class TaskManager
      * @param int $taskId
      * @param string $text
      *
-     * @throws Exceptions\NotUniqueTaskFieldsException
-     * @throws Exceptions\TaskNotFoundException
+     * @throws Exceptions\CannotBeEmptyException
      * @throws Exceptions\CannotEditTaskException
+     * @throws Exceptions\ForbiddenStatusException
+     * @throws Exceptions\NotUniqueTaskFieldsException
+     * @throws Exceptions\NotValidEmailException
+     * @throws Exceptions\TaskNotFoundException
      */
     public function edit(int $taskId, string $text): void
     {
@@ -87,9 +100,12 @@ class TaskManager
     /**
      * @param int $taskId
      *
-     * @throws Exceptions\NotUniqueTaskFieldsException
-     * @throws Exceptions\TaskNotFoundException
+     * @throws Exceptions\CannotBeEmptyException
      * @throws Exceptions\CannotDoneTaskException
+     * @throws Exceptions\ForbiddenStatusException
+     * @throws Exceptions\NotUniqueTaskFieldsException
+     * @throws Exceptions\NotValidEmailException
+     * @throws Exceptions\TaskNotFoundException
      */
     public function done(int $taskId): void
     {

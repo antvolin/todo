@@ -2,13 +2,16 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
+use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
+use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
+use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Lib\TaskManager;
-use BeeJeeMVC\Model\Status;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -76,6 +79,9 @@ class TaskController
     /**
      * @return Response
      *
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -108,6 +114,10 @@ class TaskController
      * @param string|null $order
      *
      * @return PagerfantaPaginator
+     *
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
      */
     private function createPaginator(int $page, ?string $orderBy, ?string $order): PagerfantaPaginator
     {
@@ -124,6 +134,9 @@ class TaskController
     /**
      * @return RedirectResponse|Response
      *
+     * @throws ForbiddenStatusException
+     * @throws CannotBeEmptyException
+     * @throws NotValidEmailException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -153,12 +166,15 @@ class TaskController
     /**
      * @return RedirectResponse|Response
      *
+     * @throws CannotBeEmptyException
+     * @throws CannotEditTaskException
+     * @throws ForbiddenStatusException
      * @throws NotUniqueTaskFieldsException
+     * @throws NotValidEmailException
      * @throws TaskNotFoundException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     * @throws \BeeJeeMVC\Lib\Exceptions\CannotEditTaskException
      */
     public function edit()
     {

@@ -79,6 +79,7 @@ class TaskTest extends TestCase
      *
      * @throws CannotEditTaskException
      * @throws ForbiddenStatusException
+     * @throws CannotBeEmptyException
      */
     public function shouldBeEditable(): void
     {
@@ -93,6 +94,7 @@ class TaskTest extends TestCase
      *
      * @throws CannotEditTaskException
      * @throws ForbiddenStatusException
+     * @throws CannotBeEmptyException
      */
     public function notShouldBeEditableIfStatusDone(): void
     {

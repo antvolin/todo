@@ -2,7 +2,10 @@
 
 namespace BeeJeeMVC\Lib\Repository;
 
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
+use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
+use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
 use BeeJeeMVC\Model\Task;
 
@@ -14,6 +17,9 @@ interface TaskRepositoryInterface
      * @return Task
      *
      * @throws TaskNotFoundException
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
      */
     public function getById(int $taskId): Task;
 
@@ -28,6 +34,10 @@ interface TaskRepositoryInterface
      * @param string|null $order
      *
      * @return array
+     *
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
      */
     public function getList(int $page, ?string $orderBy = null, ?string $order = null): array;
 
