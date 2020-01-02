@@ -19,15 +19,17 @@ class Status
     private $value;
 
     /**
-     * @param string $value
+     * @param string|null $value
      */
-    public function __construct(string $value)
+    public function __construct(?string $value = null)
     {
-        if (!in_array($value, self::ALLOWED_STATUSES, true)) {
-            throw new InvalidArgumentException('This status cannot be used!');
-        }
+        if ($value) {
+            if (!in_array($value, self::ALLOWED_STATUSES, true)) {
+                throw new InvalidArgumentException('This status cannot be used!');
+            }
 
-        $this->value = $value;
+            $this->value = $value;
+        }
     }
 
     /**
@@ -35,6 +37,6 @@ class Status
      */
     public function __toString(): string
     {
-        return $this->value;
+        return (string) $this->value;
     }
 }

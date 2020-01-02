@@ -5,6 +5,7 @@ namespace BeeJeeMVC\Tests\Text;
 use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
 use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
 use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Id;
 use BeeJeeMVC\Model\Status;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
@@ -14,19 +15,29 @@ use PHPUnit\Framework\TestCase;
 class TaskTest extends TestCase
 {
     /**
+     * @var Id
+     */
+    protected $taskId;
+
+    /**
      * @var UserName
      */
-    protected $userName;
+    protected $taskUserName;
 
     /**
      * @var Email
      */
-    protected $email;
+    protected $taskEmail;
 
     /**
      * @var Text
      */
-    protected $text;
+    protected $taskText;
+
+    /**
+     * @var Status
+     */
+    protected $taskStatus;
 
     /**
      * @var Task
@@ -35,10 +46,12 @@ class TaskTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->userName = new UserName('test user name');
-        $this->email = new Email('test@test.test');
-        $this->text = new Text('test task text');
-        $this->task = new Task($this->userName, $this->email, $this->text);
+        $this->taskUserName = new UserName('test user name');
+        $this->taskEmail = new Email('test@test.test');
+        $this->taskText = new Text('test task text');
+        $this->taskId = new Id();
+        $this->taskStatus = new Status();
+        $this->task = new Task($this->taskId, $this->taskUserName, $this->taskEmail, $this->taskText, $this->taskStatus);
     }
 
     /**
@@ -46,9 +59,11 @@ class TaskTest extends TestCase
      */
     public function shouldBeCreated(): void
     {
-        $this->assertEquals($this->userName, $this->task->getUserName());
-        $this->assertEquals($this->email, $this->task->getEmail());
-        $this->assertEquals($this->text, $this->task->getText());
+        $this->assertEquals($this->taskId, $this->task->getId());
+        $this->assertEquals($this->taskUserName, $this->task->getUserName());
+        $this->assertEquals($this->taskEmail, $this->task->getEmail());
+        $this->assertEquals($this->taskText, $this->task->getText());
+        $this->assertEquals($this->taskStatus, $this->task->getStatus());
     }
 
     /**

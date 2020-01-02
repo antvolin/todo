@@ -94,8 +94,6 @@ class TaskController
             'page' => $page,
             'order' => $this->ordering->getNextOrder($order),
             'tasks' => $paginator->getCurrentPageResults(),
-            'done' => Status::DONE,
-            'edited' => Status::EDITED,
             'pagination' => $paginator->getHtml($orderBy, $order),
         ];
 

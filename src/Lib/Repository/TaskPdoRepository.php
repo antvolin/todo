@@ -7,6 +7,7 @@ use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
 use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Id;
 use BeeJeeMVC\Model\Status;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
@@ -48,13 +49,13 @@ class TaskPdoRepository implements TaskRepositoryInterface
             throw new TaskNotFoundException();
         }
 
-        $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
-        $taskObj->setId($task['id']);
-        if ($task['status']) {
-            $taskObj->setStatus(new Status($task['status']));
-        }
-
-        return $taskObj;
+        return new Task(
+            new Id($task['id']),
+            new UserName($task['user_name']),
+            new Email($task['email']),
+            new Text($task['text']),
+            new Status($task['status'])
+        );
     }
 
     /**
@@ -83,12 +84,13 @@ class TaskPdoRepository implements TaskRepositoryInterface
         $sth->execute();
 
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $task) {
-            $taskObj = new Task(new UserName($task['user_name']), new Email($task['email']), new Text($task['text']));
-            $taskObj->setId($task['id']);
-            if ($task['status']) {
-                $taskObj->setStatus(new Status($task['status']));
-            }
-            $result[$task['id']] = $taskObj;
+            $result[$task['id']] = new Task(
+                new Id($task['id']),
+                new UserName($task['user_name']),
+                new Email($task['email']),
+                new Text($task['text']),
+                new Status($task['status'])
+            );
         }
 
         return $result;

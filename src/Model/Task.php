@@ -8,7 +8,7 @@ use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
 class Task
 {
     /**
-     * @var int
+     * @var Id
      */
     private $id;
 
@@ -33,21 +33,25 @@ class Task
     private $status;
 
     /**
+     * @param Id $id
      * @param UserName $userName
      * @param Email $email
      * @param Text $text
+     * @param Status $status
      */
-    public function __construct(UserName $userName, Email $email, Text $text)
+    public function __construct(Id $id, UserName $userName, Email $email, Text $text, Status $status)
     {
+        $this->id = $id;
         $this->userName = $userName;
         $this->email = $email;
         $this->text = $text;
+        $this->status = $status;
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }
@@ -82,14 +86,6 @@ class Task
     public function getStatus(): ?Status
     {
         return $this->status;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     /**

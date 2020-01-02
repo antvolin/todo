@@ -4,9 +4,11 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\Status;
 use BeeJeeMVC\Model\Task;
 use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
+use BeeJeeMVC\Model\Id;
 
 class TaskManager
 {
@@ -64,7 +66,7 @@ class TaskManager
      */
     public function save(string $userName, string $email, string $text): void
     {
-        $this->repository->save(new Task(new UserName($userName), new Email($email), new Text($text)));
+        $this->repository->save(new Task(new Id(), new UserName($userName), new Email($email), new Text($text), new Status()));
     }
 
     /**
@@ -93,6 +95,6 @@ class TaskManager
     {
         $task = $this->repository->getById($taskId);
         $task->done();
-        $this->repository->save($task, $task->getId());
+        $this->repository->save($task, $task->getId()->getValue());
     }
 }
