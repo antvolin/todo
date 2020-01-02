@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Model;
 
-use InvalidArgumentException;
+use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 
 class Status
 {
@@ -20,12 +20,14 @@ class Status
 
     /**
      * @param string|null $value
+     *
+     * @throws ForbiddenStatusException
      */
     public function __construct(?string $value = null)
     {
         if ($value) {
             if (!in_array($value, self::ALLOWED_STATUSES, true)) {
-                throw new InvalidArgumentException('This status cannot be used!');
+                throw new ForbiddenStatusException();
             }
 
             $this->value = $value;

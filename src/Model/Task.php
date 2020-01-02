@@ -4,6 +4,7 @@ namespace BeeJeeMVC\Model;
 
 use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
 use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
+use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 
 class Task
 {
@@ -100,6 +101,7 @@ class Task
      * @param string $text
      *
      * @throws CannotEditTaskException
+     * @throws ForbiddenStatusException
      */
     public function edit(string $text): void
     {
@@ -113,6 +115,7 @@ class Task
 
     /**
      * @throws CannotDoneTaskException
+     * @throws ForbiddenStatusException
      */
     public function done(): void
     {

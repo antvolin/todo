@@ -2,14 +2,18 @@
 
 namespace BeeJeeMVC\Tests\Email;
 
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
+use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Model\Email;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase
 {
     /**
      * @test
+     *
+     * @throws CannotBeEmptyException
+     * @throws NotValidEmailException
      */
     public function shouldBeConstructable(): void
     {
@@ -20,10 +24,13 @@ class EmailTest extends TestCase
 
     /**
      * @test
+     *
+     * @throws CannotBeEmptyException
+     * @throws NotValidEmailException
      */
     public function shouldBeNotConstructableWithEmptyString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CannotBeEmptyException::class);
 
         new Email('');
     }
@@ -34,10 +41,13 @@ class EmailTest extends TestCase
      * @param $email
      *
      * @dataProvider notValidEmails
+     *
+     * @throws CannotBeEmptyException
+     * @throws NotValidEmailException
      */
     public function shouldBeNotConstructableWithNotValidEmail($email): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(NotValidEmailException::class);
 
         new Email($email);
     }

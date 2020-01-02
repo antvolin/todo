@@ -2,8 +2,11 @@
 
 namespace BeeJeeMVC\Tests\Text;
 
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
 use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
+use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
+use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\Id;
 use BeeJeeMVC\Model\Status;
@@ -44,6 +47,11 @@ class TaskTest extends TestCase
      */
     protected $task;
 
+    /**
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
+     */
     protected function setUp(): void
     {
         $this->taskUserName = new UserName('test user name');
@@ -70,6 +78,7 @@ class TaskTest extends TestCase
      * @test
      *
      * @throws CannotEditTaskException
+     * @throws ForbiddenStatusException
      */
     public function shouldBeEditable(): void
     {
@@ -83,6 +92,7 @@ class TaskTest extends TestCase
      * @test
      *
      * @throws CannotEditTaskException
+     * @throws ForbiddenStatusException
      */
     public function notShouldBeEditableIfStatusDone(): void
     {
@@ -95,6 +105,7 @@ class TaskTest extends TestCase
      * @test
      *
      * @throws CannotDoneTaskException
+     * @throws ForbiddenStatusException
      */
     public function shouldBeDone(): void
     {
@@ -106,6 +117,7 @@ class TaskTest extends TestCase
      * @test
      *
      * @throws CannotDoneTaskException
+     * @throws ForbiddenStatusException
      */
     public function notShouldBeDoneIfStatusDone(): void
     {

@@ -2,7 +2,8 @@
 
 namespace BeeJeeMVC\Model;
 
-use InvalidArgumentException;
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
+use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 
 class Email
 {
@@ -15,15 +16,18 @@ class Email
 
     /**
      * @param string $value
+     *
+     * @throws CannotBeEmptyException
+     * @throws NotValidEmailException
      */
     public function __construct(string $value)
     {
         if (!$value) {
-            throw new InvalidArgumentException('Email value cannot be empty.');
+            throw new CannotBeEmptyException('Email');
         }
 
         if (!preg_match(self::EMAIL_REG_EXP, $value)) {
-            throw new InvalidArgumentException('Email value must be a valid email address.');
+            throw new NotValidEmailException();
         }
 
         $this->value = $value;

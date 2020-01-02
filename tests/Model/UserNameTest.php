@@ -2,14 +2,16 @@
 
 namespace BeeJeeMVC\Tests\UserName;
 
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Model\UserName;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class UserNameTest extends TestCase
 {
     /**
      * @test
+     *
+     * @throws CannotBeEmptyException
      */
     public function shouldBeConstructable(): void
     {
@@ -20,10 +22,12 @@ class UserNameTest extends TestCase
 
     /**
      * @test
+     *
+     * @throws CannotBeEmptyException
      */
     public function shouldBeNotConstructableWithEmptyString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CannotBeEmptyException::class);
 
         new UserName('');
     }

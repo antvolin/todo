@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Model;
 
-use InvalidArgumentException;
+use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 
 class UserName
 {
@@ -13,11 +13,13 @@ class UserName
 
     /**
      * @param string $value
+     *
+     * @throws CannotBeEmptyException
      */
     public function __construct(string $value)
     {
         if (!$value) {
-            throw new InvalidArgumentException('User name value cannot be empty.');
+            throw new CannotBeEmptyException('User');
         }
 
         $this->value = $value;
