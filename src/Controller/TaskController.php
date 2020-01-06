@@ -8,8 +8,6 @@ use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
-use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
-use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Lib\TaskManager;
 use Exception;
@@ -32,11 +30,6 @@ class TaskController
     private $taskManager;
 
     /**
-     * @var PaginatorAdapterInterface
-     */
-    private $adapter;
-
-    /**
      * @var string
      */
     private $token;
@@ -49,21 +42,18 @@ class TaskController
     /**
      * @param Request $request
      * @param TaskManager $taskManager
-     * @param PaginatorAdapterInterface $adapter
      * @param string $token
      * @param Environment $template
      */
     public function __construct(
         Request $request,
         TaskManager $taskManager,
-        PaginatorAdapterInterface $adapter,
         string $token,
         Environment $template
     )
     {
         $this->request = $request;
         $this->taskManager = $taskManager;
-        $this->adapter = $adapter;
         $this->token = $token;
         $this->template = $template;
     }
@@ -71,9 +61,6 @@ class TaskController
     /**
      * @return Response
      *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -83,8 +70,7 @@ class TaskController
         $page = $this->request->get('page', 1);
         $orderBy = $this->request->get('orderBy');
         $order = $this->request->get('order');
-
-        $paginator = $this->createPaginator($page, $orderBy, $order);
+        $paginator = $this->request->get('paginator');
 
         $params = [
             'isAdmin' => $this->request->getSession()->get('admin', false),
@@ -98,29 +84,6 @@ class TaskController
         $this->request->getSession()->remove('isCreated');
 
         return new Response($this->template->render('list.html.twig', $params));
-    }
-
-    /**
-     * @param int $page
-     * @param string|null $orderBy
-     * @param string|null $order
-     *
-     * @return PagerfantaPaginator
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     */
-    private function createPaginator(int $page, ?string $orderBy, ?string $order): PagerfantaPaginator
-    {
-        $tasks = $this->taskManager->getList($page, $orderBy, $order);
-        $this->adapter->setData($tasks);
-        $taskCount = $this->taskManager->getCountRows();
-        $this->adapter->setCountRows($taskCount);
-        $paginator = new PagerfantaPaginator($this->adapter);
-        $paginator->create($page);
-
-        return $paginator;
     }
 
     /**

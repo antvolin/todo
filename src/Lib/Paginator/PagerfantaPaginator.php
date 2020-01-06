@@ -5,7 +5,7 @@ namespace BeeJeeMVC\Lib\Paginator;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\DefaultView;
 
-class PagerfantaPaginator
+class PagerfantaPaginator implements PaginatorInterface
 {
     /**
      * @var Pagerfanta
@@ -13,25 +13,12 @@ class PagerfantaPaginator
     private $paginator;
 
     /**
-     * @var PaginatorAdapterInterface
-     */
-    private $adapter;
-
-    /**
-     * @param PaginatorAdapterInterface $adapter
-     */
-    public function __construct(PaginatorAdapterInterface $adapter)
-    {
-        $this->adapter = $adapter;
-    }
-
-    /**
      * @inheritdoc
      */
-    public function create(int $page): void
+    public function __construct(PaginatorAdapterInterface $adapter, int $page)
     {
         if (!$this->paginator) {
-            $pager = new Pagerfanta($this->adapter);
+            $pager = new Pagerfanta($adapter);
             $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
             $pager->setCurrentPage($page);
 

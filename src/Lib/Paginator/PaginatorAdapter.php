@@ -33,7 +33,7 @@ class PaginatorAdapter implements PaginatorAdapterInterface
     /**
      * @inheritdoc
      */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return $this->countRows;
     }

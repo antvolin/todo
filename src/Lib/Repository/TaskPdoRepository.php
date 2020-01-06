@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Repository;
 
-use BeeJeeMVC\Lib\DbManager;
+use BeeJeeMVC\Lib\PdoManager;
 use BeeJeeMVC\Lib\Exceptions\NotUniqueTaskFieldsException;
 use BeeJeeMVC\Lib\Exceptions\TaskNotFoundException;
 use BeeJeeMVC\Lib\Ordering;
@@ -32,7 +32,7 @@ class TaskPdoRepository implements TaskRepositoryInterface
      */
     public function __construct(int $tasksPerPage)
     {
-        $this->pdo = (new DbManager())->getPdo();
+        $this->pdo = (new PdoManager())->getPdo();
         $this->tasksPerPage = $tasksPerPage;
     }
 
@@ -49,13 +49,7 @@ class TaskPdoRepository implements TaskRepositoryInterface
             throw new TaskNotFoundException();
         }
 
-        return new Task(
-            new Id($task['id']),
-            new UserName($task['user_name']),
-            new Email($task['email']),
-            new Text($task['text']),
-            new Status($task['status'])
-        );
+        return $this->createTask($task);
     }
 
     /**
@@ -84,13 +78,7 @@ class TaskPdoRepository implements TaskRepositoryInterface
         $sth->execute();
 
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $task) {
-            $result[$task['id']] = new Task(
-                new Id($task['id']),
-                new UserName($task['user_name']),
-                new Email($task['email']),
-                new Text($task['text']),
-                new Status($task['status'])
-            );
+            $result[$task['id']] = $this->createTask($task);
         }
 
         return $result;
@@ -123,5 +111,25 @@ class TaskPdoRepository implements TaskRepositoryInterface
         } catch (PDOException $exception) {
             throw new NotUniqueTaskFieldsException();
         }
+    }
+
+    /**
+     * @param array $task
+     *
+     * @return Task
+     *
+     * @throws \BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException
+     * @throws \BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException
+     * @throws \BeeJeeMVC\Lib\Exceptions\NotValidEmailException
+     */
+    private function createTask(array $task): Task
+    {
+        return new Task(
+            new Id($task['id']),
+            new UserName($task['user_name']),
+            new Email($task['email']),
+            new Text($task['text']),
+            new Status($task['status'])
+        );
     }
 }
