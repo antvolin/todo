@@ -5,7 +5,9 @@
 	{{ parent() }}
 	<link href="/css/styles.css" rel="stylesheet" />
 {% endblock %}
-
+{% block javascripts %}
+	<script src="/js/script.js"></script>
+{% endblock %}
 {% block content %}
 	{% if isCreated %}
 		<div class="msg">

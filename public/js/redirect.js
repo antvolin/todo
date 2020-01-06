@@ -1,0 +1,1 @@
+(function(){setTimeout("window.location.href = '/task/list'", 2000);})();

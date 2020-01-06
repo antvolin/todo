@@ -21,6 +21,16 @@ use Twig\Loader\FilesystemLoader;
 class Kernel
 {
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * @var TokenManager
+     */
+    private $tokenManager;
+
+    /**
      * @throws Exceptions\CannotBeEmptyException
      * @throws Exceptions\ForbiddenStatusException
      * @throws Exceptions\NotValidEmailException
@@ -30,29 +40,18 @@ class Kernel
      */
 	public function process(): void
     {
-        $request = Request::createFromGlobals();
-        $request->setSession($this->initSession());
 
-        $tokenManager = new TokenManager();
-        $tokenManager->generateToken($this->initSecretKey($request), $_ENV['TOKEN_SALT']);
-        $this->handleRequest($tokenManager, $request);
+        $this->createRequest();
+        $this->initSession();
+        $this->createTokenManager();
+        $this->handleRequest();
 
-        $urlParts = explode('/', trim($request->getPathInfo(), '/'));
+        $urlParts = explode('/', trim($this->request->getPathInfo(), '/'));
 
         if ('auth' === strtolower(array_shift($urlParts))) {
-            $controller = new AuthController(
-                $request,
-                $tokenManager->getToken(),
-                $this->createTemplate()
-            );
+            $controller = $this->createAuthController();
         } else {
-            $controller = new TaskController(
-                $request,
-                new TaskManager($this->createRepo()),
-                $this->createAdapter(),
-                $tokenManager->getToken(),
-                $this->createTemplate()
-            );
+            $controller = $this->createTaskController();
         }
 
         if (method_exists($controller, $action = array_shift($urlParts))) {
@@ -65,29 +64,66 @@ class Kernel
         $response->send();
 	}
 
-    /**
-     * @param TokenManager $tokenManager
-     * @param Request $request
-     */
-	private function handleRequest(TokenManager $tokenManager, Request $request): void
+	private function createRequest(): void
     {
-        $filterHandler = new FilterRequestHandler();
-        $accessHandler = new AccessRequestHandler($tokenManager);
-        $roleHandler = new RoleRequestHandler();
-
-        $filterHandler->setNextHandler($accessHandler)->setNextHandler($roleHandler);
-        $filterHandler->handle($request);
+        $this->request = Request::createFromGlobals();
     }
 
-    /**
-     * @return Session
-     */
-	private function initSession(): Session
+    private function initSession(): void
     {
         $session = new Session();
         $session->start();
 
-        return $session;
+        $this->request->setSession($session);
+    }
+
+	private function createTokenManager(): void
+    {
+        $this->tokenManager = new TokenManager();
+
+        if (!$secret = $this->request->getSession()->get('secret')) {
+            $secret = (new SecretGenerator())->generateSecret();
+
+            $this->request->getSession()->set('secret', $secret);
+        }
+
+        $this->tokenManager->generateToken($secret, $_ENV['TOKEN_SALT']);
+    }
+
+    private function handleRequest(): void
+    {
+        $filterHandler = new FilterRequestHandler();
+        $accessHandler = new AccessRequestHandler($this->tokenManager);
+        $roleHandler = new RoleRequestHandler();
+
+        $filterHandler->setNextHandler($accessHandler)->setNextHandler($roleHandler);
+        $filterHandler->handle($this->request);
+    }
+
+    /**
+     * @return AuthController
+     */
+	private function createAuthController(): AuthController
+    {
+        return new AuthController(
+            $this->request,
+            $this->tokenManager->getToken(),
+            $this->createTemplate()
+        );
+    }
+
+    /**
+     * @return TaskController
+     */
+    private function createTaskController(): TaskController
+    {
+        return new TaskController(
+            $this->request,
+            new TaskManager($this->createRepo()),
+            $this->createAdapter(),
+            $this->tokenManager->getToken(),
+            $this->createTemplate()
+        );
     }
 
     /**
@@ -96,33 +132,8 @@ class Kernel
 	private function createTemplate(): Environment
     {
         $loader = new FilesystemLoader(dirname(__DIR__).'/../'.'templates');
-        $options = ['autoescape' => false];
 
-        return new Environment($loader, $options);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return string
-     */
-	private function initSecretKey(Request $request): string
-    {
-        if (!$secret = $request->getSession()->get('secret')) {
-            $secret = (new SecretGenerator())->generateSecret();
-
-            $request->getSession()->set('secret', $secret);
-        }
-
-        return $secret;
-    }
-
-    /**
-     * @return PaginatorAdapterInterface
-     */
-    private function createAdapter(): PaginatorAdapterInterface
-    {
-        return new PaginatorAdapter();
+        return new Environment($loader, ['autoescape' => false]);
     }
 
     /**
@@ -140,5 +151,13 @@ class Kernel
         }
 
         return $repository;
+    }
+
+    /**
+     * @return PaginatorAdapterInterface
+     */
+    private function createAdapter(): PaginatorAdapterInterface
+    {
+        return new PaginatorAdapter();
     }
 }
