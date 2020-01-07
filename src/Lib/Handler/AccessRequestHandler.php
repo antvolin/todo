@@ -2,37 +2,25 @@
 
 namespace BeeJeeMVC\Lib\Handler;
 
-use BeeJeeMVC\Lib\TokenManager;
+use BeeJeeMVC\Lib\Factory\TokenManagerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class AccessRequestHandler extends RequestHandler
 {
-    private const ATTEMPT_TO_USE_CSRF_ATTACK = 'Attempt to use csrf attack!';
-
-    /**
-     * @var TokenManager
-     */
-    private $tokenManager;
-
-    /**
-     * @param TokenManager $tokenManager
-     */
-    public function __construct(TokenManager $tokenManager)
-    {
-        $this->tokenManager = $tokenManager;
-    }
+    private const ACCESS_DENIED_MSG = 'Attempt to use csrf attack!';
 
     /**
      * @param Request $request
      */
-    protected function processing(Request $request): void
+    protected function process(Request $request): void
     {
         $token = $request->get('csrf-token');
         $secret = $request->getSession()->get('secret');
+        $tokenManager = (new TokenManagerFactory())->create($request);
 
-        if ($token && !$this->tokenManager->checkToken($token, $secret)) {
-            throw new AccessDeniedHttpException(self::ATTEMPT_TO_USE_CSRF_ATTACK);
+        if ($token && !$tokenManager->isValidToken($token, $secret)) {
+            throw new AccessDeniedHttpException(self::ACCESS_DENIED_MSG);
         }
     }
 }

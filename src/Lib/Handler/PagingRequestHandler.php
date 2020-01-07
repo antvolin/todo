@@ -21,11 +21,11 @@ class PagingRequestHandler extends RequestHandler
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    protected function processing(Request $request): void
+    protected function process(Request $request): void
     {
         $controllerMethodName = strtolower(explode('/', ltrim($request->getPathInfo(), '/ '))[1]);
 
-        if ('list' === $controllerMethodName) {
+        if (!$controllerMethodName || 'list' === $controllerMethodName) {
             $request->request->set('paginator', $this->createPaginator(
                 $request->get('page', 1),
                 $request->get('orderBy'),

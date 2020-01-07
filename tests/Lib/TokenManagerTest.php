@@ -44,7 +44,7 @@ class TokenManagerTest extends TestCase
      */
     public function validationOfAValidTokenMustBeSuccessful(): void
     {
-        $this->assertTrue($this->tokenManager->checkToken($this->token, $this->secret));
+        $this->assertTrue($this->tokenManager->isValidToken($this->token, $this->secret));
     }
 
     /**
@@ -52,6 +52,6 @@ class TokenManagerTest extends TestCase
      */
     public function validationOfInvalidTokenMustFail(): void
     {
-        $this->assertFalse($this->tokenManager->checkToken('not valid token', 'not valid secret'));
+        $this->assertFalse($this->tokenManager->isValidToken('not valid token', 'not valid secret'));
     }
 }

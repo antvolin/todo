@@ -13,7 +13,7 @@ class RoleRequestHandler extends RequestHandler
     /**
      * @param Request $request
      */
-    protected function processing(Request $request): void
+    protected function process(Request $request): void
     {
         $controllerMethodName = strtolower(explode('/', ltrim($request->getPathInfo(), '/ '))[1]);
 

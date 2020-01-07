@@ -28,7 +28,7 @@ abstract class RequestHandler implements RequestHandlerInterface
      */
     public function handle(Request $request): void
     {
-        $this->processing($request);
+        $this->process($request);
 
         if ($this->nextHandler) {
             $this->nextHandler->handle($request);
@@ -38,5 +38,5 @@ abstract class RequestHandler implements RequestHandlerInterface
     /**
      * @param Request $request
      */
-    abstract protected function processing(Request $request): void;
+    abstract protected function process(Request $request): void;
 }

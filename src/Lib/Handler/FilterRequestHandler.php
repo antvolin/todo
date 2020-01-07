@@ -9,7 +9,7 @@ class FilterRequestHandler extends RequestHandler
     /**
      * @param Request $request
      */
-    protected function processing(Request $request): void
+    protected function process(Request $request): void
     {
         if ($request->request->count()) {
             foreach ($request->request->keys() as $key) {

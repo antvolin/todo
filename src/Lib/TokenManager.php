@@ -32,7 +32,7 @@ class TokenManager
      *
      * @return bool
      */
-    public function checkToken(string $token, string $secret): bool
+    public function isValidToken(string $token, string $secret): bool
     {
         $salt = explode(':', $token)[0];
 
