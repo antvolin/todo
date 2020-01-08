@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory;
 
-use BeeJeeMVC\Lib\SecretGenerator;
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\TokenManager;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,7 +18,7 @@ class TokenManagerFactory
         $tokenManager = new TokenManager();
 
         if (!$secret = $request->getSession()->get('secret')) {
-            $secret = (new SecretGenerator())->generateSecret();
+            $secret = (new App())->getSecret();
 
             $request->getSession()->set('secret', $secret);
         }

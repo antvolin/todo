@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib;
 
+use BeeJeeMVC\Lib\Factory\PagerfantaPaginatorFactory;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
@@ -14,9 +15,27 @@ class PagerfantaPaginatorTest extends TestCase
      */
     protected $paginator;
 
+    /**
+     * @var int
+     */
+    protected $prevPage;
+
+    /**
+     * @var int
+     */
+    protected $currentPage;
+
+    /**
+     * @var int
+     */
+    protected $nextPage;
+
     protected function setUp()
     {
-        $currentPage = 2;
+        $this->prevPage = 1;
+        $this->currentPage = 2;
+        $this->nextPage = 3;
+
         $rows = [
             'a' => 0,
             'b' => 111,
@@ -29,10 +48,7 @@ class PagerfantaPaginatorTest extends TestCase
             'i' => 92,
         ];
 
-        $adapter = new PaginatorAdapter();
-        $adapter->setData($rows);
-        $adapter->setCountRows(count($rows));
-        $this->paginator = new PagerfantaPaginator($adapter, $currentPage);
+        $this->paginator = (new PagerfantaPaginatorFactory(new PaginatorAdapter()))->create($rows, count($rows), $this->currentPage);
     }
 
     /**
@@ -54,9 +70,36 @@ class PagerfantaPaginatorTest extends TestCase
      */
     public function shouldBeGettingHtmlContent(): void
     {
-        $html1 = '<nav><a href="/task/list?page=1&orderBy=user_name&order=ASC" rel="prev">Previous</a><a href="/task/list?page=1&orderBy=user_name&order=ASC">1</a><span class="current">2</span><a href="/task/list?page=3&orderBy=user_name&order=ASC">3</a><a href="/task/list?page=3&orderBy=user_name&order=ASC" rel="next">Next</a></nav>';
+        $prevUrl = sprintf(
+            '<a href="%s" rel="prev">Previous</a><a href="%s">%s</a>',
+            $this->getUrl($this->prevPage),
+            $this->getUrl($this->prevPage),
+            $this->prevPage
+        );
+        $currentUrl = sprintf(
+            '<span class="current">%s</span>',
+            $this->currentPage
+        );
+        $nextUrl = sprintf(
+            '<a href="%s">%s</a><a href="%s" rel="next">Next</a>',
+            $this->getUrl($this->nextPage),
+            $this->nextPage,
+            $this->getUrl($this->nextPage)
+        );
+
+        $html1 = sprintf('<nav>%s%s%s</nav>', $prevUrl, $currentUrl, $nextUrl);
         $html2 = $this->paginator->getHtml(Ordering::ALLOWED_ORDER_BY_FIELDS[0], Ordering::ASC);
 
         $this->assertEquals($html1, $html2);
+    }
+
+    /**
+     * @param int $page
+     *
+     * @return string
+     */
+    private function getUrl(int $page): string
+    {
+        return sprintf('/task/list?page=%s&orderBy=user_name&order=ASC', $page);
     }
 }

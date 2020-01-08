@@ -4,16 +4,10 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Controller\AuthController;
 use BeeJeeMVC\Controller\TaskController;
-use BeeJeeMVC\Lib\Factory\RequestFactory;
-use BeeJeeMVC\Lib\Factory\TaskFileRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\TaskPdoRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\TemplateFactory;
-use BeeJeeMVC\Lib\Factory\TokenManagerFactory;
 use BeeJeeMVC\Lib\Handler\AccessRequestHandler;
 use BeeJeeMVC\Lib\Handler\FilterRequestHandler;
-use BeeJeeMVC\Lib\Handler\PagingRequestHandler;
+use BeeJeeMVC\Lib\Handler\PaginatorRequestHandler;
 use BeeJeeMVC\Lib\Handler\RoleRequestHandler;
-use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -26,14 +20,32 @@ class Kernel
     private $request;
 
     /**
-     * @var TokenManager
+     * @var string
      */
-    private $tokenManager;
+    private $token;
 
     /**
      * @var Environment
      */
     private $template;
+
+    /**
+     * @var TaskManager
+     */
+    private $taskManager;
+
+    /**
+     * @var App
+     */
+    private $app;
+
+    /**
+     * @param App $app
+     */
+    public function __construct(App $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * @throws \Twig\Error\LoaderError
@@ -42,9 +54,10 @@ class Kernel
      */
 	public function process(): void
     {
-        $this->request = (new RequestFactory())->create();
-        $this->tokenManager = (new TokenManagerFactory())->create($this->request);
-        $this->template = (new TemplateFactory())->create();
+        $this->request = $this->app->getRequest();
+        $this->token = $this->app->getToken();
+        $this->template = $this->app->getTemplate();
+        $this->taskManager = $this->app->getTaskManager();
 
         $this->handleRequest();
 
@@ -69,9 +82,14 @@ class Kernel
     private function handleRequest(): void
     {
         $filterRequestHandler = new FilterRequestHandler();
-        $accessRequestHandler = new AccessRequestHandler();
+        $accessRequestHandler = new AccessRequestHandler(
+            $this->app->getTokenManagerFactory()
+        );
         $roleRequestHandler = new RoleRequestHandler();
-        $pagingRequestHandler = new PagingRequestHandler();
+        $pagingRequestHandler = new PaginatorRequestHandler(
+            $this->app->getPaginatorFactory(),
+            $this->taskManager
+        );
 
         $filterRequestHandler
             ->setNextHandler($accessRequestHandler)
@@ -88,7 +106,7 @@ class Kernel
     {
         return new AuthController(
             $this->request,
-            $this->tokenManager->getToken(),
+            $this->token,
             $this->template
         );
     }
@@ -100,25 +118,9 @@ class Kernel
     {
         return new TaskController(
             $this->request,
-            new TaskManager($this->createRepo()),
-            $this->tokenManager->getToken(),
+            $this->taskManager,
+            $this->token,
             $this->template
         );
-    }
-
-    /**
-     * @return TaskRepositoryInterface
-     */
-    private function createRepo(): TaskRepositoryInterface
-    {
-        $repositoryType = $_ENV['REPOSITORY'];
-
-        if ('sqlite' === $repositoryType) {
-            $repository = (new TaskPdoRepositoryFactory())->create();
-        } else {
-            $repository = (new TaskFileRepositoryFactory())->create();
-        }
-
-        return $repository;
     }
 }

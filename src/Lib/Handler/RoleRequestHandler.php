@@ -15,10 +15,16 @@ class RoleRequestHandler extends RequestHandler
      */
     protected function process(Request $request): void
     {
-        $controllerMethodName = strtolower(explode('/', ltrim($request->getPathInfo(), '/ '))[1]);
+        // TODO: need encapsulate this logic
+        $pathParts = explode('/', ltrim($request->getPathInfo(), '/'));
 
-        if (in_array($controllerMethodName, self::MODIFY_METHODS, true) && !$request->getSession()->get('admin')) {
-            throw new AccessDeniedHttpException(self::NOT_ENOUGH_RIGHTS_MSG);
+        if (count($pathParts) > 1) {
+            $controllerAction = strtolower($pathParts[1]);
+            $admin = $request->getSession()->get('admin');
+
+            if (!$admin && in_array($controllerAction, self::MODIFY_METHODS, true)) {
+                throw new AccessDeniedHttpException(self::NOT_ENOUGH_RIGHTS_MSG);
+            }
         }
     }
 }

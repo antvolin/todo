@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib;
 
-use BeeJeeMVC\Lib\Factory\RequestFactory;
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Handler\FilterRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class FilterRequestHandlerTest extends TestCase
     protected function setUp()
     {
         $this->originalText = '<script>alert("test");</script>';
-        $this->request = (new RequestFactory())->create();
+        $this->request = (new App())->getRequest();
         $this->request->request->set('text', $this->originalText);
     }
 

@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib;
 
-use BeeJeeMVC\Lib\SecretGenerator;
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\TokenManager;
 use PHPUnit\Framework\TestCase;
 
@@ -26,7 +26,7 @@ class TokenManagerTest extends TestCase
     protected function setUp()
     {
         $this->tokenManager = new TokenManager();
-        $this->secret = (new SecretGenerator())->generateSecret();
+        $this->secret = (new App())->getSecret();
         $this->tokenManager->generateToken($this->secret, $_ENV['TOKEN_SALT']);
         $this->token = $this->tokenManager->getToken();
     }
