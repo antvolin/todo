@@ -6,6 +6,7 @@ use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Factory\PaginatorFactory;
+use BeeJeeMVC\Lib\PathSeparator;
 use BeeJeeMVC\Lib\TaskManager;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,8 +44,7 @@ class PaginatorRequestHandler extends RequestHandler
      */
     protected function process(Request $request): void
     {
-        // TODO: need encapsulate this logic
-        $pathParts = explode('/', ltrim($request->getPathInfo(), '/'));
+        $pathParts = PathSeparator::separate($request->getPathInfo());
 
         if (count($pathParts) === 1 || 'list' === strtolower($pathParts[1])) {
             $page = $request->get('page', 1);

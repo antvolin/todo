@@ -61,7 +61,7 @@ class Kernel
 
         $this->handleRequest();
 
-        $urlParts = explode('/', trim($this->request->getPathInfo(), '/'));
+        $urlParts = PathSeparator::separate($this->request->getPathInfo());
 
         if ('auth' === strtolower(array_shift($urlParts))) {
             $controller = $this->createAuthController();

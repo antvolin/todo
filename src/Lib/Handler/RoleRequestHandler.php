@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Handler;
 
+use BeeJeeMVC\Lib\PathSeparator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -20,8 +21,7 @@ class RoleRequestHandler extends RequestHandler
      */
     protected function process(Request $request): void
     {
-        // TODO: need encapsulate this logic
-        $pathParts = explode('/', ltrim($request->getPathInfo(), '/'));
+        $pathParts = PathSeparator::separate($request->getPathInfo());
 
         if (count($pathParts) > 1) {
             $controllerMethodName = strtolower($pathParts[1]);
