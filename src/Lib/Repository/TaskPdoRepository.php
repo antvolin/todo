@@ -32,8 +32,8 @@ class TaskPdoRepository implements TaskRepositoryInterface
      */
     public function __construct(int $tasksPerPage)
     {
-        $this->pdo = (new PdoManager())->getPdo();
         $this->tasksPerPage = $tasksPerPage;
+        $this->pdo = (new PdoManager())->getPdo();
     }
 
     /**

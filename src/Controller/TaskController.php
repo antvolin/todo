@@ -20,6 +20,11 @@ use Twig\Environment;
 class TaskController
 {
     /**
+     * @var string
+     */
+    private $token;
+
+    /**
      * @var Request
      */
     private $request;
@@ -30,31 +35,26 @@ class TaskController
     private $taskManager;
 
     /**
-     * @var string
-     */
-    private $token;
-
-    /**
      * @var Environment
      */
     private $template;
 
     /**
+     * @param string $token
      * @param Request $request
      * @param TaskManager $taskManager
-     * @param string $token
      * @param Environment $template
      */
     public function __construct(
+        string $token,
         Request $request,
         TaskManager $taskManager,
-        string $token,
         Environment $template
     )
     {
+        $this->token = $token;
         $this->request = $request;
         $this->taskManager = $taskManager;
-        $this->token = $token;
         $this->template = $template;
     }
 

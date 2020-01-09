@@ -105,8 +105,8 @@ class Kernel
 	private function createAuthController(): AuthController
     {
         return new AuthController(
-            $this->request,
             $this->token,
+            $this->request,
             $this->template
         );
     }
@@ -117,9 +117,9 @@ class Kernel
     private function createTaskController(): TaskController
     {
         return new TaskController(
+            $this->token,
             $this->request,
             $this->taskManager,
-            $this->token,
             $this->template
         );
     }

@@ -10,14 +10,14 @@ use Twig\Environment;
 class AuthController
 {
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var string
      */
     private $token;
+
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * @var Environment
@@ -25,14 +25,18 @@ class AuthController
     private $template;
 
     /**
-     * @param Request $request
      * @param string $token
+     * @param Request $request
      * @param Environment $template
      */
-    public function __construct(Request $request, string $token, Environment $template)
+    public function __construct(
+        string $token,
+        Request $request,
+        Environment $template
+    )
     {
-        $this->request = $request;
         $this->token = $token;
+        $this->request = $request;
         $this->template = $template;
     }
 
