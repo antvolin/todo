@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory;
+namespace BeeJeeMVC\Lib\Factory\Paginator;
 
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;

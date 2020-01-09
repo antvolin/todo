@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Factory\TaskPdoRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\TaskPdoRepositoryFactory;
 use BeeJeeMVC\Lib\Repository\TaskPdoRepository;
 use PHPUnit\Framework\TestCase;
 

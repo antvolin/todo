@@ -2,12 +2,12 @@
 
 namespace BeeJeeMVC\Lib;
 
-use BeeJeeMVC\Lib\Factory\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Factory\PaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Repository\TaskFileRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\TaskPdoRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\TaskRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\RequestFactory;
-use BeeJeeMVC\Lib\Factory\TaskFileRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\TaskPdoRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\TaskRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
 use BeeJeeMVC\Lib\Factory\TokenManagerFactory;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;

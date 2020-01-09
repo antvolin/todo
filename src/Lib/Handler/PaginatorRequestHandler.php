@@ -5,7 +5,7 @@ namespace BeeJeeMVC\Lib\Handler;
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Factory\PaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
 use BeeJeeMVC\Lib\PathSeparator;
 use BeeJeeMVC\Lib\TaskManager;
 use Symfony\Component\HttpFoundation\Request;

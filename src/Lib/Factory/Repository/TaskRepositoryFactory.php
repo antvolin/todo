@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory;
+namespace BeeJeeMVC\Lib\Factory\Repository;
 
 use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
 

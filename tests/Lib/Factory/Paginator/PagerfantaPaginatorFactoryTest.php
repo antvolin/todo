@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace BeeJeeMVC\Tests\Lib\Factory\Paginator;
 
-use BeeJeeMVC\Lib\Factory\PagerfantaPaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use PHPUnit\Framework\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace BeeJeeMVC\Tests\Lib\Handler;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Handler\RoleRequestHandler;

@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Factory\TaskFileRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\TaskFileRepositoryFactory;
 use BeeJeeMVC\Lib\Repository\TaskFileRepository;
 use PHPUnit\Framework\TestCase;
 

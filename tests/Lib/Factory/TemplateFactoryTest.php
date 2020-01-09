@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace BeeJeeMVC\Tests\Lib\Factory;
 
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
 use PHPUnit\Framework\TestCase;

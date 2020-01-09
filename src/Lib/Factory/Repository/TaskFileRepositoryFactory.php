@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory;
+namespace BeeJeeMVC\Lib\Factory\Repository;
 
 use BeeJeeMVC\Lib\Repository\TaskFileRepository;
 use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
@@ -12,6 +12,6 @@ class TaskFileRepositoryFactory extends TaskRepositoryFactory
      */
     public function create(): TaskRepositoryInterface
     {
-        return new TaskFileRepository(dirname(__DIR__).'/../'.$_ENV['TASK_FOLDER_NAME'], $_ENV['TASKS_PER_PAGE']);
+        return new TaskFileRepository(dirname(__DIR__) . '/src/' .$_ENV['TASK_FOLDER_NAME'], $_ENV['TASKS_PER_PAGE']);
     }
 }
