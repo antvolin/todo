@@ -6,6 +6,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AuthController
 {
@@ -43,9 +46,9 @@ class AuthController
     /**
      * @return RedirectResponse|Response
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function login()
     {
@@ -61,7 +64,7 @@ class AuthController
         if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
             $this->request->getSession()->set('admin', true);
 
-            return new RedirectResponse('/task/list');
+            return new RedirectResponse('/entity/list');
         }
 
         $params = ['error' => 'The entered data is not correct!', 'token' => $this->token];
@@ -78,6 +81,6 @@ class AuthController
             $this->request->getSession()->remove('admin');
         }
 
-        return new RedirectResponse('/task/list');
+        return new RedirectResponse('/entity/list');
     }
 }

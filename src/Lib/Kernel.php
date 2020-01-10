@@ -3,14 +3,18 @@
 namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Controller\AuthController;
-use BeeJeeMVC\Controller\TaskController;
+use BeeJeeMVC\Controller\EntityController;
 use BeeJeeMVC\Lib\Handler\AccessRequestHandler;
 use BeeJeeMVC\Lib\Handler\FilterRequestHandler;
 use BeeJeeMVC\Lib\Handler\PaginatorRequestHandler;
 use BeeJeeMVC\Lib\Handler\RoleRequestHandler;
+use BeeJeeMVC\Lib\Manager\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class Kernel
 {
@@ -30,9 +34,9 @@ class Kernel
     private $template;
 
     /**
-     * @var TaskManager
+     * @var EntityManager
      */
-    private $taskManager;
+    private $entityManager;
 
     /**
      * @var App
@@ -48,16 +52,17 @@ class Kernel
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exceptions\NotAllowedEntityName
      */
 	public function process(): void
     {
         $this->request = $this->app->getRequest();
         $this->token = $this->app->getToken();
         $this->template = $this->app->getTemplate();
-        $this->taskManager = $this->app->getTaskManager();
+        $this->entityManager = $this->app->getEntityManager();
 
         $this->handleRequest();
 
@@ -66,7 +71,7 @@ class Kernel
         if ('auth' === strtolower(array_shift($urlParts))) {
             $controller = $this->createAuthController();
         } else {
-            $controller = $this->createTaskController();
+            $controller = $this->createEntityController();
         }
 
         if (method_exists($controller, $action = array_shift($urlParts))) {
@@ -88,7 +93,7 @@ class Kernel
         $roleRequestHandler = new RoleRequestHandler();
         $pagingRequestHandler = new PaginatorRequestHandler(
             $this->app->getPaginatorFactory(),
-            $this->taskManager
+            $this->entityManager
         );
 
         $filterRequestHandler
@@ -112,14 +117,14 @@ class Kernel
     }
 
     /**
-     * @return TaskController
+     * @return EntityController
      */
-    private function createTaskController(): TaskController
+    private function createEntityController(): EntityController
     {
-        return new TaskController(
+        return new EntityController(
             $this->token,
             $this->request,
-            $this->taskManager,
+            $this->entityManager,
             $this->template
         );
     }

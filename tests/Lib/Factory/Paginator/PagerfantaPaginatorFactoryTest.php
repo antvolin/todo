@@ -16,7 +16,7 @@ class PagerfantaPaginatorFactoryTest extends TestCase
         $rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
         $countRows = count($rows);
 
-        $paginator = (new PagerfantaPaginatorFactory(new PaginatorAdapter()))->create($rows, $countRows, 3);
+        $paginator = (new PagerfantaPaginatorFactory(new PaginatorAdapter(), 3))->create($rows, $countRows, 3);
 
         $this->assertTrue(method_exists($paginator, 'getCurrentPageResults'));
         $this->assertTrue(method_exists($paginator, 'getHtml'));

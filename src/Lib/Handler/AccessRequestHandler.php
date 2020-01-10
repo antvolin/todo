@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Handler;
 
-use BeeJeeMVC\Lib\Factory\TokenManagerFactory;
+use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

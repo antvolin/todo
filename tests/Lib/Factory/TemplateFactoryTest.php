@@ -4,15 +4,18 @@ namespace BeeJeeMVC\Tests\Lib\Factory;
 
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
 use PHPUnit\Framework\TestCase;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class TemplateFactoryTest extends TestCase
 {
     /**
      * @test
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function shouldBeCreatedTemplate(): void
     {

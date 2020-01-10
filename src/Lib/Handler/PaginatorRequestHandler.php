@@ -6,8 +6,8 @@ use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
+use BeeJeeMVC\Lib\Manager\EntityManager;
 use BeeJeeMVC\Lib\PathSeparator;
-use BeeJeeMVC\Lib\TaskManager;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorRequestHandler extends RequestHandler
@@ -18,21 +18,21 @@ class PaginatorRequestHandler extends RequestHandler
     private $paginatorFactory;
 
     /**
-     * @var TaskManager
+     * @var EntityManager
      */
-    private $taskManager;
+    private $entityManager;
 
     /**
      * @param PaginatorFactory $paginatorFactory
-     * @param TaskManager $taskManager
+     * @param EntityManager $entityManager
      */
     public function __construct(
         PaginatorFactory $paginatorFactory,
-        TaskManager $taskManager
+        EntityManager $entityManager
     )
     {
         $this->paginatorFactory = $paginatorFactory;
-        $this->taskManager = $taskManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -51,10 +51,10 @@ class PaginatorRequestHandler extends RequestHandler
             $orderBy = $request->get('orderBy');
             $order = $request->get('order');
 
-            $tasks = $this->taskManager->getList($page, $orderBy, $order);
-            $countRows = $this->taskManager->getCountRows();
+            $entities = $this->entityManager->getList($page, $orderBy, $order);
+            $countRows = $this->entityManager->getCountRows();
 
-            $paginator = $this->paginatorFactory->create($tasks, $countRows, $page);
+            $paginator = $this->paginatorFactory->create($entities, $countRows, $page);
 
             $request->request->set('paginator', $paginator);
         }

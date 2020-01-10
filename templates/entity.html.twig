@@ -1,0 +1,24 @@
+<div id="{{ entity.id.value }}" class="row entity">
+    <div class="col-sm-2 center">{{ entity.userName }}</div>
+    <div class="col-sm-3 center">{{ entity.email }}</div>
+    <div class="col-sm-5 text center">{{ entity.text }}</div>
+    <div class="col-sm-1 status center">{{ entity.status }}</div>
+    <div class="col-sm-1">
+        {% if isAdmin %}
+            <div class="modify-buttons">
+                {% if entity.status != constant('BeeJeeMVC\\Model\\Status::DONE') %}
+                    <div class="hovered-buttons">
+                        <a href="/entity/edit/{{ entity.id.value }}">
+                            <button class="btn btn-primary control-button right-button">edit</button>
+                        </a>
+                    </div>
+                    <div class="hovered-buttons">
+                        <a href="/entity/done/{{ entity.id.value }}">
+                            <button class="btn btn-primary control-button right-button">done</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>

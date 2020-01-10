@@ -15,11 +15,11 @@ class PagerfantaPaginator implements PaginatorInterface
     /**
      * @inheritdoc
      */
-    public function __construct(PaginatorAdapterInterface $adapter, int $page)
+    public function __construct(PaginatorAdapterInterface $adapter, int $page, int $entityPerPage)
     {
         if (!$this->paginator) {
             $pager = new Pagerfanta($adapter);
-            $pager->setMaxPerPage($_ENV['TASKS_PER_PAGE']);
+            $pager->setMaxPerPage($entityPerPage);
             $pager->setCurrentPage($page);
 
             $this->paginator = $pager;
@@ -40,7 +40,7 @@ class PagerfantaPaginator implements PaginatorInterface
     public function getHtml(?string $orderBy, ?string $order): string
     {
         $routeGenerator = function (int $page) use ($orderBy, $order) {
-            return sprintf('/task/list?page=%s&orderBy=%s&order=%s', $page, $orderBy, $order);
+            return sprintf('/entity/list?page=%s&orderBy=%s&order=%s', $page, $orderBy, $order);
         };
 
         return (new DefaultView())->render($this->paginator, $routeGenerator);

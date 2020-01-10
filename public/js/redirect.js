@@ -1,1 +1,1 @@
-(function(){setTimeout("window.location.href = '/task/list'", 2000);})();
+(function(){setTimeout("window.location.href = '/entity/list'", 2000);})();

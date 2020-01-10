@@ -14,11 +14,18 @@ class PagerfantaPaginatorFactory extends PaginatorFactory
     private $adapter;
 
     /**
-     * @param PaginatorAdapterInterface $adapter
+     * @var int
      */
-    public function __construct(PaginatorAdapterInterface $adapter)
+    private $entityPerPage;
+
+    /**
+     * @param PaginatorAdapterInterface $adapter
+     * @param int $entityPerPage
+     */
+    public function __construct(PaginatorAdapterInterface $adapter, int $entityPerPage)
     {
         $this->adapter = $adapter;
+        $this->entityPerPage = $entityPerPage;
     }
 
     /**
@@ -29,6 +36,6 @@ class PagerfantaPaginatorFactory extends PaginatorFactory
         $this->adapter->setData($rows);
         $this->adapter->setCountRows($countRows);
 
-        return new PagerfantaPaginator($this->adapter, $page);
+        return new PagerfantaPaginator($this->adapter, $page, $this->entityPerPage);
     }
 }

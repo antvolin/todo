@@ -48,7 +48,7 @@ class PagerfantaPaginatorTest extends TestCase
             'i' => 92,
         ];
 
-        $this->paginator = (new PagerfantaPaginatorFactory(new PaginatorAdapter()))->create($rows, count($rows), $this->currentPage);
+        $this->paginator = (new PagerfantaPaginatorFactory(new PaginatorAdapter(), 3))->create($rows, count($rows), $this->currentPage);
     }
 
     /**
@@ -100,6 +100,6 @@ class PagerfantaPaginatorTest extends TestCase
      */
     private function getUrl(int $page): string
     {
-        return sprintf('/task/list?page=%s&orderBy=user_name&order=ASC', $page);
+        return sprintf('/entity/list?page=%s&orderBy=user_name&order=ASC', $page);
     }
 }

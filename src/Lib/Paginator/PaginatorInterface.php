@@ -6,9 +6,10 @@ interface PaginatorInterface
 {
     /**
      * @param PaginatorAdapterInterface $adapter
-     * @param int $current
+     * @param int $currentPage
+     * @param int $entityPerPage
      */
-    public function __construct(PaginatorAdapterInterface $adapter, int $current);
+    public function __construct(PaginatorAdapterInterface $adapter, int $currentPage, int $entityPerPage);
 
     /**
      * @return array

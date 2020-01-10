@@ -3,14 +3,15 @@
 namespace BeeJeeMVC\Tests\Model;
 
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotDoneTaskException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditTaskException;
+use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
+use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Model\Email;
+use BeeJeeMVC\Model\EntityInterface;
 use BeeJeeMVC\Model\Id;
 use BeeJeeMVC\Model\Status;
-use BeeJeeMVC\Model\Task;
+use BeeJeeMVC\Model\Entity;
 use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
 use PHPUnit\Framework\TestCase;
@@ -20,32 +21,32 @@ class TaskTest extends TestCase
     /**
      * @var Id
      */
-    protected $taskId;
+    protected $id;
 
     /**
      * @var UserName
      */
-    protected $taskUserName;
+    protected $userName;
 
     /**
      * @var Email
      */
-    protected $taskEmail;
+    protected $email;
 
     /**
      * @var Text
      */
-    protected $taskText;
+    protected $text;
 
     /**
      * @var Status
      */
-    protected $taskStatus;
+    protected $status;
 
     /**
-     * @var Task
+     * @var EntityInterface
      */
-    protected $task;
+    protected $entity;
 
     /**
      * @throws CannotBeEmptyException
@@ -54,12 +55,12 @@ class TaskTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->taskUserName = new UserName('test user name');
-        $this->taskEmail = new Email('test@test.test');
-        $this->taskText = new Text('test task text');
-        $this->taskId = new Id();
-        $this->taskStatus = new Status();
-        $this->task = new Task($this->taskId, $this->taskUserName, $this->taskEmail, $this->taskText, $this->taskStatus);
+        $this->userName = new UserName('test user name');
+        $this->email = new Email('test@test.test');
+        $this->text = new Text('test text');
+        $this->id = new Id();
+        $this->status = new Status();
+        $this->entity = new Entity($this->id, $this->userName, $this->email, $this->text, $this->status);
     }
 
     /**
@@ -67,64 +68,64 @@ class TaskTest extends TestCase
      */
     public function shouldBeCreated(): void
     {
-        $this->assertEquals($this->taskId, $this->task->getId());
-        $this->assertEquals($this->taskUserName, $this->task->getUserName());
-        $this->assertEquals($this->taskEmail, $this->task->getEmail());
-        $this->assertEquals($this->taskText, $this->task->getText());
-        $this->assertEquals($this->taskStatus, $this->task->getStatus());
+        $this->assertEquals($this->id, $this->entity->getId());
+        $this->assertEquals($this->userName, $this->entity->getUserName());
+        $this->assertEquals($this->email, $this->entity->getEmail());
+        $this->assertEquals($this->text, $this->entity->getText());
+        $this->assertEquals($this->status, $this->entity->getStatus());
     }
 
     /**
      * @test
      *
-     * @throws CannotEditTaskException
+     * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
      * @throws CannotBeEmptyException
      */
     public function shouldBeEditable(): void
     {
         $newText = 'new test text';
-        $this->task->edit($newText);
-        $this->assertEquals($newText, $this->task->getText());
-        $this->assertEquals(Status::EDITED, $this->task->getStatus());
+        $this->entity->edit($newText);
+        $this->assertEquals($newText, $this->entity->getText());
+        $this->assertEquals(Status::EDITED, $this->entity->getStatus());
     }
 
     /**
      * @test
      *
-     * @throws CannotEditTaskException
+     * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
      * @throws CannotBeEmptyException
      */
     public function shouldBeNotEditableIfStatusDone(): void
     {
-        $this->expectException(CannotEditTaskException::class);
-        $this->task->setStatus(new Status(Status::DONE));
-        $this->task->edit('new test text');
+        $this->expectException(CannotEditEntityException::class);
+        $this->entity->setStatus(new Status(Status::DONE));
+        $this->entity->edit('new test text');
     }
 
     /**
      * @test
      *
-     * @throws CannotDoneTaskException
+     * @throws CannotDoneEntityException
      * @throws ForbiddenStatusException
      */
     public function shouldBeDone(): void
     {
-        $this->task->done();
-        $this->assertEquals(Status::DONE, $this->task->getStatus());
+        $this->entity->done();
+        $this->assertEquals(Status::DONE, $this->entity->getStatus());
     }
 
     /**
      * @test
      *
-     * @throws CannotDoneTaskException
+     * @throws CannotDoneEntityException
      * @throws ForbiddenStatusException
      */
     public function shouldBeNotDoneIfStatusDone(): void
     {
-        $this->expectException(CannotDoneTaskException::class);
-        $this->task->setStatus(new Status(Status::DONE));
-        $this->task->done();
+        $this->expectException(CannotDoneEntityException::class);
+        $this->entity->setStatus(new Status(Status::DONE));
+        $this->entity->done();
     }
 }

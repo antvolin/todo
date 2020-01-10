@@ -2,16 +2,18 @@
 
 namespace BeeJeeMVC\Lib;
 
+use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
+use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
-use BeeJeeMVC\Lib\Factory\Repository\TaskFileRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\Repository\TaskPdoRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\Repository\TaskRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
+use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\RequestFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
-use BeeJeeMVC\Lib\Factory\TokenManagerFactory;
+use BeeJeeMVC\Lib\Manager\EntityManager;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
-use BeeJeeMVC\Lib\Repository\TaskRepositoryInterface;
+use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
@@ -30,7 +32,7 @@ class App
      */
     public function getSecret(): string
     {
-        return (new SecretGenerator())->generateSecret();
+        return (new SecretGenerator($_ENV['TOKEN_SECRET_PREFIX'], $_ENV['TOKEN_SECRET']))->generateSecret();
     }
 
     /**
@@ -46,7 +48,7 @@ class App
      */
     public function getTokenManagerFactory(): TokenManagerFactory
     {
-        return new TokenManagerFactory();
+        return new TokenManagerFactory($_ENV['TOKEN_SALT']);
     }
 
     /**
@@ -58,30 +60,43 @@ class App
     }
 
     /**
-     * @return TaskManager
+     * @return EntityManager
+     *
+     * @throws Exceptions\NotAllowedEntityName
      */
-    public function getTaskManager(): TaskManager
+    public function getEntityManager(): EntityManager
     {
-        return new TaskManager($this->getRepository());
+        $entityManagerFactory = (new EntityManagerFactory($_ENV['ENTITY_FOLDER_NAMESPACE']));
+
+        return $entityManagerFactory->create($_ENV['ENTITY_NAME'], $this->getRepository());
     }
 
     /**
-     * @return TaskRepositoryInterface
+     * @return EntityRepositoryInterface
+     *
+     * @throws Exceptions\NotAllowedEntityName
      */
-    public function getRepository(): TaskRepositoryInterface
+    public function getRepository(): EntityRepositoryInterface
     {
-        return $this->getRepositoryFactory()->create();
+        return $this->getRepositoryFactory()->create($_ENV['ENTITY_PER_PAGE']);
     }
 
     /**
-     * @return TaskRepositoryFactory
+     * @return EntityRepositoryFactory
+     *
+     * @throws Exceptions\NotAllowedEntityName
      */
-    public function getRepositoryFactory(): TaskRepositoryFactory
+    public function getRepositoryFactory(): EntityRepositoryFactory
     {
-        if ('sqlite' === $_ENV['REPOSITORY']) {
-            $factory = new TaskPdoRepositoryFactory();
+        if ('sqlite' === $_ENV['PDO_TYPE']) {
+            $factory = new EntityPdoRepositoryFactory(
+                $_ENV['ENTITY_NAME'],
+                $_ENV['PDO_TYPE'],
+                $_ENV['DB_FOLDER_NAME'],
+                $_ENV['ENTITY_FOLDER_NAMESPACE']
+            );
         } else {
-            $factory = new TaskFileRepositoryFactory();
+            $factory = new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']);
         }
 
         return $factory;
@@ -92,6 +107,6 @@ class App
      */
     public function getPaginatorFactory(): PaginatorFactory
     {
-        return new PagerfantaPaginatorFactory(new PaginatorAdapter());
+        return new PagerfantaPaginatorFactory(new PaginatorAdapter(), $_ENV['ENTITY_PER_PAGE']);
     }
 }

@@ -17,8 +17,8 @@
 	{% include 'buttons.html.twig' %}
 	{% include 'sorting.html.twig' %}
 	<div class="tasks">
-		{% for task in tasks %}
-			{% include 'task.html.twig' %}
+		{% for entity in entities %}
+			{% include 'entity.html.twig' %}
 		{% endfor %}
 	</div>
 	{% include 'pagination.html.twig' %}
