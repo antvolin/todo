@@ -13,14 +13,14 @@ class EntityManagerFactory
     /**
      * @var string
      */
-    private $entityFolderNamespace;
+    private $entityClassNamespace;
 
     /**
-     * @param string $entityFolderNamespace
+     * @param string $entityClassNamespace
      */
-    public function __construct(string $entityFolderNamespace)
+    public function __construct(string $entityClassNamespace)
     {
-        $this->entityFolderNamespace = $entityFolderNamespace;
+        $this->entityClassNamespace = $entityClassNamespace;
     }
 
     /**
@@ -38,6 +38,6 @@ class EntityManagerFactory
             throw new NotAllowedEntityName();
         }
 
-        return new EntityManager($this->entityFolderNamespace.ucfirst(strtolower($entityName)), $repository);
+        return new EntityManager($this->entityClassNamespace.ucfirst(strtolower($entityName)), $repository);
     }
 }

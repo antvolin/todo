@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
-use BeeJeeMVC\Lib\Repository\EntityFileRepository;
+use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class EntityFileRepositoryFactoryTest extends TestCase
@@ -26,13 +26,10 @@ class EntityFileRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatedEntityFileRepository(): void
     {
-        $repository = (new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']))->create($this->entityPerPage);
+        $factory = new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']);
+        $repository = $factory->create($this->entityPerPage);
 
-        $this->assertInstanceOf(EntityFileRepository::class, $repository);
-        $this->assertTrue(method_exists($repository, 'getById'));
-        $this->assertTrue(method_exists($repository, 'getCountRows'));
-        $this->assertTrue(method_exists($repository, 'getList'));
-        $this->assertTrue(method_exists($repository, 'save'));
+        $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
     }
 
     /**
@@ -43,6 +40,8 @@ class EntityFileRepositoryFactoryTest extends TestCase
     public function shouldBeNotCreatedWithNotValidEntityName(): void
     {
         $this->expectException(NotAllowedEntityName::class);
-        (new EntityFileRepositoryFactory('not valid entity name'))->create($this->entityPerPage);
+
+        $factory = new EntityFileRepositoryFactory('not valid entity name');
+        $factory->create($this->entityPerPage);
     }
 }

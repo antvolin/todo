@@ -5,7 +5,7 @@ namespace BeeJeeMVC\Controller;
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotUniqueFieldsException;
+use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Manager\EntityManager;
@@ -109,7 +109,7 @@ class EntityController
 
         try {
             $this->entityManager->save($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
-        } catch (NotUniqueFieldsException $exception) {
+        } catch (PdoErrorsException $exception) {
             $msg = $exception->getMessage();
             $params = ['error' => $msg, 'token' => $this->token];
 
@@ -127,7 +127,7 @@ class EntityController
      * @throws CannotBeEmptyException
      * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
-     * @throws NotUniqueFieldsException
+     * @throws PdoErrorsException
      * @throws NotValidEmailException
      * @throws NotFoundException
      * @throws LoaderErrorAlias

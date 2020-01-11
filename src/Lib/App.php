@@ -69,7 +69,7 @@ class App
      */
     public function getEntityManager(): EntityManagerInterface
     {
-        $entityManagerFactory = (new EntityManagerFactory($_ENV['ENTITY_FOLDER_NAMESPACE']));
+        $entityManagerFactory = (new EntityManagerFactory($_ENV['ENTITY_CLASS_NAMESPACE']));
 
         return $entityManagerFactory->create($_ENV['ENTITY_NAME'], $this->getRepository());
     }
@@ -95,7 +95,7 @@ class App
             $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
                 $_ENV['ENTITY_NAME'],
-                $_ENV['ENTITY_FOLDER_NAMESPACE']
+                $_ENV['ENTITY_CLASS_NAMESPACE']
             );
         } else {
             $factory = new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']);

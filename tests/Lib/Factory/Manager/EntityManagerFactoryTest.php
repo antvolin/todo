@@ -17,7 +17,7 @@ class EntityManagerFactoryTest extends TestCase
      */
     public function shouldBeCreatedEntityManager(): void
     {
-        $factory = new EntityManagerFactory($_ENV['ENTITY_FOLDER_NAMESPACE']);
+        $factory = new EntityManagerFactory($_ENV['ENTITY_CLASS_NAMESPACE']);
         $repository = (new App())->getRepository();
         $entity = $factory->create($_ENV['ENTITY_NAME'], $repository);
 

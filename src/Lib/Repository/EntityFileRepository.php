@@ -89,8 +89,10 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function save(EntityInterface $entity, ?int $entityId = null): void
+    public function save(EntityInterface $entity, ?int $entityId = null): int
     {
         file_put_contents($this->entityStoragePath.$entity->getId()->getValue(), serialize($entity));
+
+        return $entity->getId()->getValue();
     }
 }

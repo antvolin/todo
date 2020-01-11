@@ -19,7 +19,9 @@ class TemplateFactoryTest extends TestCase
      */
     public function shouldBeCreatedTemplate(): void
     {
-        $template = (new TemplateFactory())->create();
+        $factory = new TemplateFactory();
+        $template = $factory->create();
+
         $this->assertNotEmpty($template->render('list.html.twig'));
     }
 }

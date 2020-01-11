@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Lib\Repository;
 
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotUniqueFieldsException;
+use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Model\EntityInterface;
@@ -45,7 +45,9 @@ interface EntityRepositoryInterface
      * @param EntityInterface $entity
      * @param int|null $entityId
      *
-     * @throws NotUniqueFieldsException
+     * @return int
+     *
+     * @throws PdoErrorsException
      */
-    public function save(EntityInterface $entity, ?int $entityId = null): void;
+    public function save(EntityInterface $entity, ?int $entityId = null): int;
 }

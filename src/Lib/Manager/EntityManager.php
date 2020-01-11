@@ -15,7 +15,7 @@ class EntityManager implements EntityManagerInterface
     /**
      * @var string
      */
-    private $entityName;
+    private $entityClass;
 
     /**
      * @var EntityRepositoryInterface
@@ -25,9 +25,9 @@ class EntityManager implements EntityManagerInterface
     /**
      * @inheritDoc
      */
-    public function __construct(string $entityName, EntityRepositoryInterface $repository)
+    public function __construct(string $entityClass, EntityRepositoryInterface $repository)
     {
-        $this->entityName = $entityName;
+        $this->entityClass = $entityClass;
         $this->repository = $repository;
     }
 
@@ -42,7 +42,7 @@ class EntityManager implements EntityManagerInterface
     /**
      * @inheritDoc
      */
-    public function getList(int $page, ?string $orderBy, ?string $order): array
+    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         return $this->repository->getList($page, $orderBy, $order);
     }
@@ -58,10 +58,10 @@ class EntityManager implements EntityManagerInterface
     /**
      * @inheritDoc
      */
-    public function save(string $userName, string $email, string $text): void
+    public function save(string $userName, string $email, string $text): int
     {
-        $this->repository->save(
-            new $this->entityName(
+        return $this->repository->save(
+            new $this->entityClass(
                 new Id(),
                 new UserName($userName),
                 new Email($email),
@@ -69,6 +69,14 @@ class EntityManager implements EntityManagerInterface
                 new Status()
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(int $entityId): void
+    {
+        $this->repository->delete($entityId);
     }
 
     /**

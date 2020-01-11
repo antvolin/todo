@@ -5,7 +5,7 @@ namespace BeeJeeMVC\Lib\Repository;
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Exceptions\NotUniqueFieldsException;
+use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Model\Email;
@@ -46,9 +46,9 @@ class EntityPdoRepository implements EntityRepositoryInterface
      */
     public function __construct(Pdo $pdo, string $entityName, int $entityPerPage, string $entityFolderNamespace)
     {
+        $this->pdo = $pdo;
         $this->entityName = strtolower($entityName);
         $this->entityPerPage = $entityPerPage;
-        $this->pdo = $pdo;
         $this->entityFolderNamespace = $entityFolderNamespace;
     }
 
@@ -103,7 +103,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function save(EntityInterface $entity, ?int $entityId = null): void
+    public function save(EntityInterface $entity, ?int $entityId = null): int
     {
         $userName = $entity->getUserName();
         $email = $entity->getEmail();
@@ -125,8 +125,20 @@ class EntityPdoRepository implements EntityRepositoryInterface
         try {
             $sth->execute();
         } catch (PDOException $exception) {
-            throw new NotUniqueFieldsException();
+            throw new PdoErrorsException($exception->getMessage());
         }
+
+        return $this->pdo->lastInsertId();
+    }
+
+    /**
+     * @param int $entityId
+     */
+    public function delete(int $entityId): void
+    {
+        $sth = $this->pdo->prepare("DELETE FROM $this->entityName WHERE id = :id;");
+        $sth->bindParam(':id', $entityId, PDO::PARAM_INT);
+        $sth->execute();
     }
 
     /**

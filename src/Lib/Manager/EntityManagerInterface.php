@@ -6,7 +6,7 @@ use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
 use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotUniqueFieldsException;
+use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
@@ -15,10 +15,10 @@ use BeeJeeMVC\Model\EntityInterface;
 interface EntityManagerInterface
 {
     /**
-     * @param string $entityName
+     * @param string $entityClass
      * @param EntityRepositoryInterface $repository
      */
-    public function __construct(string $entityName, EntityRepositoryInterface $repository);
+    public function __construct(string $entityClass, EntityRepositoryInterface $repository);
 
     /**
      * @param int $id
@@ -44,7 +44,7 @@ interface EntityManagerInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getList(int $page, ?string $orderBy, ?string $order): array;
+    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array;
 
     /**
      * @return int
@@ -56,12 +56,19 @@ interface EntityManagerInterface
      * @param string $email
      * @param string $text
      *
+     * @return int
+     *
      * @throws CannotBeEmptyException
      * @throws NotValidEmailException
      * @throws ForbiddenStatusException
-     * @throws NotUniqueFieldsException
+     * @throws PdoErrorsException
      */
-    public function save(string $userName, string $email, string $text): void;
+    public function save(string $userName, string $email, string $text): int;
+
+    /**
+     * @param int $entityId
+     */
+    public function delete(int $entityId): void;
 
     /**
      * @param int $entityId
@@ -69,7 +76,7 @@ interface EntityManagerInterface
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotUniqueFieldsException
+     * @throws PdoErrorsException
      * @throws NotValidEmailException
      * @throws NotFoundException
      * @throws CannotEditEntityException
@@ -81,7 +88,7 @@ interface EntityManagerInterface
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotUniqueFieldsException
+     * @throws PdoErrorsException
      * @throws NotValidEmailException
      * @throws NotFoundException
      * @throws CannotDoneEntityException

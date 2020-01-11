@@ -5,7 +5,6 @@ namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
-use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -35,7 +34,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatedEntityPdoRepository(): void
     {
-        $factory = new EntityPdoRepositoryFactory($this->pdo, $_ENV['ENTITY_NAME'], $_ENV['ENTITY_FOLDER_NAMESPACE']);
+        $factory = new EntityPdoRepositoryFactory($this->pdo, $_ENV['ENTITY_NAME'], $_ENV['ENTITY_CLASS_NAMESPACE']);
         $repository = $factory->create($this->entityPerPage);
 
         $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
@@ -49,6 +48,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     public function shouldBeNotCreatedWithNotValidEntityName(): void
     {
         $this->expectException(NotAllowedEntityName::class);
+
         $factory = new EntityPdoRepositoryFactory($this->pdo, 'not valid entity name', 'asd');
         $factory->create($this->entityPerPage);
     }
