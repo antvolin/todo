@@ -3,6 +3,7 @@
 namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
+use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
 use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
@@ -12,8 +13,10 @@ use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\RequestFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
 use BeeJeeMVC\Lib\Manager\EntityManager;
+use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use PDO;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
@@ -64,7 +67,7 @@ class App
      *
      * @throws Exceptions\NotAllowedEntityName
      */
-    public function getEntityManager(): EntityManager
+    public function getEntityManager(): EntityManagerInterface
     {
         $entityManagerFactory = (new EntityManagerFactory($_ENV['ENTITY_FOLDER_NAMESPACE']));
 
@@ -88,11 +91,10 @@ class App
      */
     public function getRepositoryFactory(): EntityRepositoryFactory
     {
-        if ('sqlite' === $_ENV['PDO_TYPE']) {
+        if ('sqlite' === $_ENV['STORAGE_TYPE']) {
             $factory = new EntityPdoRepositoryFactory(
+                $this->getPdo(),
                 $_ENV['ENTITY_NAME'],
-                $_ENV['PDO_TYPE'],
-                $_ENV['DB_FOLDER_NAME'],
                 $_ENV['ENTITY_FOLDER_NAMESPACE']
             );
         } else {
@@ -100,6 +102,20 @@ class App
         }
 
         return $factory;
+    }
+
+    /**
+     * @return PDO
+     */
+    public function getPdo(): Pdo
+    {
+        $pdoManagerFactory = new PdoManagerFactory(
+            $_ENV['ENTITY_NAME'],
+            $_ENV['STORAGE_TYPE'],
+            $_ENV['DB_FOLDER_NAME']
+        );
+
+        return $pdoManagerFactory->create()->getPdo();
     }
 
     /**

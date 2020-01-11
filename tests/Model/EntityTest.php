@@ -16,7 +16,7 @@ use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
 use PHPUnit\Framework\TestCase;
 
-class TaskTest extends TestCase
+class EntityTest extends TestCase
 {
     /**
      * @var Id

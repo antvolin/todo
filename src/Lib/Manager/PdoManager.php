@@ -4,12 +4,17 @@ namespace BeeJeeMVC\Lib\Manager;
 
 use PDO;
 
-class PdoManager
+class PdoManager implements PdoManagerInterface
 {
     /**
      * @var PDO
      */
     private $pdo;
+
+    /**
+     * @var string
+     */
+    private $entityName;
 
     /**
      * @var string
@@ -22,24 +27,17 @@ class PdoManager
     private $dbFolderName;
 
     /**
-     * @var string
+     * @inheritDoc
      */
-    private $entityName;
-
-    /**
-     * @param string $pdoType
-     * @param string $dbFolderName
-     * @param string $entityName
-     */
-    public function __construct(string $pdoType, string $dbFolderName, string $entityName)
+    public function __construct(string $entityName, string $pdoType, string $dbFolderName)
     {
+        $this->entityName = $entityName;
         $this->pdoType = $pdoType;
         $this->dbFolderName = $dbFolderName;
-        $this->entityName = $entityName;
     }
 
     /**
-     * @return PDO
+     * @inheritDoc
      */
     public function getPdo(): PDO
     {

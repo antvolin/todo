@@ -5,19 +5,14 @@ namespace BeeJeeMVC\Lib\Factory\Repository;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use PDO;
 
 class EntityPdoRepositoryFactory extends EntityRepositoryFactory
 {
     /**
-     * @var string
+     * @var PDO
      */
-    private $pdoType;
-
-    /**
-     * @var string
-     */
-    private $dbFolderName;
-
+    private $pdo;
 
     /**
      * @var string
@@ -25,19 +20,16 @@ class EntityPdoRepositoryFactory extends EntityRepositoryFactory
     private $entityFolderNamespace;
 
     /**
+     * @param PDO $pdo
      * @param string $entityName
-     * @param string $pdoType
-     * @param string $dbFolderName
-     *
      * @param string $entityFolderNamespace
      * @throws NotAllowedEntityName
      */
-    public function __construct(string $entityName, string $pdoType, string $dbFolderName, string $entityFolderNamespace)
+    public function __construct(Pdo $pdo, string $entityName, string $entityFolderNamespace)
     {
         parent::__construct($entityName);
 
-        $this->pdoType = strtolower($pdoType);
-        $this->dbFolderName = strtolower($dbFolderName);
+        $this->pdo = $pdo;
         $this->entityFolderNamespace = $entityFolderNamespace;
     }
 
@@ -46,6 +38,6 @@ class EntityPdoRepositoryFactory extends EntityRepositoryFactory
      */
     public function create(int $entityPerPage): EntityRepositoryInterface
     {
-        return new EntityPdoRepository($this->entityName, $entityPerPage, $this->pdoType, $this->dbFolderName, $this->entityFolderNamespace);
+        return new EntityPdoRepository($this->pdo, $this->entityName, $entityPerPage, $this->entityFolderNamespace);
     }
 }

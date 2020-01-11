@@ -15,9 +15,12 @@ class EntityManagerFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeCreatedValidEntityManager(): void
+    public function shouldBeCreatedEntityManager(): void
     {
-        $entity = (new EntityManagerFactory)->create($_ENV['ENTITY_NAME'], (new App())->getRepository());
+        $factory = new EntityManagerFactory($_ENV['ENTITY_FOLDER_NAMESPACE']);
+        $repository = (new App())->getRepository();
+        $entity = $factory->create($_ENV['ENTITY_NAME'], $repository);
+
         $this->assertInstanceOf(EntityManagerInterface::class, $entity);
     }
 }

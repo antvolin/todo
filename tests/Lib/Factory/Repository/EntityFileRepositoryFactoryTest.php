@@ -24,7 +24,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeCreatedTaskFileRepository(): void
+    public function shouldBeCreatedEntityFileRepository(): void
     {
         $repository = (new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']))->create($this->entityPerPage);
 

@@ -2,9 +2,12 @@
 
 namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
+use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 class EntityPdoRepositoryFactoryTest extends TestCase
@@ -14,9 +17,15 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      */
     protected $entityPerPage;
 
+    /**
+     * @var Pdo
+     */
+    protected $pdo;
+
     protected function setUp()
     {
         $this->entityPerPage = 3;
+        $this->pdo = (new App())->getPdo();
     }
 
     /**
@@ -24,15 +33,12 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeCreatedTaskPdoRepository(): void
+    public function shouldBeCreatedEntityPdoRepository(): void
     {
-        $repository = (new EntityPdoRepositoryFactory($_ENV['ENTITY_NAME'], $_ENV['PDO_TYPE'], $_ENV['DB_FOLDER_NAME'], $_ENV['ENTITY_FOLDER_NAMESPACE']))->create($this->entityPerPage);
+        $factory = new EntityPdoRepositoryFactory($this->pdo, $_ENV['ENTITY_NAME'], $_ENV['ENTITY_FOLDER_NAMESPACE']);
+        $repository = $factory->create($this->entityPerPage);
 
-        $this->assertInstanceOf(EntityPdoRepository::class, $repository);
-        $this->assertTrue(method_exists($repository, 'getById'));
-        $this->assertTrue(method_exists($repository, 'getCountRows'));
-        $this->assertTrue(method_exists($repository, 'getList'));
-        $this->assertTrue(method_exists($repository, 'save'));
+        $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
     }
 
     /**
@@ -43,6 +49,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     public function shouldBeNotCreatedWithNotValidEntityName(): void
     {
         $this->expectException(NotAllowedEntityName::class);
-        (new EntityPdoRepositoryFactory('not valid entity name', 'asd', 'asd', 'asd'))->create($this->entityPerPage);
+        $factory = new EntityPdoRepositoryFactory($this->pdo, 'not valid entity name', 'asd');
+        $factory->create($this->entityPerPage);
     }
 }

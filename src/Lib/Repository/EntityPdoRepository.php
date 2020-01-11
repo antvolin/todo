@@ -7,7 +7,6 @@ use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\NotUniqueFieldsException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
 use BeeJeeMVC\Lib\Ordering;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\EntityInterface;
@@ -21,6 +20,11 @@ use PDOException;
 class EntityPdoRepository implements EntityRepositoryInterface
 {
     /**
+     * @var PDO
+     */
+    private $pdo;
+
+    /**
      * @var string
      */
     private $entityName;
@@ -30,27 +34,21 @@ class EntityPdoRepository implements EntityRepositoryInterface
     private $entityPerPage;
 
     /**
-     * @var PDO
-     */
-    private $pdo;
-
-    /**
      * @var string
      */
     private $entityFolderNamespace;
 
     /**
+     * @param PDO $pdo
      * @param string $entityName
      * @param int $entityPerPage
-     * @param string $pdoType
-     * @param string $dbFolderName
      * @param string $entityFolderNamespace
      */
-    public function __construct(string $entityName, int $entityPerPage, string $pdoType, string $dbFolderName, string $entityFolderNamespace)
+    public function __construct(Pdo $pdo, string $entityName, int $entityPerPage, string $entityFolderNamespace)
     {
         $this->entityName = strtolower($entityName);
         $this->entityPerPage = $entityPerPage;
-        $this->pdo = (new PdoManagerFactory($pdoType, $dbFolderName, $entityName))->create()->getPdo();
+        $this->pdo = $pdo;
         $this->entityFolderNamespace = $entityFolderNamespace;
     }
 

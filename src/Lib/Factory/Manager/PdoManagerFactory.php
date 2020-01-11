@@ -3,9 +3,15 @@
 namespace BeeJeeMVC\Lib\Factory\Manager;
 
 use BeeJeeMVC\Lib\Manager\PdoManager;
+use BeeJeeMVC\Lib\Manager\PdoManagerInterface;
 
 class PdoManagerFactory
 {
+    /**
+     * @var string
+     */
+    private $entityName;
+
     /**
      * @var string
      */
@@ -16,29 +22,23 @@ class PdoManagerFactory
      */
     private $dbFolderName;
 
-
     /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
+     * @param string $entityName
      * @param string $pdoType
      * @param string $dbFolderName
-     * @param string $entityName
      */
-    public function __construct(string $pdoType, string $dbFolderName, string $entityName)
+    public function __construct(string $entityName, string $pdoType, string $dbFolderName)
     {
+        $this->entityName = strtolower($entityName);
         $this->pdoType = strtolower($pdoType);
         $this->dbFolderName = strtolower($dbFolderName);
-        $this->entityName = strtolower($entityName);
     }
 
     /**
-     * @return PdoManager
+     * @return PdoManagerInterface
      */
-    public function create(): PdoManager
+    public function create(): PdoManagerInterface
     {
-        return new PdoManager($this->pdoType, $this->dbFolderName, $this->entityName);
+        return new PdoManager($this->entityName, $this->pdoType, $this->dbFolderName);
     }
 }
