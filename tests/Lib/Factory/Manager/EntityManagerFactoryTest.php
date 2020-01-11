@@ -2,15 +2,22 @@
 
 namespace BeeJeeMVC\Tests\Lib\Factory\Manager;
 
+use BeeJeeMVC\Lib\App;
+use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
+use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
+use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
 class EntityManagerFactoryTest extends TestCase
 {
     /**
      * @test
+     *
+     * @throws NotAllowedEntityName
      */
-    public function sss(): void
+    public function shouldBeCreatedValidEntityManager(): void
     {
-        $this->markTestIncomplete();
+        $entity = (new EntityManagerFactory)->create($_ENV['ENTITY_NAME'], (new App())->getRepository());
+        $this->assertInstanceOf(EntityManagerInterface::class, $entity);
     }
 }

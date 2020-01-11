@@ -4,6 +4,7 @@ namespace BeeJeeMVC\Lib\Factory\Manager;
 
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Manager\EntityManager;
+use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use BeeJeeMVC\Model\EntityInterface;
 
@@ -26,12 +27,12 @@ class EntityManagerFactory
      * @param string $entityName
      * @param EntityRepositoryInterface $repository
      *
-     * @return EntityManager
+     * @return EntityManagerInterface
      *
      * @throws NotAllowedEntityName
      * @throws NotAllowedEntityName
      */
-    public function create(string $entityName, EntityRepositoryInterface $repository): EntityManager
+    public function create(string $entityName, EntityRepositoryInterface $repository): EntityManagerInterface
     {
         if (!in_array($entityName, EntityInterface::ALLOWED_ENTITY_NAMES, true)) {
             throw new NotAllowedEntityName();
