@@ -3,21 +3,33 @@
 namespace BeeJeeMVC\Tests\Lib\Manager;
 
 use BeeJeeMVC\Lib\Manager\PdoManager;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 class PdoManagerTest extends TestCase
 {
     /**
+     * PdoManager $pdoManager
+     */
+    protected $pdoManager;
+
+    /**
+     * Pdo $pdo
+     */
+    protected $pdo;
+
+    protected function setUp()
+    {
+        $this->pdoManager = new PdoManager($_ENV['ENTITY_NAME'], $_ENV['STORAGE_TYPE'], $_ENV['DB_FOLDER_NAME']);
+        $this->pdo = $this->pdoManager->getPdo();
+    }
+
+    /**
      * @test
      */
     public function shouldBeGettingPdo(): void
     {
-        $entityName = $_ENV['ENTITY_NAME'];
-
-        $pdoManager = new PdoManager($entityName, $_ENV['STORAGE_TYPE'], $_ENV['DB_FOLDER_NAME']);
-        $pdo = $pdoManager->getPdo();
-
-        $this->assertIsObject($pdo);
+        $this->assertInstanceOf(Pdo::class, $this->pdo);
     }
 
     /**
@@ -25,6 +37,6 @@ class PdoManagerTest extends TestCase
      */
     public function shouldBeCreatedTables(): void
     {
-        $this->markTestIncomplete();
+        $this->assertTrue($this->pdoManager->createTables());
     }
 }

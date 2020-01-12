@@ -3,6 +3,7 @@
 namespace BeeJeeMVC\Lib\Manager;
 
 use PDO;
+use PDOStatement;
 
 interface PdoManagerInterface
 {
@@ -18,5 +19,8 @@ interface PdoManagerInterface
      */
     public function getPdo(): PDO;
 
-    public function createTables(): void;
+    /**
+     * @return bool
+     */
+    public function createTables(): bool;
 }

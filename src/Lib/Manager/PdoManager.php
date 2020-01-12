@@ -47,9 +47,14 @@ class PdoManager implements PdoManagerInterface
         return $this->pdo;
     }
 
-    public function createTables(): void
+    /**
+     * @inheritDoc
+     */
+    public function createTables(): bool
     {
-        $this->pdo->exec(sprintf('CREATE TABLE IF NOT EXISTS %s (id INTEGER PRIMARY KEY, user_name TEXT, email TEXT, text TEXT, status TEXT);', $this->entityName));
-        $this->pdo->exec(sprintf('CREATE UNIQUE INDEX IF NOT EXISTS idx_%s_user_name_email_text ON %s (user_name, email, text);', $this->entityName, $this->entityName));
+        $result1 = $this->pdo->query(sprintf('CREATE TABLE IF NOT EXISTS %s (id INTEGER PRIMARY KEY, user_name TEXT, email TEXT, text TEXT, status TEXT);', $this->entityName));
+        $result2 = $this->pdo->query(sprintf('CREATE UNIQUE INDEX IF NOT EXISTS idx_%s_user_name_email_text ON %s (user_name, email, text);', $this->entityName, $this->entityName));
+
+        return $result1 && $result2;
     }
 }
