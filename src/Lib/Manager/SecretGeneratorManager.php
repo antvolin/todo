@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace BeeJeeMVC\Lib\Manager;
 
-class SecretGenerator
+class SecretGeneratorManager
 {
     /**
      * @var string

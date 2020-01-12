@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Tests\Lib\Handler;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Handler\RoleRequestHandler;
+use BeeJeeMVC\Lib\RequestHandler\RoleRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

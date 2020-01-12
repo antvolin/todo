@@ -6,7 +6,7 @@ use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
 use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
 use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
@@ -14,6 +14,7 @@ use BeeJeeMVC\Lib\Factory\RequestFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
 use BeeJeeMVC\Lib\Manager\EntityManager;
 use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
+use BeeJeeMVC\Lib\Manager\SecretGeneratorManager;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PDO;
@@ -35,7 +36,7 @@ class App
      */
     public function getSecret(): string
     {
-        return (new SecretGenerator($_ENV['TOKEN_SECRET_PREFIX'], $_ENV['TOKEN_SECRET']))->generateSecret();
+        return (new SecretGeneratorManager($_ENV['TOKEN_SECRET_PREFIX'], $_ENV['TOKEN_SECRET']))->generateSecret();
     }
 
     /**
@@ -119,9 +120,9 @@ class App
     }
 
     /**
-     * @return PaginatorFactory
+     * @return PaginatorFactoryInterface
      */
-    public function getPaginatorFactory(): PaginatorFactory
+    public function getPaginatorFactory(): PaginatorFactoryInterface
     {
         return new PagerfantaPaginatorFactory(new PaginatorAdapter(), $_ENV['ENTITY_PER_PAGE']);
     }

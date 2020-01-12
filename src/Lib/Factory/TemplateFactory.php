@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory;
 
+use BeeJeeMVC\Lib\Manager\PathManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -12,7 +13,7 @@ class TemplateFactory
      */
     public function create(): Environment
     {
-        $loader = new FilesystemLoader(dirname(__DIR__).'/../../'.'templates');
+        $loader = new FilesystemLoader(PathManager::getPathToTemplates());
 
         return new Environment($loader, ['autoescape' => false]);
     }

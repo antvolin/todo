@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Manager;
 
+use BeeJeeMVC\Lib\Manager\PathManager;
 use PDO;
 
 class PdoManager implements PdoManagerInterface
@@ -42,14 +43,14 @@ class PdoManager implements PdoManagerInterface
     public function getPdo(): PDO
     {
         $this->connect();
-//         $this->createTables();
+        /*$this->createTables();*/
 
         return $this->pdo;
     }
 
     public function connect(): void
     {
-        $this->pdo = new PDO($this->pdoType.':'.dirname(__DIR__).'/../..'.$this->dbFolderName.$this->entityName);
+        $this->pdo = new PDO(PathManager::getPathToPdoDsn($this->pdoType, $this->dbFolderName, $this->entityName));
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 

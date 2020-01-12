@@ -6,7 +6,7 @@ use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
 use BeeJeeMVC\Lib\Paginator\PaginatorInterface;
 
-class PagerfantaPaginatorFactory extends PaginatorFactory
+class PagerfantaPaginatorFactory implements PaginatorFactoryInterface
 {
     /**
      * @var PaginatorAdapterInterface

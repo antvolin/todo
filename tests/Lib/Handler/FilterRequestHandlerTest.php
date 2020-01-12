@@ -3,8 +3,8 @@
 namespace BeeJeeMVC\Tests\Lib\Handler;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Handler\FilterRequestHandler;
-use BeeJeeMVC\Lib\Handler\RequestHandler;
+use BeeJeeMVC\Lib\RequestHandler\FilterRequestHandler;
+use BeeJeeMVC\Lib\RequestHandler\RequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 

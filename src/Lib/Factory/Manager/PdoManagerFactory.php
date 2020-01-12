@@ -5,7 +5,7 @@ namespace BeeJeeMVC\Lib\Factory\Manager;
 use BeeJeeMVC\Lib\Manager\PdoManager;
 use BeeJeeMVC\Lib\Manager\PdoManagerInterface;
 
-class PdoManagerFactory
+class PdoManagerFactory implements PdoManagerFactoryInterface
 {
     /**
      * @var string

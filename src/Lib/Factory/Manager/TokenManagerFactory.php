@@ -6,7 +6,7 @@ use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Manager\TokenManager;
 use Symfony\Component\HttpFoundation\Request;
 
-class TokenManagerFactory
+class TokenManagerFactory implements TokenManagerFactoryInterface
 {
     /**
      * @var string

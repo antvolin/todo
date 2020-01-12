@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Handler;
+namespace BeeJeeMVC\Lib\RequestHandler;
 
 use Symfony\Component\HttpFoundation\Request;
 

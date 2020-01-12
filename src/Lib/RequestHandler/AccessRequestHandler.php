@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Handler;
+namespace BeeJeeMVC\Lib\RequestHandler;
 
 use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
 use Symfony\Component\HttpFoundation\Request;

@@ -8,7 +8,7 @@ use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use BeeJeeMVC\Model\EntityInterface;
 
-class EntityManagerFactory
+class EntityManagerFactory implements EntityManagerFactoryInterface
 {
     /**
      * @var string

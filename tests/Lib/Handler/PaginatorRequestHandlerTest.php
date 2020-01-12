@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Tests\Lib\Handler;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Handler\PaginatorRequestHandler;
+use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
 use BeeJeeMVC\Lib\Paginator\PaginatorInterface;
 use PHPUnit\Framework\TestCase;
 

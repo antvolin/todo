@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Repository;
 
-use BeeJeeMVC\Lib\Ordering;
+use BeeJeeMVC\Lib\Manager\OrderingManager;
 use BeeJeeMVC\Model\EntityInterface;
 use FilesystemIterator;
 use LogicException;
@@ -72,7 +72,7 @@ class EntityFileRepository implements EntityRepositoryInterface
         if ($orderBy && $order) {
             $method = 'get'.ucfirst($orderBy);
 
-            if (Ordering::ASC === $order) {
+            if (OrderingManager::ASC === $order) {
                 uasort($entity, function (EntityInterface $a, EntityInterface $b) use ($method) {
                     return strcmp(strtolower($a->$method()), strtolower($b->$method()));
                 });

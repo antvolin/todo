@@ -1,19 +1,19 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Handler;
+namespace BeeJeeMVC\Lib\RequestHandler;
 
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
 use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactory;
+use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use BeeJeeMVC\Lib\Manager\EntityManager;
-use BeeJeeMVC\Lib\PathSeparator;
+use BeeJeeMVC\Lib\Manager\PathManager;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorRequestHandler extends RequestHandler
 {
     /**
-     * @var PaginatorFactory
+     * @var PaginatorFactoryInterface
      */
     private $paginatorFactory;
 
@@ -23,11 +23,11 @@ class PaginatorRequestHandler extends RequestHandler
     private $entityManager;
 
     /**
-     * @param PaginatorFactory $paginatorFactory
+     * @param PaginatorFactoryInterface $paginatorFactory
      * @param EntityManager $entityManager
      */
     public function __construct(
-        PaginatorFactory $paginatorFactory,
+        PaginatorFactoryInterface $paginatorFactory,
         EntityManager $entityManager
     )
     {
@@ -44,7 +44,7 @@ class PaginatorRequestHandler extends RequestHandler
      */
     protected function process(Request $request): void
     {
-        $pathParts = PathSeparator::separate($request->getPathInfo());
+        $pathParts = PathManager::getPathParts($request->getPathInfo());
 
         if (count($pathParts) === 1 || 'list' === strtolower($pathParts[1])) {
             $page = $request->get('page', 1);

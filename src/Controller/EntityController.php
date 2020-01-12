@@ -9,7 +9,7 @@ use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Manager\EntityManager;
-use BeeJeeMVC\Lib\Ordering;
+use BeeJeeMVC\Lib\Manager\OrderingManager;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -79,7 +79,7 @@ class EntityController
             'isAdmin' => $this->request->getSession()->get('admin', false),
             'isCreated' => $this->request->getSession()->get('isCreated', false),
             'page' => $page,
-            'order' => Ordering::getNextOrder($order),
+            'order' => OrderingManager::getNextOrder($order),
             'entities' => $paginator->getCurrentPageResults(),
             'pagination' => $paginator->getHtml($orderBy, $order),
         ];

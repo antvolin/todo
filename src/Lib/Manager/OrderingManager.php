@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace BeeJeeMVC\Lib\Manager;
 
-class Ordering
+class OrderingManager
 {
     public const ASC = 'ASC';
     public const DESC = 'DESC';
