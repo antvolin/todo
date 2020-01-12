@@ -18,7 +18,5 @@ interface PdoManagerInterface
      */
     public function getPdo(): PDO;
 
-    public function connect(): void;
-
     public function createTables(): void;
 }

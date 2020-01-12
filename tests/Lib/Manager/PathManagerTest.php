@@ -54,7 +54,7 @@ class PathManagerTest extends TestCase
         $pdo = new PDO($dsn);
 
         $entityManager = (new App())->getEntityManager();
-        $id = $entityManager->save('asdfqw', 'asdhe@lakjsd.cansj', 'asdlkqwdnlasd');
+        $id = $entityManager->save('test_user_ Name', 'testEmail@testEmail.testEmail', 'lkasjd lask asd dj ali');
 
         $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();
 

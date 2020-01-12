@@ -17,20 +17,20 @@ class EntityPdoRepositoryFactory extends EntityRepositoryFactory
     /**
      * @var string
      */
-    private $entityFolderNamespace;
+    private $entityClassNamespace;
 
     /**
      * @param PDO $pdo
      * @param string $entityName
-     * @param string $entityFolderNamespace
+     * @param string $entityClassNamespace
      * @throws NotAllowedEntityName
      */
-    public function __construct(Pdo $pdo, string $entityName, string $entityFolderNamespace)
+    public function __construct(Pdo $pdo, string $entityName, string $entityClassNamespace)
     {
         parent::__construct($entityName);
 
         $this->pdo = $pdo;
-        $this->entityFolderNamespace = $entityFolderNamespace;
+        $this->entityClassNamespace = $entityClassNamespace;
     }
 
     /**
@@ -38,6 +38,6 @@ class EntityPdoRepositoryFactory extends EntityRepositoryFactory
      */
     public function create(int $entityPerPage): EntityRepositoryInterface
     {
-        return new EntityPdoRepository($this->pdo, $this->entityName, $entityPerPage, $this->entityFolderNamespace);
+        return new EntityPdoRepository($this->pdo, $this->entityName, $entityPerPage, $this->entityClassNamespace);
     }
 }

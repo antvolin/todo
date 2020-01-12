@@ -116,7 +116,11 @@ class App
             $_ENV['DB_FOLDER_NAME']
         );
 
-        return $pdoManagerFactory->create()->getPdo();
+        $pdoManager = $pdoManagerFactory->create();
+        $pdo = $pdoManager->getPdo();
+        $pdoManager->createTables();
+
+        return $pdo;
     }
 
     /**
