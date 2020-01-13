@@ -49,11 +49,12 @@ class PathManagerTest extends TestCase
      */
     public function shouldBeGettingCorrectPathToPdoDsn(): void
     {
-        $entityName = $_ENV['ENTITY_NAME'];
-        $dsn = PathManager::getPathToPdoDsn($_ENV['STORAGE_TYPE'], $_ENV['DB_FOLDER_NAME'], $entityName);
+        $app = new App();
+        $entityName = $app->getEntityName();
+        $dsn = PathManager::getPathToPdoDsn($app->getStorageType(), $app->getDbFolderName(), $entityName);
         $pdo = new PDO($dsn);
 
-        $entityManager = (new App())->getEntityManager();
+        $entityManager = $app->getEntityManager();
         $id = $entityManager->saveEntity('test_user_ Name', 'testEmail@testEmail.testEmail', 'lkasjd lask asd dj ali');
 
         $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();

@@ -17,6 +17,11 @@ use PHPUnit\Framework\TestCase;
 class EntityPdoRepositoryTest extends TestCase
 {
     /**
+     * @var App
+     */
+    protected $app;
+
+    /**
      * @var EntityPdoRepository
      */
     protected $repository;
@@ -27,14 +32,29 @@ class EntityPdoRepositoryTest extends TestCase
     protected $entityManager;
 
     /**
+     * @var string 
+     */
+    protected $entityName;
+
+    /**
+     * @var string
+     */
+    protected $entityClassNamespace;
+
+    /**
      * @throws NotAllowedEntityName
      */
     public function setUp()
     {
-        $app = new App();
-        $pdo = $app->getPdo();
-        $this->repository = new EntityPdoRepository($pdo, $_ENV['ENTITY_NAME'], 3, $_ENV['ENTITY_CLASS_NAMESPACE']);
-        $this->entityManager = (new EntityManagerFactory($_ENV['ENTITY_CLASS_NAMESPACE']))->create($_ENV['ENTITY_NAME'], $app->getRepository());
+        $this->app = new App();
+        $pdo = $this->app->getPdo();
+        $this->entityName = $this->app->getEntityName();
+        $this->entityClassNamespace = $this->app->getEntityClassNamespace();
+
+        $this->repository = new EntityPdoRepository($pdo, $this->entityName, 3, $this->entityClassNamespace);
+
+        $factory = new EntityManagerFactory($this->entityClassNamespace);
+        $this->entityManager = $factory->create($this->entityName, $this->app->getRepository());
     }
 
     /**
@@ -50,7 +70,7 @@ class EntityPdoRepositoryTest extends TestCase
     {
         $id = $this->entityManager->saveEntity('test_user_name_777', 'asdeqw@kljasd.com', 'asda sdkj iasd sad asd');
 
-        $this->assertInstanceOf($_ENV['ENTITY_CLASS_NAMESPACE'].ucfirst(strtolower($_ENV['ENTITY_NAME'])), $this->repository->getEntityById($id));
+        $this->assertInstanceOf($this->entityClassNamespace.ucfirst(strtolower($this->entityName)), $this->repository->getEntityById($id));
 
         $this->entityManager->deleteEntity($id);
     }

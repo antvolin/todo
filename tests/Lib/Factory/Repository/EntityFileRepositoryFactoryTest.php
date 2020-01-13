@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
@@ -26,7 +27,8 @@ class EntityFileRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatedEntityFileRepository(): void
     {
-        $factory = new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']);
+        $app = new App();
+        $factory = new EntityFileRepositoryFactory($app->getEntityName());
         $repository = $factory->create($this->entityPerPage);
 
         $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);

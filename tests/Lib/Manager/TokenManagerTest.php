@@ -9,6 +9,11 @@ use PHPUnit\Framework\TestCase;
 class TokenManagerTest extends TestCase
 {
     /**
+     * @var App
+     */
+    protected $app;
+
+    /**
      * @var string
      */
     protected $secret;
@@ -19,15 +24,22 @@ class TokenManagerTest extends TestCase
     protected $token;
 
     /**
+     * @var string
+     */
+    protected $tokenSalt;
+
+    /**
      * @var TokenManager
      */
     protected $tokenManager;
 
     protected function setUp()
     {
+        $this->app = new App();
         $this->tokenManager = new TokenManager();
-        $this->secret = (new App())->getSecret();
-        $this->tokenManager->generateToken($this->secret, $_ENV['TOKEN_SALT']);
+        $this->secret = $this->app->getSecret();
+        $this->tokenSalt = $this->app->getTokenSalt();
+        $this->tokenManager->generateToken($this->secret, $this->tokenSalt);
         $this->token = $this->tokenManager->getToken();
     }
 
@@ -36,7 +48,7 @@ class TokenManagerTest extends TestCase
      */
     public function tokenShouldBeGenerated(): void
     {
-        $this->assertEquals($_ENV['TOKEN_SALT'].':'.md5($_ENV['TOKEN_SALT'].':'.$this->secret), $this->token);
+        $this->assertEquals($this->tokenSalt.':'.md5($this->tokenSalt.':'.$this->secret), $this->token);
     }
 
     /**

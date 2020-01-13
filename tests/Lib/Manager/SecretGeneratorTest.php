@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib\Manager;
 
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Manager\SecretGeneratorManager;
 use PHPUnit\Framework\TestCase;
 
@@ -12,10 +13,11 @@ class SecretGeneratorManagerTest extends TestCase
      */
     public function secretShouldBeGeneratedValidSecret(): void
     {
-        $generator = new SecretGeneratorManager($_ENV['TOKEN_SECRET_PREFIX'], $_ENV['TOKEN_SECRET']);
-        $secretPrefix = uniqid($_ENV['TOKEN_SECRET_PREFIX'], true);
+        $app = new App();
+        $generator = new SecretGeneratorManager($app->getTokenSecretPrefix(), $app->getTokenSecret());
+        $secretPrefix = uniqid($app->getTokenSecretPrefix(), true);
         $secret = $generator->generateSecret($secretPrefix);
 
-        $this->assertEquals(md5($_ENV['TOKEN_SECRET'].$secretPrefix), $secret);
+        $this->assertEquals(md5($app->getTokenSecret().$secretPrefix), $secret);
     }
 }

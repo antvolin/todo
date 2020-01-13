@@ -13,8 +13,9 @@ class TokenManagerFactoryTest extends TestCase
      */
     public function shouldBeCreatedTokenManager(): void
     {
-        $request = (new App())->getRequest();
-        $factory = new TokenManagerFactory($_ENV['TOKEN_SALT']);
+        $app = new App();
+        $request = $app->getRequest();
+        $factory = new TokenManagerFactory($app->getTokenSalt());
         $tokenManager = $factory->create($request);
 
         $token = $tokenManager->getToken();

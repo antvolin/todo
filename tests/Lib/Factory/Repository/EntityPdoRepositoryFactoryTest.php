@@ -12,6 +12,11 @@ use PHPUnit\Framework\TestCase;
 class EntityPdoRepositoryFactoryTest extends TestCase
 {
     /**
+     * @var App
+     */
+    protected $app;
+
+    /**
      * @var int
      */
     protected $entityPerPage;
@@ -23,8 +28,9 @@ class EntityPdoRepositoryFactoryTest extends TestCase
 
     protected function setUp()
     {
+        $this->app = new App();
         $this->entityPerPage = 3;
-        $this->pdo = (new App())->getPdo();
+        $this->pdo = $this->app->getPdo();
     }
 
     /**
@@ -34,7 +40,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatedEntityPdoRepository(): void
     {
-        $factory = new EntityPdoRepositoryFactory($this->pdo, $_ENV['ENTITY_NAME'], $_ENV['ENTITY_CLASS_NAMESPACE']);
+        $factory = new EntityPdoRepositoryFactory($this->pdo, $this->app->getEntityName(), $this->app->getEntityClassNamespace());
         $repository = $factory->create($this->entityPerPage);
 
         $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);

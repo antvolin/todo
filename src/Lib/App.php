@@ -24,11 +24,65 @@ use Twig\Environment;
 class App
 {
     /**
+     * @var string
+     */
+    private $entityName;
+
+    /**
+     * @var int
+     */
+    private $entityPerPage;
+
+    /**
+     * @var string
+     */
+    private $entityClassNamespace;
+
+    /**
+     * @var string
+     */
+    private $tokenSecretPrefix;
+
+    /**
+     * @var string
+     */
+    private $tokenSecret;
+
+    /**
+     * @var string
+     */
+    private $tokenSalt;
+
+    /**
+     * @var string
+     */
+    private $dbFolderName;
+
+    /**
+     * @var string
+     */
+    private $storageType;
+
+    public function __construct()
+    {
+        $this->entityName = $_ENV['ENTITY_NAME'];
+        $this->entityPerPage = $_ENV['ENTITY_PER_PAGE'];
+        $this->entityClassNamespace = $_ENV['ENTITY_CLASS_NAMESPACE'];
+        $this->tokenSecretPrefix = $_ENV['TOKEN_SECRET_PREFIX'];
+        $this->tokenSecret = $_ENV['TOKEN_SECRET'];
+        $this->tokenSalt = $_ENV['TOKEN_SALT'];
+        $this->dbFolderName = $_ENV['DB_FOLDER_NAME'];
+        $this->storageType = $_ENV['STORAGE_TYPE'];
+    }
+
+    /**
      * @return Request
      */
     public function getRequest(): Request
     {
-        return (new RequestFactory())->create();
+        $factory = new RequestFactory();
+
+        return $factory->create();
     }
 
     /**
@@ -36,7 +90,9 @@ class App
      */
     public function getSecret(): string
     {
-        return (new SecretGeneratorManager($_ENV['TOKEN_SECRET_PREFIX'], $_ENV['TOKEN_SECRET']))->generateSecret();
+        $manager = new SecretGeneratorManager($this->getTokenSecretPrefix(), $this->getTokenSecret());
+
+        return $manager->generateSecret();
     }
 
     /**
@@ -52,7 +108,7 @@ class App
      */
     public function getTokenManagerFactory(): TokenManagerFactory
     {
-        return new TokenManagerFactory($_ENV['TOKEN_SALT']);
+        return new TokenManagerFactory($this->getTokenSalt());
     }
 
     /**
@@ -60,7 +116,9 @@ class App
      */
     public function getTemplate(): Environment
     {
-        return (new TemplateFactory())->create();
+        $factory = new TemplateFactory();
+
+        return $factory->create();
     }
 
     /**
@@ -70,9 +128,9 @@ class App
      */
     public function getEntityManager(): EntityManagerInterface
     {
-        $entityManagerFactory = (new EntityManagerFactory($_ENV['ENTITY_CLASS_NAMESPACE']));
+        $entityManagerFactory = new EntityManagerFactory($this->getEntityClassNamespace());
 
-        return $entityManagerFactory->create($_ENV['ENTITY_NAME'], $this->getRepository());
+        return $entityManagerFactory->create($this->getEntityName(), $this->getRepository());
     }
 
     /**
@@ -82,7 +140,9 @@ class App
      */
     public function getRepository(): EntityRepositoryInterface
     {
-        return $this->getRepositoryFactory()->create($_ENV['ENTITY_PER_PAGE']);
+        $factory = $this->getRepositoryFactory();
+
+        return $factory->create($this->getEntityPerPage());
     }
 
     /**
@@ -92,14 +152,14 @@ class App
      */
     public function getRepositoryFactory(): EntityRepositoryFactory
     {
-        if ('sqlite' === $_ENV['STORAGE_TYPE']) {
+        if ('sqlite' === $this->getStorageType()) {
             $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
-                $_ENV['ENTITY_NAME'],
-                $_ENV['ENTITY_CLASS_NAMESPACE']
+                $this->getEntityName(),
+                $this->getEntityClassNamespace()
             );
         } else {
-            $factory = new EntityFileRepositoryFactory($_ENV['ENTITY_NAME']);
+            $factory = new EntityFileRepositoryFactory($this->getEntityName());
         }
 
         return $factory;
@@ -110,13 +170,13 @@ class App
      */
     public function getPdo(): Pdo
     {
-        $pdoManagerFactory = new PdoManagerFactory(
-            $_ENV['ENTITY_NAME'],
-            $_ENV['STORAGE_TYPE'],
-            $_ENV['DB_FOLDER_NAME']
+        $factory = new PdoManagerFactory(
+            $this->getEntityName(),
+            $this->getStorageType(),
+            $this->getDbFolderName()
         );
 
-        $pdoManager = $pdoManagerFactory->create();
+        $pdoManager = $factory->create();
         $pdo = $pdoManager->getPdo();
         $pdoManager->createTables();
 
@@ -128,6 +188,48 @@ class App
      */
     public function getPaginatorFactory(): PaginatorFactoryInterface
     {
-        return new PagerfantaPaginatorFactory(new PaginatorAdapter(), $_ENV['ENTITY_PER_PAGE']);
+        $adapter = new PaginatorAdapter();
+
+        return new PagerfantaPaginatorFactory($adapter, $this->getEntityPerPage());
+    }
+
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    public function getEntityClassNamespace()
+    {
+        return $this->entityClassNamespace;
+    }
+
+    public function getEntityPerPage()
+    {
+        return $this->entityPerPage;
+    }
+
+    public function getTokenSecretPrefix()
+    {
+        return $this->tokenSecretPrefix;
+    }
+
+    public function getTokenSecret()
+    {
+        return $this->tokenSecret;
+    }
+
+    public function getTokenSalt()
+    {
+        return $this->tokenSalt;
+    }
+
+    public function getDbFolderName()
+    {
+        return $this->dbFolderName;
+    }
+
+    public function getStorageType()
+    {
+        return $this->storageType;
     }
 }

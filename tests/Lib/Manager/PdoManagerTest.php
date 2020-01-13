@@ -2,6 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib\Manager;
 
+use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Manager\PdoManager;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,8 @@ class PdoManagerTest extends TestCase
 
     protected function setUp()
     {
-        $this->pdoManager = new PdoManager($_ENV['ENTITY_NAME'], $_ENV['STORAGE_TYPE'], $_ENV['DB_FOLDER_NAME']);
+        $app = new App();
+        $this->pdoManager = new PdoManager($app->getEntityName(), $app->getStorageType(), $app->getDbFolderName());
         $this->pdo = $this->pdoManager->getPdo();
     }
 

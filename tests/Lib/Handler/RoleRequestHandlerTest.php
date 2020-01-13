@@ -20,9 +20,10 @@ class RoleRequestHandlerTest extends TestCase
     {
         $this->expectException(AccessDeniedHttpException::class);
 
-        $request = (new App())->getRequest();
+        $app = new App();
+        $request = $app->getRequest();
         $request->getSession()->set('admin', false);
-        $request->server->set('REQUEST_URI', sprintf($_ENV['ENTITY_NAME'].'/%s', $method));
+        $request->server->set('REQUEST_URI', sprintf($app->getEntityName().'/%s', $method));
 
         (new RoleRequestHandler())->handle($request);
     }

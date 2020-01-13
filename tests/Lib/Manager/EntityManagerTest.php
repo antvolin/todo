@@ -29,8 +29,9 @@ class EntityManagerTest extends TestCase
      */
     protected function setUp()
     {
-        $repository = (new App())->getRepository();
-        $entityClass = $_ENV['ENTITY_CLASS_NAMESPACE'].ucfirst(strtolower($_ENV['ENTITY_NAME']));
+        $app = new App();
+        $repository = $app->getRepository();
+        $entityClass = $app->getEntityClassNamespace().ucfirst(strtolower($app->getEntityName()));
         $this->manager = new EntityManager($entityClass, $repository);
     }
 
