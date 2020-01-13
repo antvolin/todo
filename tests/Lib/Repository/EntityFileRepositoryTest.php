@@ -11,6 +11,6 @@ class EntityFileRepositoryTest extends TestCase
      */
     public function incomplete(): void
     {
-        $this->markTestIncomplete();
+        $this->markTestSkipped();
     }
 }
