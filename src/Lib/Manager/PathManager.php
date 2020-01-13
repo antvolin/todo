@@ -8,6 +8,17 @@ class PathManager
      * @param string $path
      * @param string $separator
      *
+     * @return string
+     */
+    public static function getFirstPart(string $path, string $separator = '/'): string
+    {
+        return strtolower(self::getPathParts($path, $separator)[1]);
+    }
+
+    /**
+     * @param string $path
+     * @param string $separator
+     *
      * @return array
      */
     public static function getPathParts(string $path, string $separator = '/'): array

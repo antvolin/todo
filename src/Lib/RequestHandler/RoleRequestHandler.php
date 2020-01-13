@@ -24,7 +24,7 @@ class RoleRequestHandler extends RequestHandler
         $pathParts = PathManager::getPathParts($request->getPathInfo());
 
         if (count($pathParts) > 1) {
-            $controllerMethodName = strtolower($pathParts[1]);
+            $controllerMethodName = PathManager::getFirstPart($request->getPathInfo());
             $admin = $request->getSession()->get('admin');
 
             if (!$admin && in_array($controllerMethodName, self::MODIFY_METHODS, true)) {

@@ -5,6 +5,7 @@ namespace BeeJeeMVC\Lib;
 use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
 use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
 use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
+use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactoryInterface;
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
@@ -75,6 +76,46 @@ class App
         $this->storageType = $_ENV['STORAGE_TYPE'];
     }
 
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    public function getEntityClassNamespace()
+    {
+        return $this->entityClassNamespace;
+    }
+
+    public function getEntityPerPage()
+    {
+        return $this->entityPerPage;
+    }
+
+    public function getTokenSecretPrefix()
+    {
+        return $this->tokenSecretPrefix;
+    }
+
+    public function getTokenSecret()
+    {
+        return $this->tokenSecret;
+    }
+
+    public function getTokenSalt()
+    {
+        return $this->tokenSalt;
+    }
+
+    public function getDbFolderName()
+    {
+        return $this->dbFolderName;
+    }
+
+    public function getStorageType()
+    {
+        return $this->storageType;
+    }
+
     /**
      * @return Request
      */
@@ -106,7 +147,7 @@ class App
     /**
      * @return TokenManagerFactory
      */
-    public function getTokenManagerFactory(): TokenManagerFactory
+    public function getTokenManagerFactory(): TokenManagerFactoryInterface
     {
         return new TokenManagerFactory($this->getTokenSalt());
     }
@@ -191,45 +232,5 @@ class App
         $adapter = new PaginatorAdapter();
 
         return new PagerfantaPaginatorFactory($adapter, $this->getEntityPerPage());
-    }
-
-    public function getEntityName()
-    {
-        return $this->entityName;
-    }
-
-    public function getEntityClassNamespace()
-    {
-        return $this->entityClassNamespace;
-    }
-
-    public function getEntityPerPage()
-    {
-        return $this->entityPerPage;
-    }
-
-    public function getTokenSecretPrefix()
-    {
-        return $this->tokenSecretPrefix;
-    }
-
-    public function getTokenSecret()
-    {
-        return $this->tokenSecret;
-    }
-
-    public function getTokenSalt()
-    {
-        return $this->tokenSalt;
-    }
-
-    public function getDbFolderName()
-    {
-        return $this->dbFolderName;
-    }
-
-    public function getStorageType()
-    {
-        return $this->storageType;
     }
 }

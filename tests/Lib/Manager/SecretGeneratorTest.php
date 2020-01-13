@@ -14,8 +14,9 @@ class SecretGeneratorManagerTest extends TestCase
     public function secretShouldBeGeneratedValidSecret(): void
     {
         $app = new App();
-        $generator = new SecretGeneratorManager($app->getTokenSecretPrefix(), $app->getTokenSecret());
-        $secretPrefix = uniqid($app->getTokenSecretPrefix(), true);
+        $tokenSecretPrefix = $app->getTokenSecretPrefix();
+        $generator = new SecretGeneratorManager($tokenSecretPrefix, $app->getTokenSecret());
+        $secretPrefix = uniqid($tokenSecretPrefix, true);
         $secret = $generator->generateSecret($secretPrefix);
 
         $this->assertEquals(md5($app->getTokenSecret().$secretPrefix), $secret);

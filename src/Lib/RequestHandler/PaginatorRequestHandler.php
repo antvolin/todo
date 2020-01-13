@@ -46,7 +46,7 @@ class PaginatorRequestHandler extends RequestHandler
     {
         $pathParts = PathManager::getPathParts($request->getPathInfo());
 
-        if (count($pathParts) === 1 || 'list' === strtolower($pathParts[1])) {
+        if (count($pathParts) === 1 || 'list' === PathManager::getFirstPart($request->getPathInfo())) {
             $page = $request->get('page', 1);
             $orderBy = $request->get('orderBy');
             $order = $request->get('order');
