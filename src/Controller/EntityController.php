@@ -100,11 +100,12 @@ class EntityController
         }
 
         try {
-            $this->entityManager->saveEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+            $id = $this->entityManager->saveEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
             return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
         }
 
+        $this->request->request->set('entity_id', $id);
         $this->request->getSession()->set('isCreated', true);
 
         return new RedirectResponse('/entity/list');
@@ -138,7 +139,7 @@ class EntityController
         } catch (InvalidArgumentException $exception) {
             $params = ['error' => $exception->getMessage()];
 
-            return new Response($this->template->render('edit_error', $params));
+            return new Response($this->template->render('edit_error.html.twig', $params));
         }
 
         return new RedirectResponse('/entity/list');

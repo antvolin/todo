@@ -23,6 +23,7 @@ abstract class EntityRepositoryFactory
         if (!in_array($entityName, EntityInterface::ALLOWED_ENTITY_NAMES, true)) {
             throw new NotAllowedEntityName();
         }
+
         $this->entityName = $entityName;
     }
 
