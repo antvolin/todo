@@ -2,8 +2,8 @@
 
 namespace BeeJeeMVC\Controller;
 
+use BeeJeeMVC\Lib\Manager\AuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -13,14 +13,9 @@ use Twig\Error\SyntaxError;
 class AuthController
 {
     /**
-     * @var string
+     * @var AuthService
      */
-    private $token;
-
-    /**
-     * @var Request
-     */
-    private $request;
+    private $authService;
 
     /**
      * @var Environment
@@ -28,18 +23,15 @@ class AuthController
     private $template;
 
     /**
-     * @param string $token
-     * @param Request $request
+     * @param AuthService $authService
      * @param Environment $template
      */
     public function __construct(
-        string $token,
-        Request $request,
+        AuthService $authService,
         Environment $template
     )
     {
-        $this->token = $token;
-        $this->request = $request;
+        $this->authService = $authService;
         $this->template = $template;
     }
 
@@ -52,24 +44,19 @@ class AuthController
      */
     public function login()
     {
-        if ('POST' !== $this->request->getMethod()) {
-            $params = ['token' => $this->token];
+        $token = $this->authService->getRequest()->get('token');
 
-            return new Response($this->template->render('form_login.html.twig', $params));
+        if ('POST' !== $this->authService->getRequest()->getMethod()) {
+            return new Response($this->template->render('form_login.html.twig', ['token' => $token]));
         }
 
-        $user = $this->request->get('user');
-        $password = $this->request->get('password');
+        $redirectResponse = $this->authService->login();
 
-        if ('admin' === $user && $_ENV['PASSWORD'] === $password) {
-            $this->request->getSession()->set('admin', true);
-
-            return new RedirectResponse('/entity/list');
+        if ($redirectResponse) {
+            return $redirectResponse;
         }
 
-        $params = ['error' => 'The entered data is not correct!', 'token' => $this->token];
-
-        return new Response($this->template->render('form_login.html.twig', $params));
+        return new Response($this->template->render('form_login.html.twig', ['error' => AuthService::ERROR_MSG, 'token' => $token]));
     }
 
     /**
@@ -77,10 +64,6 @@ class AuthController
      */
     public function logout(): RedirectResponse
     {
-        if ($this->request->getSession()->get('admin')) {
-            $this->request->getSession()->remove('admin');
-        }
-
-        return new RedirectResponse('/entity/list');
+        return $this->authService->logout();
     }
 }

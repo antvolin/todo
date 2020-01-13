@@ -3,7 +3,6 @@
 namespace BeeJeeMVC\Lib\Manager;
 
 use PDO;
-use PDOStatement;
 
 interface PdoManagerInterface
 {

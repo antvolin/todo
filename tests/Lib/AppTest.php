@@ -7,6 +7,7 @@ use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactoryInterface;
 use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
+use BeeJeeMVC\Lib\Manager\AuthService;
 use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PDO;
@@ -95,7 +96,7 @@ class AppTest extends TestCase
     public function shouldBeGettingPdo(): void
     {
         $pdo = $this->app->getPdo();
-        $this->assertInstanceOf(Pdo::class, $pdo);
+        $this->assertInstanceOf(PDO::class, $pdo);
     }
 
     /**
@@ -105,5 +106,14 @@ class AppTest extends TestCase
     {
         $factory = $this->app->getPaginatorFactory();
         $this->assertInstanceOf(PaginatorFactoryInterface::class, $factory);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBeGettingAuthService(): void
+    {
+        $service = $this->app->getAuthService($this->app->getRequest());
+        $this->assertInstanceOf(AuthService::class, $service);
     }
 }

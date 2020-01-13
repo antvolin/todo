@@ -31,7 +31,7 @@ class PdoManagerTest extends TestCase
      */
     public function shouldBeGettingPdo(): void
     {
-        $this->assertInstanceOf(Pdo::class, $this->pdo);
+        $this->assertInstanceOf(PDO::class, $this->pdo);
     }
 
     /**

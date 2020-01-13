@@ -4,6 +4,7 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Controller\AuthController;
 use BeeJeeMVC\Controller\EntityController;
+use BeeJeeMVC\Lib\Manager\AuthService;
 use BeeJeeMVC\Lib\RequestHandler\AccessRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\FilterRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
@@ -25,11 +26,6 @@ class Kernel
     private $request;
 
     /**
-     * @var string
-     */
-    private $token;
-
-    /**
      * @var Environment
      */
     private $template;
@@ -43,6 +39,11 @@ class Kernel
      * @var App
      */
     private $app;
+
+    /**
+     * @var AuthService
+     */
+    private $authService;
 
     /**
      * @param App $app
@@ -61,7 +62,8 @@ class Kernel
 	public function process(): void
     {
         $this->request = $this->app->getRequest();
-        $this->token = $this->app->getToken();
+        $this->request->request->set('token', $this->app->getToken());
+        $this->authService = $this->app->getAuthService($this->request);
         $this->template = $this->app->getTemplate();
         $this->entityManager = $this->app->getEntityManager();
 
@@ -111,8 +113,7 @@ class Kernel
 	private function createAuthController(): AuthController
     {
         return new AuthController(
-            $this->token,
-            $this->request,
+            $this->authService,
             $this->template
         );
     }
@@ -123,7 +124,6 @@ class Kernel
     private function createEntityController(): EntityController
     {
         return new EntityController(
-            $this->token,
             $this->request,
             $this->entityManager,
             $this->template

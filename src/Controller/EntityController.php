@@ -23,11 +23,6 @@ use Twig\Error\SyntaxError as SyntaxErrorAlias;
 class EntityController
 {
     /**
-     * @var string
-     */
-    private $token;
-
-    /**
      * @var Request
      */
     private $request;
@@ -43,19 +38,16 @@ class EntityController
     private $template;
 
     /**
-     * @param string $token
      * @param Request $request
      * @param EntityManager $entityManager
      * @param Environment $template
      */
     public function __construct(
-        string $token,
         Request $request,
         EntityManager $entityManager,
         Environment $template
     )
     {
-        $this->token = $token;
         $this->request = $request;
         $this->entityManager = $entityManager;
         $this->template = $template;
@@ -101,19 +93,16 @@ class EntityController
      */
     public function create()
     {
-        if ('POST' !== $this->request->getMethod()) {
-            $params = ['token' => $this->token];
+        $token = $this->request->get('token');
 
-            return new Response($this->template->render('form_create.html.twig', $params));
+        if ('POST' !== $this->request->getMethod()) {
+            return new Response($this->template->render('form_create.html.twig', ['token' => $token]));
         }
 
         try {
             $this->entityManager->saveEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
-            $msg = $exception->getMessage();
-            $params = ['error' => $msg, 'token' => $this->token];
-
-            return new Response($this->template->render('form_create.html.twig', $params));
+            return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
         }
 
         $this->request->getSession()->set('isCreated', true);
@@ -138,14 +127,10 @@ class EntityController
     {
         if ('POST' !== $this->request->getMethod()) {
             $id = func_get_args()[0];
+            $text = $this->entityManager->getEntityById($id)->getText();
+            $token = $this->request->get('token');
 
-            $params = [
-                'id' => $id,
-                'text' => $this->entityManager->getEntityById($id)->getText(),
-                'token' => $this->token,
-            ];
-
-            return new Response($this->template->render('form_edit.html.twig', $params));
+            return new Response($this->template->render('form_edit.html.twig', ['id' => $id, 'text' => $text, 'token' => $token]));
         }
 
         try {
@@ -171,9 +156,7 @@ class EntityController
         try {
             $this->entityManager->doneEntity(func_get_args()[0]);
         } catch (Exception $exception) {
-            $params = ['error' => $exception->getMessage()];
-
-            return new Response($this->template->render('done_error.html.twig', $params));
+            return new Response($this->template->render('done_error.html.twig', ['error' => $exception->getMessage()]));
         }
 
         return new RedirectResponse('/entity/list');

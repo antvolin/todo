@@ -15,6 +15,7 @@ use BeeJeeMVC\Lib\Factory\RequestFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
 use BeeJeeMVC\Lib\Manager\EntityManager;
 use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
+use BeeJeeMVC\Lib\Manager\AuthService;
 use BeeJeeMVC\Lib\Manager\SecretGeneratorManager;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
@@ -24,6 +25,11 @@ use Twig\Environment;
 
 class App
 {
+    /**
+     * @var Request
+     */
+    private $request;
+
     /**
      * @var string
      */
@@ -121,9 +127,13 @@ class App
      */
     public function getRequest(): Request
     {
-        $factory = new RequestFactory();
+        if (!$this->request) {
+            $factory = new RequestFactory();
 
-        return $factory->create();
+            $this->request = $factory->create();
+        }
+
+        return $this->request;
     }
 
     /**
@@ -209,7 +219,7 @@ class App
     /**
      * @return PDO
      */
-    public function getPdo(): Pdo
+    public function getPdo(): PDO
     {
         $factory = new PdoManagerFactory(
             $this->getEntityName(),
@@ -232,5 +242,15 @@ class App
         $adapter = new PaginatorAdapter();
 
         return new PagerfantaPaginatorFactory($adapter, $this->getEntityPerPage());
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return AuthService
+     */
+    public function getAuthService(Request $request): AuthService
+    {
+        return new AuthService($request);
     }
 }

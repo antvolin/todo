@@ -22,7 +22,8 @@
     },
     "require-dev": {
         "symfony/test-pack": "^1.0",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "ext-http": "*"
     },
     "autoload": {
         "psr-4": {
