@@ -21,12 +21,12 @@ interface EntityRepositoryInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getById(int $entityId): EntityInterface;
+    public function getEntityById(int $entityId): EntityInterface;
 
     /**
      * @return int
      */
-    public function getCountRows(): int;
+    public function getCountEntities(): int;
 
     /**
      * @param int $page
@@ -39,7 +39,7 @@ interface EntityRepositoryInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array;
+    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array;
 
     /**
      * @param EntityInterface $entity
@@ -49,5 +49,5 @@ interface EntityRepositoryInterface
      *
      * @throws PdoErrorsException
      */
-    public function save(EntityInterface $entity, ?int $entityId = null): int;
+    public function saveEntity(EntityInterface $entity, ?int $entityId = null): int;
 }

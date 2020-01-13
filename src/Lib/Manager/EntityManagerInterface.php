@@ -30,7 +30,7 @@ interface EntityManagerInterface
      * @throws NotValidEmailException
      * @throws NotFoundException
      */
-    public function getById(int $id): EntityInterface;
+    public function getEntityById(int $id): EntityInterface;
 
     /**
      * @param int $page
@@ -44,12 +44,12 @@ interface EntityManagerInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array;
+    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array;
 
     /**
      * @return int
      */
-    public function getCountRows(): int;
+    public function getCountEntities(): int;
 
     /**
      * @param string $userName
@@ -63,12 +63,12 @@ interface EntityManagerInterface
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      */
-    public function save(string $userName, string $email, string $text): int;
+    public function saveEntity(string $userName, string $email, string $text): int;
 
     /**
      * @param int $entityId
      */
-    public function delete(int $entityId): void;
+    public function deleteEntity(int $entityId): void;
 
     /**
      * @param int $entityId
@@ -81,7 +81,7 @@ interface EntityManagerInterface
      * @throws NotFoundException
      * @throws CannotEditEntityException
      */
-    public function edit(int $entityId, string $text): void;
+    public function editEntity(int $entityId, string $text): void;
 
     /**
      * @param int $entityId
@@ -93,5 +93,5 @@ interface EntityManagerInterface
      * @throws NotFoundException
      * @throws CannotDoneEntityException
      */
-    public function done(int $entityId): void;
+    public function doneEntity(int $entityId): void;
 }

@@ -34,33 +34,33 @@ class EntityManager implements EntityManagerInterface
     /**
      * @inheritDoc
      */
-    public function getById(int $id): EntityInterface
+    public function getEntityById(int $id): EntityInterface
     {
-        return $this->repository->getById($id);
+        return $this->repository->getEntityById($id);
     }
 
     /**
      * @inheritDoc
      */
-    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
     {
-        return $this->repository->getList($page, $orderBy, $order);
+        return $this->repository->getEntities($page, $orderBy, $order);
     }
 
     /**
      * @inheritDoc
      */
-    public function getCountRows(): int
+    public function getCountEntities(): int
     {
-        return $this->repository->getCountRows();
+        return $this->repository->getCountEntities();
     }
 
     /**
      * @inheritDoc
      */
-    public function save(string $userName, string $email, string $text): int
+    public function saveEntity(string $userName, string $email, string $text): int
     {
-        return $this->repository->save(
+        return $this->repository->saveEntity(
             new $this->entityClass(
                 new Id(),
                 new UserName($userName),
@@ -74,28 +74,28 @@ class EntityManager implements EntityManagerInterface
     /**
      * @inheritDoc
      */
-    public function delete(int $entityId): void
+    public function deleteEntity(int $entityId): void
     {
-        $this->repository->delete($entityId);
+        $this->repository->deleteEntity($entityId);
     }
 
     /**
      * @inheritDoc
      */
-    public function edit(int $entityId, string $text): void
+    public function editEntity(int $entityId, string $text): void
     {
-        $entity = $this->repository->getById($entityId);
+        $entity = $this->repository->getEntityById($entityId);
         $entity->edit($text);
-        $this->repository->save($entity, $entityId);
+        $this->repository->saveEntity($entity, $entityId);
     }
 
     /**
      * @inheritDoc
      */
-    public function done(int $entityId): void
+    public function doneEntity(int $entityId): void
     {
-        $entity = $this->repository->getById($entityId);
+        $entity = $this->repository->getEntityById($entityId);
         $entity->done();
-        $this->repository->save($entity, $entity->getId()->getValue());
+        $this->repository->saveEntity($entity, $entity->getId()->getValue());
     }
 }

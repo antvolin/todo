@@ -36,26 +36,26 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @var string
      */
-    private $entityFolderNamespace;
+    private $entityClassNamespace;
 
     /**
      * @param PDO $pdo
      * @param string $entityName
      * @param int $entityPerPage
-     * @param string $entityFolderNamespace
+     * @param string $entityClassNamespace
      */
-    public function __construct(Pdo $pdo, string $entityName, int $entityPerPage, string $entityFolderNamespace)
+    public function __construct(Pdo $pdo, string $entityName, int $entityPerPage, string $entityClassNamespace)
     {
         $this->pdo = $pdo;
         $this->entityName = strtolower($entityName);
         $this->entityPerPage = $entityPerPage;
-        $this->entityFolderNamespace = $entityFolderNamespace;
+        $this->entityClassNamespace = $entityClassNamespace;
     }
 
     /**
      * @inheritdoc
      */
-    public function getById(int $id): EntityInterface
+    public function getEntityById(int $id): EntityInterface
     {
         $sth = $this->pdo->prepare("SELECT * FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
@@ -71,7 +71,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getCountRows(): int
+    public function getCountEntities(): int
     {
         return  $this->pdo->query("SELECT COUNT(id) FROM $this->entityName;")->fetchColumn();
     }
@@ -79,7 +79,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getList(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         $result = [];
 
@@ -103,7 +103,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function save(EntityInterface $entity, ?int $entityId = null): int
+    public function saveEntity(EntityInterface $entity, ?int $entityId = null): int
     {
         $userName = $entity->getUserName();
         $email = $entity->getEmail();
@@ -134,7 +134,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @param int $entityId
      */
-    public function delete(int $entityId): void
+    public function deleteEntity(int $entityId): void
     {
         $sth = $this->pdo->prepare("DELETE FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $entityId, PDO::PARAM_INT);
@@ -152,7 +152,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
      */
     private function createEntity(array $entity): EntityInterface
     {
-        $entityName = $this->entityFolderNamespace.ucfirst($this->entityName);
+        $entityName = $this->entityClassNamespace.ucfirst($this->entityName);
 
         return new $entityName(
             new Id($entity['id']),

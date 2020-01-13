@@ -108,7 +108,7 @@ class EntityController
         }
 
         try {
-            $this->entityManager->save($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+            $this->entityManager->saveEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
             $msg = $exception->getMessage();
             $params = ['error' => $msg, 'token' => $this->token];
@@ -141,7 +141,7 @@ class EntityController
 
             $params = [
                 'id' => $id,
-                'text' => $this->entityManager->getById($id)->getText(),
+                'text' => $this->entityManager->getEntityById($id)->getText(),
                 'token' => $this->token,
             ];
 
@@ -149,7 +149,7 @@ class EntityController
         }
 
         try {
-            $this->entityManager->edit($this->request->get('id'), $this->request->get('text'));
+            $this->entityManager->editEntity($this->request->get('id'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
             $params = ['error' => $exception->getMessage()];
 
@@ -169,7 +169,7 @@ class EntityController
     public function done()
     {
         try {
-            $this->entityManager->done(func_get_args()[0]);
+            $this->entityManager->doneEntity(func_get_args()[0]);
         } catch (Exception $exception) {
             $params = ['error' => $exception->getMessage()];
 
