@@ -39,8 +39,6 @@ class AuthService
         $password = $this->request->get('password');
 
         if ('admin' !== $user || $_ENV['PASSWORD'] !== $password) {
-            $this->request->getSession()->set('admin', true);
-
             return null;
         }
 

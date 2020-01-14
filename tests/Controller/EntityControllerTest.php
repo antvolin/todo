@@ -16,6 +16,7 @@ use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -68,9 +69,10 @@ class EntityControllerTest extends TestCase
         );
         $handler->handle($this->request);
 
-        $list = $this->controller->list();
+        $response = $this->controller->list();
 
-        $this->assertContains('<title>Tasks book</title>', $list->getContent());
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertContains('<title>Tasks book</title>', $response->getContent());
     }
 
     /**
@@ -85,8 +87,6 @@ class EntityControllerTest extends TestCase
      */
     public function shouldBeGettingCreatePage(): void
     {
-        $this->markTestIncomplete();
-
         $handler = new PaginatorRequestHandler(
             $this->app->getPaginatorFactory(),
             $this->entityManager
@@ -95,7 +95,8 @@ class EntityControllerTest extends TestCase
 
         $response = $this->controller->create();
 
-        $this->assertContains('<title>Tasks book</title>', $response->getContent());
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertContains('<title>Task create</title>', $response->getContent());
     }
 
     /**

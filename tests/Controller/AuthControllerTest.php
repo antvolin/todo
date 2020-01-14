@@ -77,8 +77,6 @@ class AuthControllerTest extends TestCase
      */
     public function shouldBeGettingLoginPage(): void
     {
-        $this->markTestIncomplete();
-
         $request = $this->app->getRequest();
         $request->request->set('token', $this->app->getToken());
         $response = $this->controller->login();

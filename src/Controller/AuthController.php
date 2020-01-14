@@ -50,10 +50,10 @@ class AuthController
             return new Response($this->template->render('form_login.html.twig', ['token' => $token]));
         }
 
-        $redirectResponse = $this->authService->login();
+        $response = $this->authService->login();
 
-        if ($redirectResponse) {
-            return $redirectResponse;
+        if ($response) {
+            return $response;
         }
 
         return new Response($this->template->render('form_login.html.twig', ['error' => AuthService::ERROR_MSG, 'token' => $token]));
