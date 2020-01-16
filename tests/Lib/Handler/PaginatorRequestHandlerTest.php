@@ -21,8 +21,8 @@ class PaginatorRequestHandlerTest extends TestCase
         $paginatorFactory = $app->getPaginatorFactory();
         $entityManager = $app->getEntityManager();
         $request = $app->getRequest();
-
-        (new PaginatorRequestHandler($paginatorFactory, $entityManager))->handle($request);
+        $handler = new PaginatorRequestHandler($paginatorFactory, $entityManager);
+        $handler->handle($request);
 
         $this->assertInstanceOf(PaginatorInterface::class, $request->get('paginator'));
     }

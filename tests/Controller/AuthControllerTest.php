@@ -59,8 +59,8 @@ class AuthControllerTest extends TestCase
     {
         $request = $this->app->getRequest();
         $request->request->set('token', $this->app->getToken());
-        $request->request->set('user', 'admin');
-        $request->request->set('password', $_ENV['PASSWORD']);
+        $request->request->set('user', $this->app->getUser());
+        $request->request->set('password', $this->app->getPassword());
         $request->setMethod('POST');
         $response = $this->controller->login();
 
@@ -96,14 +96,14 @@ class AuthControllerTest extends TestCase
     {
         $request = $this->app->getRequest();
         $request->request->set('token', $this->app->getToken());
-        $request->request->set('user', 'admin');
-        $request->request->set('password', $_ENV['PASSWORD']);
+        $request->request->set('user', $this->app->getUser());
+        $request->request->set('password', $this->app->getPassword());
         $request->setMethod('POST');
         $this->controller->login();
         $response = $this->controller->logout();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals('/entity/list', $response->getTargetUrl());
-        $this->assertNull($request->getSession()->get('admin'));
+        $this->assertNull($request->getSession()->get($this->app->getUser()));
     }
 }

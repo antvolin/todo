@@ -46,9 +46,8 @@ class EntityManagerTest extends TestCase
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->manager->saveEntity('test222', 'test@test.test', 'TEXT12');
+        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
         $entity = $this->manager->getEntityById($id);
-        $this->manager->deleteEntity($id);
 
         $this->assertInstanceOf(EntityInterface::class, $entity);
     }
@@ -63,19 +62,15 @@ class EntityManagerTest extends TestCase
      */
     public function shouldBeGettingEntitiesArray(): void
     {
-        $id1 = $this->manager->saveEntity('test1', 'test@test.test1', 'TEXT13');
-        $id2 = $this->manager->saveEntity('test2', 'test@test.test2', 'TEXT24');
-        $id3 = $this->manager->saveEntity('test3', 'test@test.test3', 'TEXT35');
+        $this->manager->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test1', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->manager->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test2', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->manager->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test3', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $entities = $this->manager->getEntities(0);
 
         foreach ($entities as $entity) {
             $this->assertInstanceOf(EntityInterface::class, $entity);
         }
-
-        $this->manager->deleteEntity($id1);
-        $this->manager->deleteEntity($id2);
-        $this->manager->deleteEntity($id3);
     }
 
     /**
@@ -88,17 +83,13 @@ class EntityManagerTest extends TestCase
      */
     public function shouldBeGettingCountOfEntities(): void
     {
-        $id1 = $this->manager->saveEntity('1_test_1_1', 'test@test.test', 'TEXT1');
-        $id2 = $this->manager->saveEntity('2_test_2_2', 'test@test.test', 'TEXT2');
-        $id3 = $this->manager->saveEntity('3_test_3_3', 'test@test.test', 'TEXT3');
+        $this->manager->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->manager->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->manager->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $count = $this->manager->getCountEntities();
 
         $this->assertLessThan($count, 0);
-
-        $this->manager->deleteEntity($id1);
-        $this->manager->deleteEntity($id2);
-        $this->manager->deleteEntity($id3);
     }
 
     /**
@@ -114,7 +105,7 @@ class EntityManagerTest extends TestCase
     {
         $this->expectException(NotFoundException::class);
 
-        $id = $this->manager->saveEntity('1_test_1_1_1', 'test@test.test', 'TEXT1');
+        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $this->manager->deleteEntity($id);
         $this->manager->getEntityById($id);
@@ -132,14 +123,13 @@ class EntityManagerTest extends TestCase
      */
     public function shouldBeEditingEntity(): void
     {
-        $id = $this->manager->saveEntity('test111', 'test@test.test111', 'TEXT1asd11');
-        $this->manager->editEntity($id, 'TEXT2');
+        $newText = uniqid('text'.__METHOD__.__CLASS__, true);
+        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->manager->editEntity($id, $newText);
         $entity = $this->manager->getEntityById($id);
 
         $this->assertEquals(Status::EDITED, $entity->getStatus());
-        $this->assertEquals('TEXT2', $entity->getText());
-
-        $this->manager->deleteEntity($id);
+        $this->assertEquals($newText, $entity->getText());
     }
 
     /**
@@ -154,12 +144,10 @@ class EntityManagerTest extends TestCase
      */
     public function shouldBeDoneEntity(): void
     {
-        $id = $this->manager->saveEntity('test111', 'test@test.test111', 'TEXT11dlsak1');
+        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test111', uniqid('text'.__METHOD__.__CLASS__, true));
         $this->manager->doneEntity($id);
         $entity = $this->manager->getEntityById($id);
 
         $this->assertEquals(Status::DONE, $entity->getStatus());
-
-        $this->manager->deleteEntity($id);
     }
 }

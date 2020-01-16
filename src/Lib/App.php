@@ -70,6 +70,16 @@ class App
      */
     private $storageType;
 
+    /**
+     * @var string
+     */
+    private $user;
+
+    /**
+     * @var string
+     */
+    private $password;
+
     public function __construct()
     {
         $this->entityName = $_ENV['ENTITY_NAME'];
@@ -80,46 +90,88 @@ class App
         $this->tokenSalt = $_ENV['TOKEN_SALT'];
         $this->dbFolderName = $_ENV['DB_FOLDER_NAME'];
         $this->storageType = $_ENV['STORAGE_TYPE'];
+        $this->user = $_ENV['APP_USER'];
+        $this->password = $_ENV['APP_PASSWORD'];
     }
 
-    public function getEntityName()
+    /**
+     * @return string
+     */
+    public function getEntityName(): string
     {
         return $this->entityName;
     }
 
-    public function getEntityClassNamespace()
+    /**
+     * @return string
+     */
+    public function getEntityClassNamespace(): string
     {
         return $this->entityClassNamespace;
     }
 
-    public function getEntityPerPage()
+    /**
+     * @return int
+     */
+    public function getEntityPerPage(): int
     {
         return $this->entityPerPage;
     }
 
-    public function getTokenSecretPrefix()
+    /**
+     * @return string
+     */
+    public function getTokenSecretPrefix(): string
     {
         return $this->tokenSecretPrefix;
     }
 
-    public function getTokenSecret()
+    /**
+     * @return string
+     */
+    public function getTokenSecret(): string
     {
         return $this->tokenSecret;
     }
 
-    public function getTokenSalt()
+    /**
+     * @return string
+     */
+    public function getTokenSalt(): string
     {
         return $this->tokenSalt;
     }
 
-    public function getDbFolderName()
+    /**
+     * @return string
+     */
+    public function getDbFolderName(): string
     {
         return $this->dbFolderName;
     }
 
-    public function getStorageType()
+    /**
+     * @return string
+     */
+    public function getStorageType(): string
     {
         return $this->storageType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -129,7 +181,6 @@ class App
     {
         if (!$this->request) {
             $factory = new RequestFactory();
-
             $this->request = $factory->create();
         }
 
@@ -251,6 +302,6 @@ class App
      */
     public function getAuthService(Request $request): AuthService
     {
-        return new AuthService($request);
+        return new AuthService($request, $this->getUser(), $this->getPassword());
     }
 }

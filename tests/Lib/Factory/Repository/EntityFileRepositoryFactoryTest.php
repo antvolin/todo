@@ -5,7 +5,6 @@ namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class EntityFileRepositoryFactoryTest extends TestCase
@@ -31,7 +30,10 @@ class EntityFileRepositoryFactoryTest extends TestCase
         $factory = new EntityFileRepositoryFactory($app->getEntityName());
         $repository = $factory->create($this->entityPerPage);
 
-        $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
+        $this->assertTrue(method_exists($repository, 'getCountEntities'));
+        $this->assertTrue(method_exists($repository, 'getEntities'));
+        $this->assertTrue(method_exists($repository, 'saveEntity'));
+        $this->assertTrue(method_exists($repository, 'getEntityById'));
     }
 
     /**

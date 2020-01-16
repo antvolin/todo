@@ -1,7 +1,7 @@
 <div id="{{ entity.id.value }}" class="row entity">
-    <div class="col-sm-2 center">{{ entity.userName }}</div>
-    <div class="col-sm-3 center">{{ entity.email }}</div>
-    <div class="col-sm-5 text center">{{ entity.text }}</div>
+    <div class="col-sm-2 center">{{ entity.userName[0:15] }} ...</div>
+    <div class="col-sm-3 center">{{ entity.email[0:15] }} ...</div>
+    <div class="col-sm-5 text center">{{ entity.text[0:20] }} ...</div>
     <div class="col-sm-1 status center">{{ entity.status }}</div>
     <div class="col-sm-1">
         {% if isAdmin %}

@@ -4,7 +4,6 @@ namespace BeeJeeMVC\Tests\Lib\Factory\Manager;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
-use BeeJeeMVC\Lib\Manager\PdoManagerInterface;
 use PHPUnit\Framework\TestCase;
 
 class PdoManagerFactoryTest extends TestCase
@@ -22,6 +21,7 @@ class PdoManagerFactoryTest extends TestCase
         );
         $pdoManager = $factory->create();
 
-        $this->assertInstanceOf(PdoManagerInterface::class, $pdoManager);
+        $this->assertTrue(method_exists($pdoManager, 'createTables'));
+        $this->assertTrue(method_exists($pdoManager, 'getPdo'));
     }
 }

@@ -24,8 +24,8 @@ class RoleRequestHandlerTest extends TestCase
         $request = $app->getRequest();
         $request->getSession()->set('admin', false);
         $request->server->set('REQUEST_URI', sprintf($app->getEntityName().'/%s', $method));
-
-        (new RoleRequestHandler())->handle($request);
+        $handler = new RoleRequestHandler();
+        $handler->handle($request);
     }
     
     /**

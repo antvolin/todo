@@ -48,13 +48,13 @@ class FilterRequestHandlerTest extends TestCase
      *
      * @dataProvider specialChars
      *
-     * @param string $char
+     * @param string $specialChar
      */
-    public function specialCharactersFromRequestValueShouldBeConvertedToHtmlEntity(string $char): void
+    public function specialCharactersFromRequestValueShouldBeConvertedToHtmlEntity(string $specialChar): void
     {
         $this->filterRequestHandler->handle($this->request);
 
-        $this->assertFalse(strpos($char, $this->request->request->get('text')));
+        $this->assertFalse(strpos($specialChar, $this->request->request->get('text')));
     }
 
     /**

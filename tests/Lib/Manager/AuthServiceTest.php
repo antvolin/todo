@@ -25,11 +25,23 @@ class AuthServiceTest extends TestCase
      */
     protected $request;
 
+    /**
+     * @var string
+     */
+    protected $user;
+
+    /**
+     * @var string
+     */
+    protected $password;
+
     protected function setUp()
     {
         $this->app = new App();
         $this->request = $this->app->getRequest();
-        $this->service = new AuthService($this->request);
+        $this->user = $this->app->getUser();
+        $this->password = $this->app->getPassword();
+        $this->service = new AuthService($this->request, $this->user, $this->password);
     }
 
     /**
@@ -39,7 +51,7 @@ class AuthServiceTest extends TestCase
     {
         $response = $this->service->login();
 
-        $this->assertFalse($this->request->getSession()->get('admin'));
+        $this->assertFalse($this->request->getSession()->get($this->user));
         $this->assertNull($response);
     }
 
@@ -48,13 +60,26 @@ class AuthServiceTest extends TestCase
      */
     public function shouldBeLoginIfAdmin(): void
     {
-        $this->request->request->set('user', 'admin');
-        $this->request->request->set('password', $_ENV['PASSWORD']);
+        $this->request->request->set('user', $this->user);
+        $this->request->request->set('password', $this->password);
 
         $response = $this->service->login();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals('/entity/list', $response->getTargetUrl());
-        $this->assertTrue($this->request->getSession()->get('admin'));
+        $this->assertTrue($this->request->getSession()->get($this->user));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBeLogoutIfAdmin(): void
+    {
+        $this->request->getSession()->set($this->user, true);
+
+        $response = $this->service->logout();
+
+        $this->assertEquals('/entity/list', $response->getTargetUrl());
+        $this->assertNull($this->request->getSession()->get($this->user));
     }
 }

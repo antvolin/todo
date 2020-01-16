@@ -4,18 +4,13 @@ namespace BeeJeeMVC\Tests\Lib;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactoryInterface;
-use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
-use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
-use BeeJeeMVC\Lib\Manager\AuthService;
-use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
-use PDO;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class AppTest extends TestCase
 {
+    /**
+     * @var App
+     */
     protected $app;
 
     protected function setUp()
@@ -28,7 +23,10 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingRequestObject(): void
     {
-        $this->assertInstanceOf(Request::class, $this->app->getRequest());
+        $request = $this->app->getRequest();
+
+        $this->assertObjectHasAttribute('request', $request);
+        $this->assertObjectHasAttribute('query', $request);
     }
 
     /**
@@ -37,7 +35,8 @@ class AppTest extends TestCase
     public function shouldBeGettingSecret(): void
     {
         $secret = $this->app->getSecret();
-        $this->assertIsString(Request::class, $secret);
+
+        $this->assertIsString($secret);
         $this->assertNotEmpty($secret);
     }
 
@@ -47,7 +46,8 @@ class AppTest extends TestCase
     public function shouldBeGettingToken(): void
     {
         $token = $this->app->getToken();
-        $this->assertIsString(Request::class, $token);
+
+        $this->assertIsString($token);
         $this->assertNotEmpty($token);
     }
 
@@ -57,37 +57,53 @@ class AppTest extends TestCase
     public function shouldBeGettingTokenManagerFactory(): void
     {
         $factory = $this->app->getTokenManagerFactory();
-        $this->assertInstanceOf(TokenManagerFactoryInterface::class, $factory);
+
+        $this->assertTrue(method_exists($factory, 'create'));
     }
 
     /**
      * @test
+     *
      * @throws NotAllowedEntityName
      */
     public function shouldBeGettingEntityManager(): void
     {
         $manager = $this->app->getEntityManager();
-        $this->assertInstanceOf(EntityManagerInterface::class, $manager);
+
+        $this->assertTrue(method_exists($manager, 'getCountEntities'));
+        $this->assertTrue(method_exists($manager, 'deleteEntity'));
+        $this->assertTrue(method_exists($manager, 'doneEntity'));
+        $this->assertTrue(method_exists($manager, 'editEntity'));
+        $this->assertTrue(method_exists($manager, 'getEntities'));
+        $this->assertTrue(method_exists($manager, 'getEntityById'));
+        $this->assertTrue(method_exists($manager, 'saveEntity'));
     }
 
     /**
      * @test
+     *
      * @throws NotAllowedEntityName
      */
     public function shouldBeGettingRepository(): void
     {
         $repository = $this->app->getRepository();
-        $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
+
+        $this->assertTrue(method_exists($repository, 'getCountEntities'));
+        $this->assertTrue(method_exists($repository, 'getEntities'));
+        $this->assertTrue(method_exists($repository, 'saveEntity'));
+        $this->assertTrue(method_exists($repository, 'getEntityById'));
     }
 
     /**
      * @test
+     *
      * @throws NotAllowedEntityName
      */
     public function shouldBeGettingRepositoryFactory(): void
     {
         $factory = $this->app->getRepositoryFactory();
-        $this->assertInstanceOf(EntityRepositoryFactory::class, $factory);
+
+        $this->assertTrue(method_exists($factory, 'create'));
     }
 
     /**
@@ -96,7 +112,11 @@ class AppTest extends TestCase
     public function shouldBeGettingPdo(): void
     {
         $pdo = $this->app->getPdo();
-        $this->assertInstanceOf(PDO::class, $pdo);
+
+        $this->assertTrue(method_exists($pdo, 'query'));
+        $this->assertTrue(method_exists($pdo, 'exec'));
+        $this->assertTrue(method_exists($pdo, 'prepare'));
+        $this->assertTrue(method_exists($pdo, 'lastInsertId'));
     }
 
     /**
@@ -105,7 +125,8 @@ class AppTest extends TestCase
     public function shouldBeGettingPaginatorFactory(): void
     {
         $factory = $this->app->getPaginatorFactory();
-        $this->assertInstanceOf(PaginatorFactoryInterface::class, $factory);
+
+        $this->assertTrue(method_exists($factory, 'create'));
     }
 
     /**
@@ -114,6 +135,9 @@ class AppTest extends TestCase
     public function shouldBeGettingAuthService(): void
     {
         $service = $this->app->getAuthService($this->app->getRequest());
-        $this->assertInstanceOf(AuthService::class, $service);
+
+        $this->assertTrue(method_exists($service, 'getRequest'));
+        $this->assertTrue(method_exists($service, 'logout'));
+        $this->assertTrue(method_exists($service, 'login'));
     }
 }

@@ -15,11 +15,25 @@ class AuthService
     private $request;
 
     /**
-     * @param Request $request
+     * @var string
      */
-    public function __construct(Request $request)
+    private $user;
+
+    /**
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @param Request $request
+     * @param string $user
+     * @param string $password
+     */
+    public function __construct(Request $request, string $user, string $password)
     {
         $this->request = $request;
+        $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -38,11 +52,11 @@ class AuthService
         $user = $this->request->get('user');
         $password = $this->request->get('password');
 
-        if ('admin' !== $user || $_ENV['PASSWORD'] !== $password) {
+        if ($this->user !== $user || $this->password !== $password) {
             return null;
         }
 
-        $this->request->getSession()->set('admin', true);
+        $this->request->getSession()->set($this->user, true);
 
         return new RedirectResponse('/entity/list');
     }
@@ -52,8 +66,8 @@ class AuthService
      */
     public function logout(): RedirectResponse
     {
-        if ($this->request->getSession()->get('admin')) {
-            $this->request->getSession()->remove('admin');
+        if ($this->request->getSession()->get($this->user)) {
+            $this->request->getSession()->remove($this->user);
         }
 
         return new RedirectResponse('/entity/list');

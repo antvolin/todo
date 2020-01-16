@@ -50,9 +50,7 @@ class EntityPdoRepositoryTest extends TestCase
         $pdo = $this->app->getPdo();
         $this->entityName = $this->app->getEntityName();
         $this->entityClassNamespace = $this->app->getEntityClassNamespace();
-
         $this->repository = new EntityPdoRepository($pdo, $this->entityName, 3, $this->entityClassNamespace);
-
         $factory = new EntityManagerFactory($this->entityClassNamespace);
         $this->entityManager = $factory->create($this->entityName, $this->app->getRepository());
     }
@@ -68,11 +66,17 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->entityManager->saveEntity('test_user_name_777', 'asdeqw@kljasd.com', 'asda sdkj iasd sad asd');
+        $id = $this->entityManager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $entity = $this->repository->getEntityById($id);
 
-        $this->assertInstanceOf($this->entityClassNamespace.ucfirst(strtolower($this->entityName)), $this->repository->getEntityById($id));
-
-        $this->entityManager->deleteEntity($id);
+        $this->assertTrue(method_exists($entity, 'getStatus'));
+        $this->assertTrue(method_exists($entity, 'done'));
+        $this->assertTrue(method_exists($entity, 'getText'));
+        $this->assertTrue(method_exists($entity, 'edit'));
+        $this->assertTrue(method_exists($entity, 'getEmail'));
+        $this->assertTrue(method_exists($entity, 'getId'));
+        $this->assertTrue(method_exists($entity, 'setStatus'));
+        $this->assertTrue(method_exists($entity, 'getUserName'));
     }
 
     /**
@@ -85,12 +89,9 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingCountEntities(): void
     {
-
-        $id = $this->entityManager->saveEntity('test_user_name_777', 'asdeqw@kljasd.com', 'asdasd kjiasd sad asd');
+        $this->entityManager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $this->assertLessThan($this->repository->getCountEntities(), 0);
-
-        $this->entityManager->deleteEntity($id);
     }
 
     /**
@@ -103,14 +104,10 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingAllEntities(): void
     {
-        $id1 = $this->entityManager->saveEntity('test_user_name_777', 'asdeqw@kljasd.com', 'asdasd kji asd sad asd');
-        $id2 = $this->entityManager->saveEntity('test_user_name_777', 'asdeqw@kljasd.com', 'asdasd kjia sd sad asd');
-        $id3 = $this->entityManager->saveEntity('test_user_name_777', 'asdeqw@kljasd.com', 'asdasd kjias d sad asd');
+        $this->entityManager->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityManager->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityManager->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $this->assertCount(3, $this->repository->getEntities(1));
-
-        $this->entityManager->deleteEntity($id1);
-        $this->entityManager->deleteEntity($id2);
-        $this->entityManager->deleteEntity($id3);
     }
 }

@@ -5,7 +5,6 @@ namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
@@ -43,7 +42,10 @@ class EntityPdoRepositoryFactoryTest extends TestCase
         $factory = new EntityPdoRepositoryFactory($this->pdo, $this->app->getEntityName(), $this->app->getEntityClassNamespace());
         $repository = $factory->create($this->entityPerPage);
 
-        $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
+        $this->assertTrue(method_exists($repository, 'getCountEntities'));
+        $this->assertTrue(method_exists($repository, 'getEntities'));
+        $this->assertTrue(method_exists($repository, 'saveEntity'));
+        $this->assertTrue(method_exists($repository, 'getEntityById'));
     }
 
     /**
