@@ -1,13 +1,13 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\PdoService;
+use BeeJeeMVC\Lib\Service\PdoService;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class PdoManagerTest extends TestCase
+class PdoServiceTest extends TestCase
 {
     /**
      * PdoManager $pdoManager

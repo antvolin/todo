@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Manager;
+namespace BeeJeeMVC\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\Manager\PdoServiceInterface;
+use BeeJeeMVC\Lib\Service\PdoServiceInterface;
 
-interface PdoManagerFactoryInterface
+interface PdoServiceFactoryInterface
 {
     /**
      * @param string $entityName

@@ -1,11 +1,11 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
-use BeeJeeMVC\Lib\Manager\OrderingService;
+use BeeJeeMVC\Lib\Service\OrderingService;
 use PHPUnit\Framework\TestCase;
 
-class OrderingManagerTest extends TestCase
+class OrderingServiceTest extends TestCase
 {
     /**
      * @test

@@ -1,12 +1,12 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\SecretGeneratorService;
+use BeeJeeMVC\Lib\Service\SecretGeneratorService;
 use PHPUnit\Framework\TestCase;
 
-class SecretGeneratorManagerTest extends TestCase
+class SecretGeneratorServiceTest extends TestCase
 {
     /**
      * @test

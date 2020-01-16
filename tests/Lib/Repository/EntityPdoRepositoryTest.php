@@ -9,8 +9,8 @@ use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
-use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
+use BeeJeeMVC\Lib\Factory\Service\EntityServiceFactory;
+use BeeJeeMVC\Lib\Service\EntityServiceInterface;
 use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -51,7 +51,7 @@ class EntityPdoRepositoryTest extends TestCase
         $this->entityName = $this->app->getEntityName();
         $this->entityClassNamespace = $this->app->getEntityClassNamespace();
         $this->repository = new EntityPdoRepository($pdo, $this->entityName, 3, $this->entityClassNamespace);
-        $factory = new EntityManagerFactory($this->entityClassNamespace);
+        $factory = new EntityServiceFactory($this->entityClassNamespace);
         $this->entityManager = $factory->create($this->entityName, $this->app->getRepository());
     }
 

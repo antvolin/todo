@@ -1,13 +1,13 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory\Manager;
+namespace BeeJeeMVC\Tests\Lib\Factory\Service;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
+use BeeJeeMVC\Lib\Factory\Service\EntityServiceFactory;
 use PHPUnit\Framework\TestCase;
 
-class EntityManagerFactoryTest extends TestCase
+class EntityServiceFactoryTest extends TestCase
 {
     /**
      * @test
@@ -17,7 +17,7 @@ class EntityManagerFactoryTest extends TestCase
     public function shouldBeCreatedEntityManager(): void
     {
         $app = new App();
-        $factory = new EntityManagerFactory($app->getEntityClassNamespace());
+        $factory = new EntityServiceFactory($app->getEntityClassNamespace());
         $entityManager = $factory->create($app->getEntityName(), $app->getRepository());
 
         $this->assertTrue(method_exists($entityManager, 'deleteEntity'));

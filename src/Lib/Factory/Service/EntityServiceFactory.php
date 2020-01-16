@@ -1,14 +1,14 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Manager;
+namespace BeeJeeMVC\Lib\Factory\Service;
 
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Manager\EntityService;
-use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
+use BeeJeeMVC\Lib\Service\EntityService;
+use BeeJeeMVC\Lib\Service\EntityServiceInterface;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use BeeJeeMVC\Model\EntityInterface;
 
-class EntityManagerFactory implements EntityManagerFactoryInterface
+class EntityServiceFactory implements EntityServiceFactoryInterface
 {
     /**
      * @var string

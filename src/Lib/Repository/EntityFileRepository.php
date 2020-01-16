@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Repository;
 
-use BeeJeeMVC\Lib\Manager\OrderingService;
+use BeeJeeMVC\Lib\Service\OrderingService;
 use BeeJeeMVC\Model\EntityInterface;
 use FilesystemIterator;
 use LogicException;

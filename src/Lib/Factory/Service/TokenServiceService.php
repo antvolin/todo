@@ -1,12 +1,12 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Manager;
+namespace BeeJeeMVC\Lib\Factory\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\TokenService;
+use BeeJeeMVC\Lib\Service\TokenService;
 use Symfony\Component\HttpFoundation\Request;
 
-class TokenManagerFactory implements TokenManagerFactoryInterface
+class TokenServiceService implements TokenManagerServiceInterface
 {
     /**
      * @var string

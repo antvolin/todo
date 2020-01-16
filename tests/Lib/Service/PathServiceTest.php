@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
@@ -8,11 +8,11 @@ use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Manager\PathService;
+use BeeJeeMVC\Lib\Service\PathService;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class PathManagerTest extends TestCase
+class PathServiceTest extends TestCase
 {
     /**
      * @test

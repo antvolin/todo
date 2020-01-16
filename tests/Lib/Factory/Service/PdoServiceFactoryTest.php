@@ -1,12 +1,12 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory\Manager;
+namespace BeeJeeMVC\Tests\Lib\Factory\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
+use BeeJeeMVC\Lib\Factory\Service\PdoServiceFactory;
 use PHPUnit\Framework\TestCase;
 
-class PdoManagerFactoryTest extends TestCase
+class PdoServiceFactoryTest extends TestCase
 {
     /**
      * @test
@@ -14,7 +14,7 @@ class PdoManagerFactoryTest extends TestCase
     public function shouldBeCreatedPdoManager(): void
     {
         $app = new App();
-        $factory = new PdoManagerFactory(
+        $factory = new PdoServiceFactory(
             $app->getEntityName(),
             $app->getStorageType(),
             $app->getDbFolderName()

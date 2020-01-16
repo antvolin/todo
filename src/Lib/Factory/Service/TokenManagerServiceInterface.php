@@ -1,11 +1,11 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Manager;
+namespace BeeJeeMVC\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\Manager\TokenService;
+use BeeJeeMVC\Lib\Service\TokenService;
 use Symfony\Component\HttpFoundation\Request;
 
-interface TokenManagerFactoryInterface
+interface TokenManagerServiceInterface
 {
     /**
      * @param string $tokenSalt

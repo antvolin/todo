@@ -1,12 +1,12 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\TokenService;
+use BeeJeeMVC\Lib\Service\TokenService;
 use PHPUnit\Framework\TestCase;
 
-class TokenManagerTest extends TestCase
+class TokenServiceTest extends TestCase
 {
     /**
      * @var App

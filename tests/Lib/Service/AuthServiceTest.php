@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\AuthService;
+use BeeJeeMVC\Lib\Service\AuthService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

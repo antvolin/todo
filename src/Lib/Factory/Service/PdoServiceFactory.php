@@ -1,11 +1,11 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Manager;
+namespace BeeJeeMVC\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\Manager\PdoService;
-use BeeJeeMVC\Lib\Manager\PdoServiceInterface;
+use BeeJeeMVC\Lib\Service\PdoService;
+use BeeJeeMVC\Lib\Service\PdoServiceInterface;
 
-class PdoManagerFactory implements PdoManagerFactoryInterface
+class PdoServiceFactory implements PdoServiceFactoryInterface
 {
     /**
      * @var string

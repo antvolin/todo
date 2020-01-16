@@ -2,10 +2,10 @@
 
 namespace BeeJeeMVC\Lib;
 
-use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
-use BeeJeeMVC\Lib\Factory\Manager\PdoManagerFactory;
-use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
-use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactoryInterface;
+use BeeJeeMVC\Lib\Factory\Service\EntityServiceFactory;
+use BeeJeeMVC\Lib\Factory\Service\PdoServiceFactory;
+use BeeJeeMVC\Lib\Factory\Service\TokenServiceService;
+use BeeJeeMVC\Lib\Factory\Service\TokenManagerServiceInterface;
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
@@ -13,10 +13,10 @@ use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\RequestFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
-use BeeJeeMVC\Lib\Manager\EntityService;
-use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
-use BeeJeeMVC\Lib\Manager\AuthService;
-use BeeJeeMVC\Lib\Manager\SecretGeneratorService;
+use BeeJeeMVC\Lib\Service\EntityService;
+use BeeJeeMVC\Lib\Service\EntityServiceInterface;
+use BeeJeeMVC\Lib\Service\AuthService;
+use BeeJeeMVC\Lib\Service\SecretGeneratorService;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PDO;
@@ -206,11 +206,11 @@ class App
     }
 
     /**
-     * @return TokenManagerFactory
+     * @return TokenServiceService
      */
-    public function getTokenManagerFactory(): TokenManagerFactoryInterface
+    public function getTokenManagerFactory(): TokenManagerServiceInterface
     {
-        return new TokenManagerFactory($this->getTokenSalt());
+        return new TokenServiceService($this->getTokenSalt());
     }
 
     /**
@@ -230,7 +230,7 @@ class App
      */
     public function getEntityManager(): EntityServiceInterface
     {
-        $entityManagerFactory = new EntityManagerFactory($this->getEntityClassNamespace());
+        $entityManagerFactory = new EntityServiceFactory($this->getEntityClassNamespace());
 
         return $entityManagerFactory->create($this->getEntityName(), $this->getRepository());
     }
@@ -272,7 +272,7 @@ class App
      */
     public function getPdo(): PDO
     {
-        $factory = new PdoManagerFactory(
+        $factory = new PdoServiceFactory(
             $this->getEntityName(),
             $this->getStorageType(),
             $this->getDbFolderName()

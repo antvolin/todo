@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Manager\PathService;
+use BeeJeeMVC\Lib\Service\PathService;
 use BeeJeeMVC\Lib\Repository\EntityFileRepository;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 

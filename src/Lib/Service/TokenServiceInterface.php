@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Manager;
+namespace BeeJeeMVC\Lib\Service;
 
 interface TokenServiceInterface
 {

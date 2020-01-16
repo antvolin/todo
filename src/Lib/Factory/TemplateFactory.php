@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory;
 
-use BeeJeeMVC\Lib\Manager\PathService;
+use BeeJeeMVC\Lib\Service\PathService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

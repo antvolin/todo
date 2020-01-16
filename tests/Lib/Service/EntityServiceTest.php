@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Manager;
+namespace BeeJeeMVC\Tests\Lib\Service;
 
 use BeeJeeMVC\Lib\App;
 use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
@@ -11,13 +11,13 @@ use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Manager\EntityService;
-use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
+use BeeJeeMVC\Lib\Service\EntityService;
+use BeeJeeMVC\Lib\Service\EntityServiceInterface;
 use BeeJeeMVC\Model\EntityInterface;
 use BeeJeeMVC\Model\Status;
 use PHPUnit\Framework\TestCase;
 
-class EntityManagerTest extends TestCase
+class EntityServiceTest extends TestCase
 {
     /**
      * @var EntityServiceInterface

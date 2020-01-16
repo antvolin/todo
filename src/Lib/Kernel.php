@@ -4,13 +4,13 @@ namespace BeeJeeMVC\Lib;
 
 use BeeJeeMVC\Controller\AuthController;
 use BeeJeeMVC\Controller\EntityController;
-use BeeJeeMVC\Lib\Manager\AuthService;
+use BeeJeeMVC\Lib\Service\AuthService;
 use BeeJeeMVC\Lib\RequestHandler\AccessRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\FilterRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\RoleRequestHandler;
-use BeeJeeMVC\Lib\Manager\EntityService;
-use BeeJeeMVC\Lib\Manager\PathService;
+use BeeJeeMVC\Lib\Service\EntityService;
+use BeeJeeMVC\Lib\Service\PathService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

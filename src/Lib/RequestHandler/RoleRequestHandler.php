@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\RequestHandler;
 
-use BeeJeeMVC\Lib\Manager\PathService;
+use BeeJeeMVC\Lib\Service\PathService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

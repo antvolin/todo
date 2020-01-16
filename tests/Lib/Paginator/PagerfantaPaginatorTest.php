@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Tests\Lib\Paginator;
 
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Manager\OrderingService;
+use BeeJeeMVC\Lib\Service\OrderingService;
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use PHPUnit\Framework\TestCase;

@@ -1,12 +1,12 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory\Manager;
+namespace BeeJeeMVC\Tests\Lib\Factory\Service;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
+use BeeJeeMVC\Lib\Factory\Service\TokenServiceService;
 use PHPUnit\Framework\TestCase;
 
-class TokenManagerFactoryTest extends TestCase
+class TokenServiceFactoryTest extends TestCase
 {
     /**
      * @test
@@ -15,7 +15,7 @@ class TokenManagerFactoryTest extends TestCase
     {
         $app = new App();
         $request = $app->getRequest();
-        $factory = new TokenManagerFactory($app->getTokenSalt());
+        $factory = new TokenServiceService($app->getTokenSalt());
         $tokenManager = $factory->create($request);
 
         $this->assertTrue(method_exists($tokenManager, 'getToken'));

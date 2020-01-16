@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\RequestHandler;
 
-use BeeJeeMVC\Lib\Factory\Manager\TokenManagerFactory;
+use BeeJeeMVC\Lib\Factory\Service\TokenServiceService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -11,11 +11,11 @@ class AccessRequestHandler extends RequestHandler
     private const ACCESS_DENIED_MSG = 'Attempt to use csrf attack!';
 
     /**
-     * @var TokenManagerFactory
+     * @var TokenServiceService
      */
     private $tokenManagerFactory;
 
-    public function __construct(TokenManagerFactory $tokenManagerFactory)
+    public function __construct(TokenServiceService $tokenManagerFactory)
     {
         $this->tokenManagerFactory = $tokenManagerFactory;
     }
