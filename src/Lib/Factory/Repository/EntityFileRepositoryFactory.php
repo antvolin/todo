@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Manager\PathManager;
+use BeeJeeMVC\Lib\Manager\PathService;
 use BeeJeeMVC\Lib\Repository\EntityFileRepository;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 
@@ -13,7 +13,7 @@ class EntityFileRepositoryFactory extends EntityRepositoryFactory
      */
     public function create(int $entityPerPage): EntityRepositoryInterface
     {
-        $entityStoragePath = PathManager::getSrcPathByLevel() .$this->entityName;
+        $entityStoragePath = PathService::getSrcPathByLevel() .$this->entityName;
 
         return new EntityFileRepository($entityStoragePath, $entityPerPage);
     }

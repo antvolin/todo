@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Manager;
 
-interface TokenManagerInterface
+interface TokenServiceInterface
 {
     /**
      * @return string

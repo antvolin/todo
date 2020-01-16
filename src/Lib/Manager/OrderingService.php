@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Manager;
 
-class OrderingManager
+class OrderingService
 {
     public const ASC = 'ASC';
     public const DESC = 'DESC';

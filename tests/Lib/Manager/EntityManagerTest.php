@@ -11,8 +11,8 @@ use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Manager\EntityManager;
-use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
+use BeeJeeMVC\Lib\Manager\EntityService;
+use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
 use BeeJeeMVC\Model\EntityInterface;
 use BeeJeeMVC\Model\Status;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class EntityManagerTest extends TestCase
 {
     /**
-     * @var EntityManagerInterface
+     * @var EntityServiceInterface
      */
     private $manager;
 
@@ -32,7 +32,7 @@ class EntityManagerTest extends TestCase
         $app = new App();
         $repository = $app->getRepository();
         $entityClass = $app->getEntityClassNamespace().ucfirst(strtolower($app->getEntityName()));
-        $this->manager = new EntityManager($entityClass, $repository);
+        $this->manager = new EntityService($entityClass, $repository);
     }
 
     /**

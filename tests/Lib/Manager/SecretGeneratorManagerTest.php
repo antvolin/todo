@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Tests\Lib\Manager;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\SecretGeneratorManager;
+use BeeJeeMVC\Lib\Manager\SecretGeneratorService;
 use PHPUnit\Framework\TestCase;
 
 class SecretGeneratorManagerTest extends TestCase
@@ -15,7 +15,7 @@ class SecretGeneratorManagerTest extends TestCase
     {
         $app = new App();
         $tokenSecretPrefix = $app->getTokenSecretPrefix();
-        $generator = new SecretGeneratorManager($tokenSecretPrefix, $app->getTokenSecret());
+        $generator = new SecretGeneratorService($tokenSecretPrefix, $app->getTokenSecret());
         $secretPrefix = uniqid($tokenSecretPrefix, true);
         $secret = $generator->generateSecret($secretPrefix);
 

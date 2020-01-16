@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Tests\Lib\Manager;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\TokenManager;
+use BeeJeeMVC\Lib\Manager\TokenService;
 use PHPUnit\Framework\TestCase;
 
 class TokenManagerTest extends TestCase
@@ -29,14 +29,14 @@ class TokenManagerTest extends TestCase
     protected $tokenSalt;
 
     /**
-     * @var TokenManager
+     * @var TokenService
      */
     protected $tokenManager;
 
     protected function setUp()
     {
         $this->app = new App();
-        $this->tokenManager = new TokenManager();
+        $this->tokenManager = new TokenService();
         $this->secret = $this->app->getSecret();
         $this->tokenSalt = $this->app->getTokenSalt();
         $this->tokenManager->generateToken($this->secret, $this->tokenSalt);

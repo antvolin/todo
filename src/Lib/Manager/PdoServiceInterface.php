@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Lib\Manager;
 
 use PDO;
 
-interface PdoManagerInterface
+interface PdoServiceInterface
 {
     /**
      * @param string $pdoType

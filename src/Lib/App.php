@@ -13,10 +13,10 @@ use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
 use BeeJeeMVC\Lib\Factory\RequestFactory;
 use BeeJeeMVC\Lib\Factory\TemplateFactory;
-use BeeJeeMVC\Lib\Manager\EntityManager;
-use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
+use BeeJeeMVC\Lib\Manager\EntityService;
+use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
 use BeeJeeMVC\Lib\Manager\AuthService;
-use BeeJeeMVC\Lib\Manager\SecretGeneratorManager;
+use BeeJeeMVC\Lib\Manager\SecretGeneratorService;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use PDO;
@@ -192,7 +192,7 @@ class App
      */
     public function getSecret(): string
     {
-        $manager = new SecretGeneratorManager($this->getTokenSecretPrefix(), $this->getTokenSecret());
+        $manager = new SecretGeneratorService($this->getTokenSecretPrefix(), $this->getTokenSecret());
 
         return $manager->generateSecret();
     }
@@ -224,11 +224,11 @@ class App
     }
 
     /**
-     * @return EntityManager
+     * @return EntityService
      *
      * @throws Exceptions\NotAllowedEntityName
      */
-    public function getEntityManager(): EntityManagerInterface
+    public function getEntityManager(): EntityServiceInterface
     {
         $entityManagerFactory = new EntityManagerFactory($this->getEntityClassNamespace());
 

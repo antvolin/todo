@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Manager;
 
-class SecretGeneratorManager
+class SecretGeneratorService
 {
     /**
      * @var string

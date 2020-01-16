@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Lib\Factory\Manager;
 
 use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Manager\TokenManager;
+use BeeJeeMVC\Lib\Manager\TokenService;
 use Symfony\Component\HttpFoundation\Request;
 
 class TokenManagerFactory implements TokenManagerFactoryInterface
@@ -24,11 +24,11 @@ class TokenManagerFactory implements TokenManagerFactoryInterface
     /**
      * @param Request $request
      *
-     * @return TokenManager
+     * @return TokenService
      */
-    public function create(Request $request): TokenManager
+    public function create(Request $request): TokenService
     {
-        $tokenManager = new TokenManager();
+        $tokenManager = new TokenService();
 
         if (!$secret = $request->getSession()->get('secret')) {
             $secret = (new App())->getSecret();

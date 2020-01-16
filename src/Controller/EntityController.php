@@ -8,8 +8,8 @@ use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Manager\EntityManager;
-use BeeJeeMVC\Lib\Manager\OrderingManager;
+use BeeJeeMVC\Lib\Manager\EntityService;
+use BeeJeeMVC\Lib\Manager\OrderingService;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,7 +28,7 @@ class EntityController
     private $request;
 
     /**
-     * @var EntityManager
+     * @var EntityService
      */
     private $entityManager;
 
@@ -39,12 +39,12 @@ class EntityController
 
     /**
      * @param Request $request
-     * @param EntityManager $entityManager
+     * @param EntityService $entityManager
      * @param Environment $template
      */
     public function __construct(
         Request $request,
-        EntityManager $entityManager,
+        EntityService $entityManager,
         Environment $template
     )
     {
@@ -71,7 +71,7 @@ class EntityController
             'isAdmin' => $this->request->getSession()->get('admin', false),
             'isCreated' => $this->request->getSession()->get('isCreated', false),
             'page' => $page,
-            'order' => OrderingManager::getNextOrder($order),
+            'order' => OrderingService::getNextOrder($order),
             'entities' => $paginator->getCurrentPageResults(),
             'pagination' => $paginator->getHtml($orderBy, $order),
         ];

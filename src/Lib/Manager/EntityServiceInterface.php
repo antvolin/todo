@@ -12,7 +12,7 @@ use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
 use BeeJeeMVC\Model\EntityInterface;
 
-interface EntityManagerInterface
+interface EntityServiceInterface
 {
     /**
      * @param string $entityClass

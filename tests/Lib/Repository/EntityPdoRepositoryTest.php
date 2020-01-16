@@ -10,7 +10,7 @@ use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Factory\Manager\EntityManagerFactory;
-use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
+use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
 use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ class EntityPdoRepositoryTest extends TestCase
     protected $repository;
 
     /**
-     * @var EntityManagerInterface
+     * @var EntityServiceInterface
      */
     protected $entityManager;
 

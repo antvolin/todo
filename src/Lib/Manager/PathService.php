@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Manager;
 
-class PathManager
+class PathService
 {
     /**
      * @param string $path

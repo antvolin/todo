@@ -8,7 +8,7 @@ use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Manager\PathManager;
+use BeeJeeMVC\Lib\Manager\PathService;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +25,7 @@ class PathManagerTest extends TestCase
             'part3',
             'part4',
         ];
-        $actual = PathManager::getPathParts('/part1/part2/part3/part4/');
+        $actual = PathService::getPathParts('/part1/part2/part3/part4/');
 
         $this->assertSame($expected, $actual);
     }
@@ -35,7 +35,7 @@ class PathManagerTest extends TestCase
      */
     public function shouldBeGettingCorrectPathToSource(): void
     {
-        $this->assertDirectoryExists(PathManager::getSrcPathByLevel(2));
+        $this->assertDirectoryExists(PathService::getSrcPathByLevel(2));
     }
 
     /**
@@ -51,7 +51,7 @@ class PathManagerTest extends TestCase
     {
         $app = new App();
         $entityName = $app->getEntityName();
-        $dsn = PathManager::getPathToPdoDsn($app->getStorageType(), $app->getDbFolderName(), $entityName);
+        $dsn = PathService::getPathToPdoDsn($app->getStorageType(), $app->getDbFolderName(), $entityName);
         $pdo = new PDO($dsn);
 
         $entityManager = $app->getEntityManager();
@@ -67,6 +67,6 @@ class PathManagerTest extends TestCase
      */
     public function shouldBeGettingCorrectPathToTemplates(): void
     {
-        $this->assertDirectoryExists(PathManager::getPathToTemplates());
+        $this->assertDirectoryExists(PathService::getPathToTemplates());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory\Manager;
 
-use BeeJeeMVC\Lib\Manager\TokenManager;
+use BeeJeeMVC\Lib\Manager\TokenService;
 use Symfony\Component\HttpFoundation\Request;
 
 interface TokenManagerFactoryInterface
@@ -15,7 +15,7 @@ interface TokenManagerFactoryInterface
     /**
      * @param Request $request
      *
-     * @return TokenManager
+     * @return TokenService
      */
-    public function create(Request $request): TokenManager;
+    public function create(Request $request): TokenService;
 }

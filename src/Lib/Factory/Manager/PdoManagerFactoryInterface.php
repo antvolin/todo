@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Factory\Manager;
 
-use BeeJeeMVC\Lib\Manager\PdoManagerInterface;
+use BeeJeeMVC\Lib\Manager\PdoServiceInterface;
 
 interface PdoManagerFactoryInterface
 {
@@ -13,7 +13,7 @@ interface PdoManagerFactoryInterface
      */
     public function __construct(string $entityName, string $pdoType, string $dbFolderName);
     /**
-     * @return PdoManagerInterface
+     * @return PdoServiceInterface
      */
-    public function create(): PdoManagerInterface;
+    public function create(): PdoServiceInterface;
 }

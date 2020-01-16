@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\RequestHandler;
 
-use BeeJeeMVC\Lib\Manager\PathManager;
+use BeeJeeMVC\Lib\Manager\PathService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -21,10 +21,10 @@ class RoleRequestHandler extends RequestHandler
      */
     protected function process(Request $request): void
     {
-        $pathParts = PathManager::getPathParts($request->getPathInfo());
+        $pathParts = PathService::getPathParts($request->getPathInfo());
 
         if (count($pathParts) > 1) {
-            $controllerMethodName = PathManager::getFirstPart($request->getPathInfo());
+            $controllerMethodName = PathService::getFirstPart($request->getPathInfo());
             $admin = $request->getSession()->get('admin');
 
             if (!$admin && in_array($controllerMethodName, self::MODIFY_METHODS, true)) {

@@ -3,7 +3,7 @@
 namespace BeeJeeMVC\Tests\Lib\Paginator;
 
 use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Manager\OrderingManager;
+use BeeJeeMVC\Lib\Manager\OrderingService;
 use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
 use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
 use PHPUnit\Framework\TestCase;
@@ -88,7 +88,7 @@ class PagerfantaPaginatorTest extends TestCase
         );
 
         $html1 = sprintf('<nav>%s%s%s</nav>', $prevUrl, $currentUrl, $nextUrl);
-        $html2 = $this->paginator->getHtml(OrderingManager::ALLOWED_ORDER_BY_FIELDS[0], OrderingManager::ASC);
+        $html2 = $this->paginator->getHtml(OrderingService::ALLOWED_ORDER_BY_FIELDS[0], OrderingService::ASC);
 
         $this->assertEquals($html1, $html2);
     }

@@ -9,8 +9,8 @@ use BeeJeeMVC\Lib\RequestHandler\AccessRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\FilterRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
 use BeeJeeMVC\Lib\RequestHandler\RoleRequestHandler;
-use BeeJeeMVC\Lib\Manager\EntityManager;
-use BeeJeeMVC\Lib\Manager\PathManager;
+use BeeJeeMVC\Lib\Manager\EntityService;
+use BeeJeeMVC\Lib\Manager\PathService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -31,7 +31,7 @@ class Kernel
     private $template;
 
     /**
-     * @var EntityManager
+     * @var EntityService
      */
     private $entityManager;
 
@@ -69,7 +69,7 @@ class Kernel
 
         $this->handleRequest();
 
-        $urlParts = PathManager::getPathParts($this->request->getPathInfo());
+        $urlParts = PathService::getPathParts($this->request->getPathInfo());
 
         if ('auth' === strtolower(array_shift($urlParts))) {
             $controller = $this->createAuthController();

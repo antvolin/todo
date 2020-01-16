@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Tests\Lib\Manager;
 
-use BeeJeeMVC\Lib\Manager\OrderingManager;
+use BeeJeeMVC\Lib\Manager\OrderingService;
 use PHPUnit\Framework\TestCase;
 
 class OrderingManagerTest extends TestCase
@@ -16,10 +16,10 @@ class OrderingManagerTest extends TestCase
      */
     public function shouldBeGettingValidOrderBy(string $field): void
     {
-        $this->assertEquals('user_name', OrderingManager::getOrderBy(null));
-        $this->assertEquals('user_name', OrderingManager::getOrderBy(''));
-        $this->assertEquals('user_name', OrderingManager::getOrderBy('test'));
-        $this->assertEquals($field, OrderingManager::getOrderBy($field));
+        $this->assertEquals('user_name', OrderingService::getOrderBy(null));
+        $this->assertEquals('user_name', OrderingService::getOrderBy(''));
+        $this->assertEquals('user_name', OrderingService::getOrderBy('test'));
+        $this->assertEquals($field, OrderingService::getOrderBy($field));
     }
 
     /**
@@ -31,10 +31,10 @@ class OrderingManagerTest extends TestCase
      */
     public function shouldBeGettingValidOrder(string $field): void
     {
-        $this->assertEquals(OrderingManager::ASC, OrderingManager::getOrder(null));
-        $this->assertEquals(OrderingManager::ASC, OrderingManager::getOrder(''));
-        $this->assertEquals(OrderingManager::ASC, OrderingManager::getOrder('test'));
-        $this->assertEquals($field, OrderingManager::getOrder($field));
+        $this->assertEquals(OrderingService::ASC, OrderingService::getOrder(null));
+        $this->assertEquals(OrderingService::ASC, OrderingService::getOrder(''));
+        $this->assertEquals(OrderingService::ASC, OrderingService::getOrder('test'));
+        $this->assertEquals($field, OrderingService::getOrder($field));
     }
 
     /**
@@ -42,10 +42,10 @@ class OrderingManagerTest extends TestCase
      */
     public function shouldBeGettingValidNextOrder(): void
     {
-        $this->assertEquals(OrderingManager::DESC, OrderingManager::getNextOrder(null));
-        $this->assertEquals(OrderingManager::DESC, OrderingManager::getNextOrder(OrderingManager::ASC));
-        $this->assertEquals(OrderingManager::ASC, OrderingManager::getNextOrder(OrderingManager::DESC));
-        $this->assertEquals(OrderingManager::ASC, OrderingManager::getNextOrder('test'));
+        $this->assertEquals(OrderingService::DESC, OrderingService::getNextOrder(null));
+        $this->assertEquals(OrderingService::DESC, OrderingService::getNextOrder(OrderingService::ASC));
+        $this->assertEquals(OrderingService::ASC, OrderingService::getNextOrder(OrderingService::DESC));
+        $this->assertEquals(OrderingService::ASC, OrderingService::getNextOrder('test'));
     }
 
     /**
@@ -55,7 +55,7 @@ class OrderingManagerTest extends TestCase
     {
         $data = [];
 
-        foreach (OrderingManager::ALLOWED_ORDER_BY_FIELDS as $field) {
+        foreach (OrderingService::ALLOWED_ORDER_BY_FIELDS as $field) {
             $data[] = [$field];
         }
 
@@ -69,7 +69,7 @@ class OrderingManagerTest extends TestCase
     {
         $data = [];
 
-        foreach (OrderingManager::ALLOWED_ORDER_FIELDS as $field) {
+        foreach (OrderingService::ALLOWED_ORDER_FIELDS as $field) {
             $data[] = [$field];
         }
 

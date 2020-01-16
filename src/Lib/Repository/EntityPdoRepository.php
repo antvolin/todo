@@ -7,7 +7,7 @@ use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Manager\OrderingManager;
+use BeeJeeMVC\Lib\Manager\OrderingService;
 use BeeJeeMVC\Model\Email;
 use BeeJeeMVC\Model\EntityInterface;
 use BeeJeeMVC\Model\Id;
@@ -83,8 +83,8 @@ class EntityPdoRepository implements EntityRepositoryInterface
     {
         $result = [];
 
-        $orderBy = OrderingManager::getOrderBy($orderBy);
-        $order = OrderingManager::getOrder($order);
+        $orderBy = OrderingService::getOrderBy($orderBy);
+        $order = OrderingService::getOrder($order);
 
         $sth = $this->pdo->prepare("SELECT * FROM $this->entityName ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;");
         $limit = $this->entityPerPage;

@@ -2,7 +2,7 @@
 
 namespace BeeJeeMVC\Lib\Manager;
 
-class TokenManager implements TokenManagerInterface
+class TokenService implements TokenServiceInterface
 {
     /**
      * @var string

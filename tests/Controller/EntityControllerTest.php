@@ -11,7 +11,7 @@ use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
 use BeeJeeMVC\Lib\Exceptions\NotFoundException;
 use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
 use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Manager\EntityManagerInterface;
+use BeeJeeMVC\Lib\Manager\EntityServiceInterface;
 use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,7 +34,7 @@ class EntityControllerTest extends TestCase
     protected $controller;
 
     /**
-     * @var EntityManagerInterface
+     * @var EntityServiceInterface
      */
     protected $entityManager;
 

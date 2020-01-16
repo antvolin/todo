@@ -4,7 +4,7 @@ namespace BeeJeeMVC\Lib\Manager;
 
 use PDO;
 
-class PdoManager implements PdoManagerInterface
+class PdoService implements PdoServiceInterface
 {
     /**
      * @var PDO
@@ -41,7 +41,7 @@ class PdoManager implements PdoManagerInterface
      */
     public function getPdo(): PDO
     {
-        $this->pdo = new PDO(PathManager::getPathToPdoDsn($this->pdoType, $this->dbFolderName, $this->entityName));
+        $this->pdo = new PDO(PathService::getPathToPdoDsn($this->pdoType, $this->dbFolderName, $this->entityName));
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $this->pdo;

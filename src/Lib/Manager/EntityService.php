@@ -10,7 +10,7 @@ use BeeJeeMVC\Model\Text;
 use BeeJeeMVC\Model\UserName;
 use BeeJeeMVC\Model\Id;
 
-class EntityManager implements EntityManagerInterface
+class EntityService implements EntityServiceInterface
 {
     /**
      * @var string
