@@ -1,18 +1,9 @@
-/vendor/
 .env
-###> symfony/phpunit-bridge ###
+
 .phpunit
 .phpunit.result.cache
 /phpunit.xml
-###< symfony/phpunit-bridge ###
 
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
 /vendor/
-/database
-###< symfony/framework-bundle ###
+/database/
+/react_v2/node_modules/

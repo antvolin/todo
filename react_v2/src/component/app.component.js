@@ -1,8 +1,23 @@
 import React, { Component } from "react";
-import s from "./app.component.css";
+import TodoList from "./pages/TodoList";
+
 class MyComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {isCreated: true};
+    }
+
+    componentDidMount() {
+
+    }
+
+    componentWillUnmount() {
+
+    }
+
     render() {
-        return <div className={s.intro}>Hello World</div>;
+        return <TodoList {...this.state}/>
     }
 }
+
 export default MyComponent;
