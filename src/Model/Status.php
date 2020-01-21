@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Model;
+namespace Todo\Model;
 
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
 
 class Status
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory\Repository;
+namespace Todo\Tests\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use PDO;
 use PHPUnit\Framework\TestCase;
 

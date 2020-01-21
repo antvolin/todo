@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Paginator;
+namespace Todo\Lib\Factory\Paginator;
 
-use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
-use BeeJeeMVC\Lib\Paginator\PaginatorInterface;
+use Todo\Lib\Paginator\PaginatorAdapterInterface;
+use Todo\Lib\Paginator\PaginatorInterface;
 
 interface PaginatorFactoryInterface
 {

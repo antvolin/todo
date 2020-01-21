@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Model;
+namespace Todo\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
 
 class Entity implements EntityInterface
 {

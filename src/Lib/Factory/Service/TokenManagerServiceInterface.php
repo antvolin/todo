@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Service;
+namespace Todo\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\Service\TokenService;
+use Todo\Lib\Service\TokenService;
 use Symfony\Component\HttpFoundation\Request;
 
 interface TokenManagerServiceInterface

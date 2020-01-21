@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace Todo\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 

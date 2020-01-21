@@ -1,20 +1,20 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Service;
+namespace Todo\Tests\Lib\Service;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Service\EntityService;
-use BeeJeeMVC\Lib\Service\EntityServiceInterface;
-use BeeJeeMVC\Model\EntityInterface;
-use BeeJeeMVC\Model\Status;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Service\EntityService;
+use Todo\Lib\Service\EntityServiceInterface;
+use Todo\Model\EntityInterface;
+use Todo\Model\Status;
 use PHPUnit\Framework\TestCase;
 
 class EntityServiceTest extends TestCase

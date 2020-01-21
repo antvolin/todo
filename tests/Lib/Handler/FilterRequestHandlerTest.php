@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Handler;
+namespace Todo\Tests\Lib\Handler;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\RequestHandler\FilterRequestHandler;
-use BeeJeeMVC\Lib\RequestHandler\RequestHandler;
+use Todo\Lib\App;
+use Todo\Lib\RequestHandler\FilterRequestHandler;
+use Todo\Lib\RequestHandler\RequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -1,18 +1,18 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Controller;
+namespace Todo\Tests\Controller;
 
-use BeeJeeMVC\Controller\EntityController;
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Service\EntityServiceInterface;
-use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
+use Todo\Controller\EntityController;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Service\EntityServiceInterface;
+use Todo\Lib\RequestHandler\PaginatorRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

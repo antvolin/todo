@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Model;
+namespace Todo\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\NotValidEmailException;
 
 class Email
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Exceptions;
+namespace Todo\Lib\Exceptions;
 
 class CannotBeEmptyException extends \Exception
 {

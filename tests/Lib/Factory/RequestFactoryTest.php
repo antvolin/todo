@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory;
+namespace Todo\Tests\Lib\Factory;
 
-use BeeJeeMVC\Lib\Factory\RequestFactory;
+use Todo\Lib\Factory\RequestFactory;
 use PHPUnit\Framework\TestCase;
 
 class RequestFactoryTest extends TestCase

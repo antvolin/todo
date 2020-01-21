@@ -11,7 +11,7 @@ const Entity = () => {
             <div className="col-sm-1">
                 {/*{% if isAdmin %}*/}
                 <div className="modify-buttons">
-                    {/*{% if entity.status != constant('BeeJeeMVC\\Model\\Status::DONE') %}*/}
+                    {/*{% if entity.status != constant('Todo\\Model\\Status::DONE') %}*/}
                     <div className="hovered-buttons">
                         <Link to="/entity/edit/{{ entity.id.value }}">
                             <button className="btn btn-primary control-button right-button">edit</button>

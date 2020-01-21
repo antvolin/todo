@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory;
+namespace Todo\Lib\Factory;
 
-use BeeJeeMVC\Lib\Service\PathService;
+use Todo\Lib\Service\PathService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

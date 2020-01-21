@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Repository;
+namespace Todo\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Service\PathService;
-use BeeJeeMVC\Lib\Repository\EntityFileRepository;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\PathService;
+use Todo\Lib\Repository\EntityFileRepository;
+use Todo\Lib\Repository\EntityRepositoryInterface;
 
 class EntityFileRepositoryFactory extends EntityRepositoryFactory
 {

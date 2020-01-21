@@ -1,13 +1,13 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Repository;
+namespace Todo\Lib\Repository;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Model\EntityInterface;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Model\EntityInterface;
 
 interface EntityRepositoryInterface
 {

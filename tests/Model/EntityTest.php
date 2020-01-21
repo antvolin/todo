@@ -1,19 +1,19 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Model;
+namespace Todo\Tests\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Model\Email;
-use BeeJeeMVC\Model\EntityInterface;
-use BeeJeeMVC\Model\Id;
-use BeeJeeMVC\Model\Status;
-use BeeJeeMVC\Model\Entity;
-use BeeJeeMVC\Model\Text;
-use BeeJeeMVC\Model\UserName;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Model\Email;
+use Todo\Model\EntityInterface;
+use Todo\Model\Id;
+use Todo\Model\Status;
+use Todo\Model\Entity;
+use Todo\Model\Text;
+use Todo\Model\UserName;
 use PHPUnit\Framework\TestCase;
 
 class EntityTest extends TestCase

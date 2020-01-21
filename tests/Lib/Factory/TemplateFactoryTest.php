@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory;
+namespace Todo\Tests\Lib\Factory;
 
-use BeeJeeMVC\Lib\Factory\TemplateFactory;
+use Todo\Lib\Factory\TemplateFactory;
 use PHPUnit\Framework\TestCase;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

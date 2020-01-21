@@ -1,17 +1,17 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Repository;
+namespace Todo\Tests\Lib\Repository;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Factory\Service\EntityServiceFactory;
-use BeeJeeMVC\Lib\Service\EntityServiceInterface;
-use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Factory\Service\EntityServiceFactory;
+use Todo\Lib\Service\EntityServiceInterface;
+use Todo\Lib\Repository\EntityPdoRepository;
 use PHPUnit\Framework\TestCase;
 
 class EntityPdoRepositoryTest extends TestCase

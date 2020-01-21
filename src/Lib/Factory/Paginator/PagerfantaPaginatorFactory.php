@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Paginator;
+namespace Todo\Lib\Factory\Paginator;
 
-use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
-use BeeJeeMVC\Lib\Paginator\PaginatorAdapterInterface;
-use BeeJeeMVC\Lib\Paginator\PaginatorInterface;
+use Todo\Lib\Paginator\PagerfantaPaginator;
+use Todo\Lib\Paginator\PaginatorAdapterInterface;
+use Todo\Lib\Paginator\PaginatorInterface;
 
 class PagerfantaPaginatorFactory implements PaginatorFactoryInterface
 {

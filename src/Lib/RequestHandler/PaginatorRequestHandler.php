@@ -1,13 +1,13 @@
 <?php
 
-namespace BeeJeeMVC\Lib\RequestHandler;
+namespace Todo\Lib\RequestHandler;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
-use BeeJeeMVC\Lib\Service\EntityService;
-use BeeJeeMVC\Lib\Service\PathService;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
+use Todo\Lib\Service\EntityService;
+use Todo\Lib\Service\PathService;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorRequestHandler extends RequestHandler

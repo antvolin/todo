@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Paginator;
+namespace Todo\Lib\Paginator;
 
 interface PaginatorInterface
 {

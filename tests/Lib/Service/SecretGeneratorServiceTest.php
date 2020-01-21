@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Service;
+namespace Todo\Tests\Lib\Service;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Service\SecretGeneratorService;
+use Todo\Lib\App;
+use Todo\Lib\Service\SecretGeneratorService;
 use PHPUnit\Framework\TestCase;
 
 class SecretGeneratorServiceTest extends TestCase

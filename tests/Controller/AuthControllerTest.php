@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Controller;
+namespace Todo\Tests\Controller;
 
-use BeeJeeMVC\Controller\AuthController;
-use BeeJeeMVC\Lib\App;
+use Todo\Controller\AuthController;
+use Todo\Lib\App;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

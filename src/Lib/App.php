@@ -1,24 +1,24 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace Todo\Lib;
 
-use BeeJeeMVC\Lib\Factory\Service\EntityServiceFactory;
-use BeeJeeMVC\Lib\Factory\Service\PdoServiceFactory;
-use BeeJeeMVC\Lib\Factory\Service\TokenServiceService;
-use BeeJeeMVC\Lib\Factory\Service\TokenManagerServiceInterface;
-use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Factory\Paginator\PaginatorFactoryInterface;
-use BeeJeeMVC\Lib\Factory\Repository\EntityFileRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\Repository\EntityPdoRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\Repository\EntityRepositoryFactory;
-use BeeJeeMVC\Lib\Factory\RequestFactory;
-use BeeJeeMVC\Lib\Factory\TemplateFactory;
-use BeeJeeMVC\Lib\Service\EntityService;
-use BeeJeeMVC\Lib\Service\EntityServiceInterface;
-use BeeJeeMVC\Lib\Service\AuthService;
-use BeeJeeMVC\Lib\Service\SecretGeneratorService;
-use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Factory\Service\EntityServiceFactory;
+use Todo\Lib\Factory\Service\PdoServiceFactory;
+use Todo\Lib\Factory\Service\TokenServiceService;
+use Todo\Lib\Factory\Service\TokenManagerServiceInterface;
+use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
+use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
+use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
+use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
+use Todo\Lib\Factory\Repository\EntityRepositoryFactory;
+use Todo\Lib\Factory\RequestFactory;
+use Todo\Lib\Factory\TemplateFactory;
+use Todo\Lib\Service\EntityService;
+use Todo\Lib\Service\EntityServiceInterface;
+use Todo\Lib\Service\AuthService;
+use Todo\Lib\Service\SecretGeneratorService;
+use Todo\Lib\Paginator\PaginatorAdapter;
+use Todo\Lib\Repository\EntityRepositoryInterface;
 use PDO;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;

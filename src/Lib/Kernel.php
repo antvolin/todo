@@ -1,16 +1,16 @@
 <?php
 
-namespace BeeJeeMVC\Lib;
+namespace Todo\Lib;
 
-use BeeJeeMVC\Controller\AuthController;
-use BeeJeeMVC\Controller\EntityController;
-use BeeJeeMVC\Lib\Service\AuthService;
-use BeeJeeMVC\Lib\RequestHandler\AccessRequestHandler;
-use BeeJeeMVC\Lib\RequestHandler\FilterRequestHandler;
-use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
-use BeeJeeMVC\Lib\RequestHandler\RoleRequestHandler;
-use BeeJeeMVC\Lib\Service\EntityService;
-use BeeJeeMVC\Lib\Service\PathService;
+use Todo\Controller\AuthController;
+use Todo\Controller\EntityController;
+use Todo\Lib\Service\AuthService;
+use Todo\Lib\RequestHandler\AccessRequestHandler;
+use Todo\Lib\RequestHandler\FilterRequestHandler;
+use Todo\Lib\RequestHandler\PaginatorRequestHandler;
+use Todo\Lib\RequestHandler\RoleRequestHandler;
+use Todo\Lib\Service\EntityService;
+use Todo\Lib\Service\PathService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

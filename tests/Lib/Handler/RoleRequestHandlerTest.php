@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Handler;
+namespace Todo\Tests\Lib\Handler;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\RequestHandler\RoleRequestHandler;
+use Todo\Lib\App;
+use Todo\Lib\RequestHandler\RoleRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

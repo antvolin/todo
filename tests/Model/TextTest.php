@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Model;
+namespace Todo\Tests\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Model\Text;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Model\Text;
 use PHPUnit\Framework\TestCase;
 
 class TextTest extends TestCase

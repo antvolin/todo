@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Model;
+namespace Todo\Tests\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Model\Email;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Model\Email;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase

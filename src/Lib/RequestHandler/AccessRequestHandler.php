@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib\RequestHandler;
+namespace Todo\Lib\RequestHandler;
 
-use BeeJeeMVC\Lib\Factory\Service\TokenServiceService;
+use Todo\Lib\Factory\Service\TokenServiceService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

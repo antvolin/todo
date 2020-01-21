@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Model;
+namespace Todo\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
 
 class UserName
 {

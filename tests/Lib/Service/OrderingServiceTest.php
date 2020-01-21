@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Service;
+namespace Todo\Tests\Lib\Service;
 
-use BeeJeeMVC\Lib\Service\OrderingService;
+use Todo\Lib\Service\OrderingService;
 use PHPUnit\Framework\TestCase;
 
 class OrderingServiceTest extends TestCase

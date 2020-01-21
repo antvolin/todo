@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Service;
+namespace Todo\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\Service\PdoServiceInterface;
+use Todo\Lib\Service\PdoServiceInterface;
 
 interface PdoServiceFactoryInterface
 {

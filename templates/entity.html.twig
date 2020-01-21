@@ -6,7 +6,7 @@
     <div class="col-sm-1">
         {% if isAdmin %}
             <div class="modify-buttons">
-                {% if entity.status != constant('BeeJeeMVC\\Model\\Status::DONE') %}
+                {% if entity.status != constant('Todo\\Model\\Status::DONE') %}
                     <div class="hovered-buttons">
                         <a href="/entity/edit/{{ entity.id.value }}">
                             <button class="btn btn-primary control-button right-button">edit</button>

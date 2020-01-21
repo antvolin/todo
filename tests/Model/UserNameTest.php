@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Model;
+namespace Todo\Tests\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Model\UserName;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Model\UserName;
 use PHPUnit\Framework\TestCase;
 
 class UserNameTest extends TestCase

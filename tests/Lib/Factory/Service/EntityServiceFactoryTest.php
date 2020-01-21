@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory\Service;
+namespace Todo\Tests\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Factory\Service\EntityServiceFactory;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Factory\Service\EntityServiceFactory;
 use PHPUnit\Framework\TestCase;
 
 class EntityServiceFactoryTest extends TestCase

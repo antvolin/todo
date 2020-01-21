@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Controller;
+namespace Todo\Controller;
 
-use BeeJeeMVC\Lib\Service\AuthService;
+use Todo\Lib\Service\AuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

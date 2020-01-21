@@ -1,14 +1,14 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Service;
+namespace Todo\Lib\Service;
 
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
-use BeeJeeMVC\Model\Email;
-use BeeJeeMVC\Model\EntityInterface;
-use BeeJeeMVC\Model\Status;
-use BeeJeeMVC\Model\Text;
-use BeeJeeMVC\Model\UserName;
-use BeeJeeMVC\Model\Id;
+use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Model\Email;
+use Todo\Model\EntityInterface;
+use Todo\Model\Status;
+use Todo\Model\Text;
+use Todo\Model\UserName;
+use Todo\Model\Id;
 
 class EntityService implements EntityServiceInterface
 {

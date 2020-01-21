@@ -1,11 +1,11 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Paginator;
+namespace Todo\Tests\Lib\Paginator;
 
-use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Service\OrderingService;
-use BeeJeeMVC\Lib\Paginator\PagerfantaPaginator;
-use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
+use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
+use Todo\Lib\Service\OrderingService;
+use Todo\Lib\Paginator\PagerfantaPaginator;
+use Todo\Lib\Paginator\PaginatorAdapter;
 use PHPUnit\Framework\TestCase;
 
 class PagerfantaPaginatorTest extends TestCase

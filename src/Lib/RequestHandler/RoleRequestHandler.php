@@ -1,8 +1,8 @@
 <?php
 
-namespace BeeJeeMVC\Lib\RequestHandler;
+namespace Todo\Lib\RequestHandler;
 
-use BeeJeeMVC\Lib\Service\PathService;
+use Todo\Lib\Service\PathService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

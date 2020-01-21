@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Service;
+namespace Todo\Tests\Lib\Service;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Service\TokenService;
+use Todo\Lib\App;
+use Todo\Lib\Service\TokenService;
 use PHPUnit\Framework\TestCase;
 
 class TokenServiceTest extends TestCase

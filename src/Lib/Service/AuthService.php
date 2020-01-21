@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Service;
+namespace Todo\Lib\Service;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,15 +1,15 @@
 <?php
 
-namespace BeeJeeMVC\Controller;
+namespace Todo\Controller;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Service\EntityService;
-use BeeJeeMVC\Lib\Service\OrderingService;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Service\EntityService;
+use Todo\Lib\Service\OrderingService;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;

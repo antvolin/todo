@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Model;
+namespace Todo\Tests\Model;
 
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Model\Status;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Model\Status;
 use PHPUnit\Framework\TestCase;
 
 class StatusTest extends TestCase

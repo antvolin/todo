@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Repository;
+namespace Todo\Tests\Lib\Repository;
 
 use PHPUnit\Framework\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory;
+namespace Todo\Lib\Factory;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;

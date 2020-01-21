@@ -1,6 +1,6 @@
 <?php
 
-namespace BeeJeeMVC\Model;
+namespace Todo\Model;
 
 class Id
 {

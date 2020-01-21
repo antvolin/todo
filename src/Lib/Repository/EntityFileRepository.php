@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Repository;
+namespace Todo\Lib\Repository;
 
-use BeeJeeMVC\Lib\Service\OrderingService;
-use BeeJeeMVC\Model\EntityInterface;
+use Todo\Lib\Service\OrderingService;
+use Todo\Model\EntityInterface;
 use FilesystemIterator;
 use LogicException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;

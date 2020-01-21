@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Factory\Paginator;
+namespace Todo\Tests\Lib\Factory\Paginator;
 
-use BeeJeeMVC\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use BeeJeeMVC\Lib\Paginator\PaginatorAdapter;
+use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
+use Todo\Lib\Paginator\PaginatorAdapter;
 use PHPUnit\Framework\TestCase;
 
 class PagerfantaPaginatorFactoryTest extends TestCase

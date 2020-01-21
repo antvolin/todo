@@ -1,9 +1,9 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib;
+namespace Todo\Tests\Lib;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
 use PHPUnit\Framework\TestCase;
 
 class AppTest extends TestCase

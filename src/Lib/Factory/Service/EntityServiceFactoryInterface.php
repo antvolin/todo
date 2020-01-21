@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Service;
+namespace Todo\Lib\Factory\Service;
 
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Service\EntityServiceInterface;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Service\EntityServiceInterface;
+use Todo\Lib\Repository\EntityRepositoryInterface;
 
 interface EntityServiceFactoryInterface
 {

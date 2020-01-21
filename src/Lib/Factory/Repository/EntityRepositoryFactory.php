@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Repository;
+namespace Todo\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
-use BeeJeeMVC\Model\EntityInterface;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Model\EntityInterface;
 
 abstract class EntityRepositoryFactory
 {

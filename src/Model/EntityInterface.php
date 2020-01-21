@@ -1,11 +1,11 @@
 <?php
 
-namespace BeeJeeMVC\Model;
+namespace Todo\Model;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
 
 interface EntityInterface
 {

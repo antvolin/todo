@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BeeJeeMVC\\": "src/"
+            "Todo\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BeeJeeMVC\\Tests\\": "tests/"
+            "Todo\\Tests\\": "tests/"
         }
     },
     "scripts": {

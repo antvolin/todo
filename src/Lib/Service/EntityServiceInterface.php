@@ -1,16 +1,16 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Service;
+namespace Todo\Lib\Service;
 
-use BeeJeeMVC\Lib\Exceptions\CannotBeEmptyException;
-use BeeJeeMVC\Lib\Exceptions\CannotDoneEntityException;
-use BeeJeeMVC\Lib\Exceptions\CannotEditEntityException;
-use BeeJeeMVC\Lib\Exceptions\ForbiddenStatusException;
-use BeeJeeMVC\Lib\Exceptions\PdoErrorsException;
-use BeeJeeMVC\Lib\Exceptions\NotValidEmailException;
-use BeeJeeMVC\Lib\Exceptions\NotFoundException;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
-use BeeJeeMVC\Model\EntityInterface;
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Model\EntityInterface;
 
 interface EntityServiceInterface
 {

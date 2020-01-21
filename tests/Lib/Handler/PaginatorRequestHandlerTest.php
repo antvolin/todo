@@ -1,11 +1,11 @@
 <?php
 
-namespace BeeJeeMVC\Tests\Lib\Handler;
+namespace Todo\Tests\Lib\Handler;
 
-use BeeJeeMVC\Lib\App;
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\RequestHandler\PaginatorRequestHandler;
-use BeeJeeMVC\Lib\Paginator\PaginatorInterface;
+use Todo\Lib\App;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\RequestHandler\PaginatorRequestHandler;
+use Todo\Lib\Paginator\PaginatorInterface;
 use PHPUnit\Framework\TestCase;
 
 class PaginatorRequestHandlerTest extends TestCase

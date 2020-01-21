@@ -1,10 +1,10 @@
 <?php
 
-namespace BeeJeeMVC\Lib\Factory\Repository;
+namespace Todo\Lib\Factory\Repository;
 
-use BeeJeeMVC\Lib\Exceptions\NotAllowedEntityName;
-use BeeJeeMVC\Lib\Repository\EntityPdoRepository;
-use BeeJeeMVC\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Repository\EntityPdoRepository;
+use Todo\Lib\Repository\EntityRepositoryInterface;
 use PDO;
 
 class EntityPdoRepositoryFactory extends EntityRepositoryFactory
