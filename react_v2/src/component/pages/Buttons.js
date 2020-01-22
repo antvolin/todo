@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+import {
+    Button,
+    Col,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
+} from 'reactstrap';
 import PropTypes from "prop-types";
 
 const Buttons = (props) => {
@@ -19,28 +29,44 @@ const Buttons = (props) => {
     return (
         <div>
             <div>
-                <Link to="/entity/create">
-                    <Button color="success" onClick={onCreateButtonClick}>create</Button>
-                </Link>
+                <Button color="success" onClick={onCreateButtonClick}>create</Button>
                 <Modal isOpen={modal1} toggle={onCreateButtonClick}>
                     <ModalHeader toggle={onCreateButtonClick}>Modal title</ModalHeader>
-                    <ModalBody>
-                        Creating!
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={onCreateButtonClick}>Do Something</Button>{' '}
-                        <Button color="secondary" onClick={onCreateButtonClick}>Cancel</Button>
-                    </ModalFooter>
+                    <Form>
+                        <ModalBody>
+                            <FormGroup row>
+                                <Label for="exampleEmail" sm={2}>Email</Label>
+                                <Col sm={10}>
+                                    <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="examplePassword" sm={2}>Password</Label>
+                                <Col sm={10}>
+                                    <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="exampleText" sm={2}>Text Area</Label>
+                                <Col sm={10}>
+                                    <Input type="textarea" name="text" id="exampleText" />
+                                </Col>
+                            </FormGroup>
+                        </ModalBody>
+                        <ModalFooter>
+                            <FormGroup check row>
+                                <Col sm={{ size: 10, offset: 2 }}>
+                                    <Button>Submit</Button>
+                                </Col>
+                            </FormGroup>
+                        </ModalFooter>
+                    </Form>
                 </Modal>
                 {' '}
                 {isAdmin === true ?
-                    <Link to="/auth/logout">
-                        <Button color="success" onClick={() => onLogoutButtonClick()}>logout</Button>
-                    </Link>
+                    <Button color="success" onClick={() => onLogoutButtonClick()}>logout</Button>
                     :
-                    <Link to="/auth/login">
-                        <Button color="success" onClick={onLoginButtonClick}>login</Button>
-                    </Link>
+                    <Button color="success" onClick={onLoginButtonClick}>login</Button>
                 }
                 {isAdmin === true ?
                     <Modal isOpen={modal3} toggle={onLogoutButtonClick}>
