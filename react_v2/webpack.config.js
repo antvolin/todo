@@ -11,7 +11,13 @@ module.exports = {
         compress: true,
         port: 9000,
         watchContentBase: true,
-        progress: true
+        progress: true,
+        historyApiFallback: true,
+        proxy: {
+            '/entity': {
+                target: 'http://localhost:8080',
+            },
+        }
     },
     module: {
         rules: [

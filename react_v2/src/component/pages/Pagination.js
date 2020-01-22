@@ -1,10 +1,9 @@
 import React from 'react';
 
-const Pagination = () => {
+const Pagination = (props) => {
+    const {pagination} = props;
     return (
-        <div className="pagerfanta">
-            {/*{{pagination}}*/}
-        </div>
+        <div className="pagerfanta" dangerouslySetInnerHTML={{__html: pagination}}/>
     );
 };
 
