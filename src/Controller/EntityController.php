@@ -2,6 +2,7 @@
 
 namespace Todo\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
@@ -54,13 +55,13 @@ class EntityController
     }
 
     /**
-     * @return Response
+     * @return JsonResponse
      *
      * @throws LoaderErrorAlias
      * @throws RuntimeErrorAlias
      * @throws SyntaxErrorAlias
      */
-    public function list(): Response
+    public function list(): JsonResponse
     {
         $page = $this->request->get('page', 1);
         $orderBy = $this->request->get('orderBy');
@@ -78,7 +79,8 @@ class EntityController
 
         $this->request->getSession()->remove('isCreated');
 
-        return new Response($this->template->render('list.html.twig', $params));
+        // return new Response($this->template->render('list.html.twig', $params));
+        return new JsonResponse($params);
     }
 
     /**

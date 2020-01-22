@@ -6,11 +6,11 @@ const Task = (props) => {
     const {entities, isAdmin} = props;
 
     return (
-        <div className="tasks">
-            {entities.map((entity) => {
-                return <Entity key={entity.id} entity={entity} isAdmin={isAdmin}/>;
-            })}
-        </div>
+        <tbody>
+        {entities.map((entity) => {
+            return <Entity key={entity.id} entity={entity} isAdmin={isAdmin}/>;
+        })}
+        </tbody>
     );
 };
 

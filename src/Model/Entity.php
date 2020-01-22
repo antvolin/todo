@@ -2,10 +2,11 @@
 
 namespace Todo\Model;
 
+use JsonSerializable;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 
-class Entity implements EntityInterface
+class Entity implements EntityInterface, JsonSerializable
 {
     /**
      * @var Id
@@ -42,6 +43,22 @@ class Entity implements EntityInterface
         $this->email = $email;
         $this->text = $text;
         $this->status = $status;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        $status = $this->getStatus();
+
+        return [
+            'id' => $this->getId()->getValue(),
+            'userName' => $this->getUserName()->getValue(),
+            'email' => $this->getEmail()->getValue(),
+            'text' => $this->getText()->getValue(),
+            'status' => $status ? $status->getValue() : null,
+        ];
     }
 
     /**

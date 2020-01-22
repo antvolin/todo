@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import {Button} from 'reactstrap';
 import PropTypes from "prop-types";
 
 const Sorting = (props) => {
@@ -11,37 +11,39 @@ const Sorting = (props) => {
     const statusOrder = '/entity/list?page='+page+'&orderBy=status&order='+order;
 
     return (
-        <div className="row sorting">
-            <div className="col-sm-2">
-                <div className="hovered-buttons">
-                    <Link to={userNameOrder}>
-                        <Button className="btn btn-primary control-button">name &uarr;&darr;</Button>
-                    </Link>
-                </div>
-            </div>
-            <div className="col-sm-3">
-                <div className="hovered-buttons">
-                    <Link to={emailOrder}>
-                        <Button className="btn btn-primary control-button">email &uarr;&darr;</Button>
-                    </Link>
-                </div>
-            </div>
-            <div className="col-sm-5">
-                <div className="hovered-buttons">
-                    <Link to={textOrder}>
-                        <Button className="btn btn-primary control-button">text &uarr;&darr;</Button>
-                    </Link>
-                </div>
-            </div>
-            <div className="col-sm-1">
-                <div className="hovered-buttons">
-                    <Link to={statusOrder}>
-                        <Button className="btn btn-primary control-button">status &uarr;&darr;</Button>
-                    </Link>
-                </div>
-            </div>
-            <div className="col-sm-1"/>
-        </div>
+        <thead>
+            <tr>
+                <th>
+                    <div>
+                        <Link to={userNameOrder}>
+                            <Button>name &uarr;&darr;</Button>
+                        </Link>
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        <Link to={emailOrder}>
+                            <Button>email &uarr;&darr;</Button>
+                        </Link>
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        <Link to={textOrder}>
+                            <Button>text &uarr;&darr;</Button>
+                        </Link>
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        <Link to={statusOrder}>
+                            <Button>status &uarr;&darr;</Button>
+                        </Link>
+                    </div>
+                </th>
+                <th/>
+            </tr>
+        </thead>
     );
 };
 

@@ -41,4 +41,12 @@ class Status
     {
         return (string) $this->value;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
 }

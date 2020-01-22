@@ -4,6 +4,7 @@ import Sorting from "./Sorting";
 import Task from "./Task";
 import Pagination from "./Pagination";
 import PropTypes from 'prop-types';
+import {Table} from "reactstrap";
 
 const TodoList = (props) => {
     const {
@@ -18,11 +19,13 @@ const TodoList = (props) => {
     return (
         <Fragment>
             {isCreated === true &&
-            <div className="msg">Task created!</div>
+            <div>Task created!</div>
             }
             <Buttons isAdmin={isAdmin}/>
-            <Sorting page={page} order={order}/>
-            <Task entities={entities} isAdmin={isAdmin}/>
+            <Table>
+                <Sorting page={page} order={order}/>
+                <Task entities={entities} isAdmin={isAdmin}/>
+            </Table>
             <Pagination pagination={pagination}/>
         </Fragment>
     );

@@ -1,5 +1,5 @@
 {
-    "name": "antvolin/bee_jee_mvc",
+    "name": "antvolin/todo",
     "description": "task book",
     "type": "project",
     "license": "MIT",
@@ -18,7 +18,8 @@
         "symfony/twig-pack": "^1.0",
         "symfony/twig-bundle": "^5.0",
         "ext-sqlite3": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/test-pack": "^1.0",
