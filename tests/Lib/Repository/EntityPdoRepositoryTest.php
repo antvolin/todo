@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Lib\Repository;
+namespace Tests\Lib\Repository;
 
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
@@ -10,9 +10,9 @@ use Todo\Lib\Exceptions\NotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Factory\Service\EntityServiceFactory;
-use Todo\Lib\Service\EntityServiceInterface;
 use Todo\Lib\Repository\EntityPdoRepository;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 
 class EntityPdoRepositoryTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 namespace Todo\Lib\Factory\Paginator;
 
-use Todo\Lib\Paginator\PagerfantaPaginator;
-use Todo\Lib\Paginator\PaginatorAdapterInterface;
-use Todo\Lib\Paginator\PaginatorInterface;
+use Todo\Lib\Service\Paginator\PagerfantaPaginatorService;
+use Todo\Lib\Service\Paginator\PaginatorAdapterInterface;
+use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 
 class PagerfantaPaginatorFactory implements PaginatorFactoryInterface
 {
@@ -31,11 +31,11 @@ class PagerfantaPaginatorFactory implements PaginatorFactoryInterface
     /**
      * @inheritdoc
      */
-    public function create(array $rows, int $countRows, int $page): PaginatorInterface
+    public function create(array $rows, int $countRows, int $page): PaginatorServiceInterface
     {
         $this->adapter->setData($rows);
         $this->adapter->setCountRows($countRows);
 
-        return new PagerfantaPaginator($this->adapter, $page, $this->entityPerPage);
+        return new PagerfantaPaginatorService($this->adapter, $page, $this->entityPerPage);
     }
 }

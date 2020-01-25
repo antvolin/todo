@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Lib\Factory\Service;
+namespace Tests\Lib\Factory\Service;
 
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\NotAllowedEntityName;

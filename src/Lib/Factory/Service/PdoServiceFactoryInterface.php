@@ -2,7 +2,7 @@
 
 namespace Todo\Lib\Factory\Service;
 
-use Todo\Lib\Service\PdoServiceInterface;
+use Todo\Lib\Service\Pdo\PdoServiceInterface;
 
 interface PdoServiceFactoryInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Todo\Tests\Lib\Factory\Service;
+namespace Tests\Lib\Factory\Service;
 
 use Todo\Lib\App;
-use Todo\Lib\Factory\Service\TokenServiceService;
+use Todo\Lib\Factory\Service\TokenServiceFactory;
 use PHPUnit\Framework\TestCase;
 
 class TokenServiceFactoryTest extends TestCase
@@ -15,7 +15,7 @@ class TokenServiceFactoryTest extends TestCase
     {
         $app = new App();
         $request = $app->getRequest();
-        $factory = new TokenServiceService($app->getTokenSalt());
+        $factory = new TokenServiceFactory($app->getTokenSalt());
         $tokenManager = $factory->create($request);
 
         $this->assertTrue(method_exists($tokenManager, 'getToken'));

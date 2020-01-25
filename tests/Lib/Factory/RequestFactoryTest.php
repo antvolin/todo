@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Lib\Factory;
+namespace Tests\Lib\Factory;
 
 use Todo\Lib\Factory\RequestFactory;
 use PHPUnit\Framework\TestCase;

@@ -4,8 +4,8 @@ namespace Todo\Lib;
 
 use Todo\Lib\Factory\Service\EntityServiceFactory;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
-use Todo\Lib\Factory\Service\TokenServiceService;
-use Todo\Lib\Factory\Service\TokenManagerServiceInterface;
+use Todo\Lib\Factory\Service\TokenServiceFactory;
+use Todo\Lib\Factory\Service\TokenServiceFactoryInterface;
 use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
@@ -13,11 +13,11 @@ use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityRepositoryFactory;
 use Todo\Lib\Factory\RequestFactory;
 use Todo\Lib\Factory\TemplateFactory;
-use Todo\Lib\Service\EntityService;
-use Todo\Lib\Service\EntityServiceInterface;
-use Todo\Lib\Service\AuthService;
-use Todo\Lib\Service\SecretGeneratorService;
-use Todo\Lib\Paginator\PaginatorAdapter;
+use Todo\Lib\Service\Auth\AuthService;
+use Todo\Lib\Service\Entity\EntityService;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
+use Todo\Lib\Service\Paginator\PaginatorAdapter;
+use Todo\Lib\Service\Secret\SecretGeneratorService;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use PDO;
 use Symfony\Component\HttpFoundation\Request;
@@ -206,11 +206,11 @@ class App
     }
 
     /**
-     * @return TokenServiceService
+     * @return TokenServiceFactory
      */
-    public function getTokenManagerFactory(): TokenManagerServiceInterface
+    public function getTokenManagerFactory(): TokenServiceFactoryInterface
     {
-        return new TokenServiceService($this->getTokenSalt());
+        return new TokenServiceFactory($this->getTokenSalt());
     }
 
     /**

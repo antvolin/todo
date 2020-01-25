@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Controller;
+namespace Tests\Controller;
 
 use Todo\Controller\EntityController;
 use Todo\Lib\App;
@@ -11,12 +11,12 @@ use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\NotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoErrorsException;
-use Todo\Lib\Service\EntityServiceInterface;
-use Todo\Lib\RequestHandler\PaginatorRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
+use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -61,9 +61,9 @@ class EntityControllerTest extends TestCase
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function shouldBeGettingEntitiesList(): void
+    public function shouldBeGettingParamsForEntityListPage(): void
     {
-        $handler = new PaginatorRequestHandler(
+        $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
             $this->entityManager
         );
@@ -72,7 +72,37 @@ class EntityControllerTest extends TestCase
         $response = $this->controller->list();
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertContains('<title>Tasks book</title>', $response->getContent());
+
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsBool($content['isAdmin']);
+        $this->assertIsBool($content['isCreated']);
+        $this->assertIsInt($content['page']);
+        $this->assertGreaterThan(0, $content['page']);
+        $this->assertIsString($content['order']);
+        $this->assertNotEmpty($content['order']);
+
+        $entities = $content['entities'];
+
+        $this->assertCount(3, $entities);
+
+        foreach ($entities as $entity) {
+            $this->assertIsInt($entity['id']);
+            $this->assertGreaterThan(0, $entity['id']);
+            $this->assertIsString($entity['userName']);
+            $this->assertNotEmpty($entity['userName']);
+            $this->assertIsString($entity['email']);
+            $this->assertNotEmpty($entity['email']);
+            $this->assertIsString($entity['text']);
+            $this->assertNotEmpty($entity['text']);
+            $this->assertArrayHasKey('status', $entity);
+        }
+
+        $this->assertGreaterThan(0, $content['page']);
+        $this->assertIsString($content['pagination']);
+        $this->assertNotEmpty($content['pagination']);
+
+//        $this->assertContains('<title>Tasks book</title>', $response->getContent());
     }
 
     /**
@@ -87,7 +117,7 @@ class EntityControllerTest extends TestCase
      */
     public function shouldBeGettingCreatePage(): void
     {
-        $handler = new PaginatorRequestHandler(
+        $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
             $this->entityManager
         );
@@ -111,7 +141,7 @@ class EntityControllerTest extends TestCase
      */
     public function shouldBeEntityCreatable(): void
     {
-        $handler = new PaginatorRequestHandler($this->app->getPaginatorFactory(), $this->entityManager);
+        $handler = new PaginatorRequestHandlerService($this->app->getPaginatorFactory(), $this->entityManager);
         $handler->handle($this->request);
         $this->request->setMethod('POST');
         $this->request->request->set('user_name', uniqid('user_name'.__METHOD__.__CLASS__, true));
@@ -139,7 +169,7 @@ class EntityControllerTest extends TestCase
      */
     public function shouldBeEntityEditable(): void
     {
-        $handler = new PaginatorRequestHandler($this->app->getPaginatorFactory(), $this->entityManager);
+        $handler = new PaginatorRequestHandlerService($this->app->getPaginatorFactory(), $this->entityManager);
         $handler->handle($this->request);
         $this->request->setMethod('POST');
 
@@ -167,7 +197,7 @@ class EntityControllerTest extends TestCase
      */
     public function shouldBeEntityDone(): void
     {
-        $handler = new PaginatorRequestHandler($this->app->getPaginatorFactory(), $this->entityManager);
+        $handler = new PaginatorRequestHandlerService($this->app->getPaginatorFactory(), $this->entityManager);
         $handler->handle($this->request);
         $this->request->setMethod('POST');
 

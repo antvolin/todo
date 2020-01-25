@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Controller;
+namespace Tests\Controller;
 
 use Todo\Controller\AuthController;
 use Todo\Lib\App;

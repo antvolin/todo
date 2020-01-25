@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Lib;
+namespace Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 

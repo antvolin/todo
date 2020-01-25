@@ -4,13 +4,13 @@ namespace Todo\Lib;
 
 use Todo\Controller\AuthController;
 use Todo\Controller\EntityController;
-use Todo\Lib\Service\AuthService;
-use Todo\Lib\RequestHandler\AccessRequestHandler;
-use Todo\Lib\RequestHandler\FilterRequestHandler;
-use Todo\Lib\RequestHandler\PaginatorRequestHandler;
-use Todo\Lib\RequestHandler\RoleRequestHandler;
-use Todo\Lib\Service\EntityService;
-use Todo\Lib\Service\PathService;
+use Todo\Lib\Service\Auth\AuthService;
+use Todo\Lib\Service\Entity\EntityService;
+use Todo\Lib\Service\Path\PathService;
+use Todo\Lib\Service\RequestHandler\AccessRequestHandlerService;
+use Todo\Lib\Service\RequestHandler\FilterRequestHandlerService;
+use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
+use Todo\Lib\Service\RequestHandler\RoleRequestHandlerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -89,12 +89,12 @@ class Kernel
 
     private function handleRequest(): void
     {
-        $filterRequestHandler = new FilterRequestHandler();
-        $accessRequestHandler = new AccessRequestHandler(
+        $filterRequestHandler = new FilterRequestHandlerService();
+        $accessRequestHandler = new AccessRequestHandlerService(
             $this->app->getTokenManagerFactory()
         );
-        $roleRequestHandler = new RoleRequestHandler();
-        $pagingRequestHandler = new PaginatorRequestHandler(
+        $roleRequestHandler = new RoleRequestHandlerService();
+        $pagingRequestHandler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
             $this->entityManager
         );

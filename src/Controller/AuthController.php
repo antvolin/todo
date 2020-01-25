@@ -2,13 +2,13 @@
 
 namespace Todo\Controller;
 
-use Todo\Lib\Service\AuthService;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Todo\Lib\Service\Auth\AuthService;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController
 {

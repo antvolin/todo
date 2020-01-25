@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Model;
+namespace Tests\Model;
 
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Model\Status;

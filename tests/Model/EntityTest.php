@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Tests\Model;
+namespace Tests\Model;
 
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;

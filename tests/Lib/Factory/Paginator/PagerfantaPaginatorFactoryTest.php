@@ -1,10 +1,10 @@
 <?php
 
-namespace Todo\Tests\Lib\Factory\Paginator;
+namespace Tests\Lib\Factory\Paginator;
 
 use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
-use Todo\Lib\Paginator\PaginatorAdapter;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Service\Paginator\PaginatorAdapter;
 
 class PagerfantaPaginatorFactoryTest extends TestCase
 {

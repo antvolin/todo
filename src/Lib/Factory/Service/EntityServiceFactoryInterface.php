@@ -3,8 +3,8 @@
 namespace Todo\Lib\Factory\Service;
 
 use Todo\Lib\Exceptions\NotAllowedEntityName;
-use Todo\Lib\Service\EntityServiceInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 
 interface EntityServiceFactoryInterface
 {

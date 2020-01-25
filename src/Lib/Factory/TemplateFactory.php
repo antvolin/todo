@@ -2,7 +2,7 @@
 
 namespace Todo\Lib\Factory;
 
-use Todo\Lib\Service\PathService;
+use Todo\Lib\Service\Path\PathService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

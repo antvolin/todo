@@ -3,9 +3,9 @@
 namespace Todo\Lib\Factory\Service;
 
 use Todo\Lib\Exceptions\NotAllowedEntityName;
-use Todo\Lib\Service\EntityService;
-use Todo\Lib\Service\EntityServiceInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\Entity\EntityService;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Model\EntityInterface;
 
 class EntityServiceFactory implements EntityServiceFactoryInterface

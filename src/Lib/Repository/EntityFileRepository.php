@@ -2,7 +2,7 @@
 
 namespace Todo\Lib\Repository;
 
-use Todo\Lib\Service\OrderingService;
+use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
 use FilesystemIterator;
 use LogicException;

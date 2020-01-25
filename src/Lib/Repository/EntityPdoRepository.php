@@ -7,7 +7,7 @@ use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotFoundException;
-use Todo\Lib\Service\OrderingService;
+use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\Email;
 use Todo\Model\EntityInterface;
 use Todo\Model\Id;

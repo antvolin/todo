@@ -2,8 +2,8 @@
 
 namespace Todo\Lib\Factory\Paginator;
 
-use Todo\Lib\Paginator\PaginatorAdapterInterface;
-use Todo\Lib\Paginator\PaginatorInterface;
+use Todo\Lib\Service\Paginator\PaginatorAdapterInterface;
+use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 
 interface PaginatorFactoryInterface
 {
@@ -18,7 +18,7 @@ interface PaginatorFactoryInterface
      * @param int $countRows
      * @param int $page
      *
-     * @return PaginatorInterface
+     * @return PaginatorServiceInterface
      */
-    public function create(array $rows, int $countRows, int $page): PaginatorInterface;
+    public function create(array $rows, int $countRows, int $page): PaginatorServiceInterface;
 }
