@@ -10,9 +10,9 @@ use Todo\Lib\Service\Pdo\PdoService;
 class PdoServiceTest extends TestCase
 {
     /**
-     * PdoManager $pdoManager
+     * PdoService $pdoService
      */
-    protected $pdoManager;
+    protected $pdoService;
 
     /**
      * Pdo $pdo
@@ -22,8 +22,8 @@ class PdoServiceTest extends TestCase
     protected function setUp()
     {
         $app = new App();
-        $this->pdoManager = new PdoService($app->getEntityName(), $app->getStorageType(), $app->getDbFolderName());
-        $this->pdo = $this->pdoManager->getPdo();
+        $this->pdoService = new PdoService($app->getEntityName(), $app->getStorageType(), $app->getDbFolderName());
+        $this->pdo = $this->pdoService->getPdo();
     }
 
     /**
@@ -39,6 +39,6 @@ class PdoServiceTest extends TestCase
      */
     public function shouldBeCreatedTables(): void
     {
-        $this->assertTrue($this->pdoManager->createTables());
+        $this->assertTrue($this->pdoService->createTables());
     }
 }

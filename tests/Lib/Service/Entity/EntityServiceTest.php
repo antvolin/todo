@@ -22,7 +22,7 @@ class EntityServiceTest extends TestCase
     /**
      * @var EntityServiceInterface
      */
-    private $manager;
+    private $entityService;
 
     /**
      * @throws NotAllowedEntityName
@@ -32,7 +32,7 @@ class EntityServiceTest extends TestCase
         $app = new App();
         $repository = $app->getRepository();
         $entityClass = $app->getEntityClassNamespace().ucfirst(strtolower($app->getEntityName()));
-        $this->manager = new EntityService($entityClass, $repository);
+        $this->entityService = new EntityService($entityClass, $repository);
     }
 
     /**
@@ -46,8 +46,8 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
-        $entity = $this->manager->getEntityById($id);
+        $id = $this->entityService->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $entity = $this->entityService->getEntityById($id);
 
         $this->assertInstanceOf(EntityInterface::class, $entity);
     }
@@ -62,11 +62,11 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeGettingEntitiesArray(): void
     {
-        $this->manager->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test1', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->manager->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test2', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->manager->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test3', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test1', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test2', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test3', uniqid('text3'.__METHOD__.__CLASS__, true));
 
-        $entities = $this->manager->getEntities(0);
+        $entities = $this->entityService->getEntities(0);
 
         foreach ($entities as $entity) {
             $this->assertInstanceOf(EntityInterface::class, $entity);
@@ -83,11 +83,11 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeGettingCountOfEntities(): void
     {
-        $this->manager->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->manager->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->manager->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
 
-        $count = $this->manager->getCountEntities();
+        $count = $this->entityService->getCountEntities();
 
         $this->assertLessThan($count, 0);
     }
@@ -105,10 +105,10 @@ class EntityServiceTest extends TestCase
     {
         $this->expectException(NotFoundException::class);
 
-        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
-        $this->manager->deleteEntity($id);
-        $this->manager->getEntityById($id);
+        $this->entityService->deleteEntity($id);
+        $this->entityService->getEntityById($id);
     }
 
     /**
@@ -124,9 +124,9 @@ class EntityServiceTest extends TestCase
     public function shouldBeEditingEntity(): void
     {
         $newText = uniqid('text'.__METHOD__.__CLASS__, true);
-        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
-        $this->manager->editEntity($id, $newText);
-        $entity = $this->manager->getEntityById($id);
+        $id = $this->entityService->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->entityService->editEntity($id, $newText);
+        $entity = $this->entityService->getEntityById($id);
 
         $this->assertEquals(Status::EDITED, $entity->getStatus());
         $this->assertEquals($newText, $entity->getText());
@@ -144,9 +144,9 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeDoneEntity(): void
     {
-        $id = $this->manager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test111', uniqid('text'.__METHOD__.__CLASS__, true));
-        $this->manager->doneEntity($id);
-        $entity = $this->manager->getEntityById($id);
+        $id = $this->entityService->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test111', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->entityService->doneEntity($id);
+        $entity = $this->entityService->getEntityById($id);
 
         $this->assertEquals(Status::DONE, $entity->getStatus());
     }

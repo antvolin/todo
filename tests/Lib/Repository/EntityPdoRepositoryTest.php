@@ -29,7 +29,7 @@ class EntityPdoRepositoryTest extends TestCase
     /**
      * @var EntityServiceInterface
      */
-    protected $entityManager;
+    protected $entityService;
 
     /**
      * @var string 
@@ -52,7 +52,7 @@ class EntityPdoRepositoryTest extends TestCase
         $this->entityClassNamespace = $this->app->getEntityClassNamespace();
         $this->repository = new EntityPdoRepository($pdo, $this->entityName, 3, $this->entityClassNamespace);
         $factory = new EntityServiceFactory($this->entityClassNamespace);
-        $this->entityManager = $factory->create($this->entityName, $this->app->getRepository());
+        $this->entityService = $factory->create($this->entityName, $this->app->getRepository());
     }
 
     /**
@@ -66,7 +66,7 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->entityManager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
         $entity = $this->repository->getEntityById($id);
 
         $this->assertTrue(method_exists($entity, 'getStatus'));
@@ -89,7 +89,7 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingCountEntities(): void
     {
-        $this->entityManager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $this->assertLessThan($this->repository->getCountEntities(), 0);
     }
@@ -104,9 +104,9 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingAllEntities(): void
     {
-        $this->entityManager->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityManager->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityManager->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityService->saveEntity(uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $this->assertCount(3, $this->repository->getEntities(1));
     }

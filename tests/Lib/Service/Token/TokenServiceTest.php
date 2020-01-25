@@ -31,16 +31,16 @@ class TokenServiceTest extends TestCase
     /**
      * @var TokenService
      */
-    protected $tokenManager;
+    protected $tokenService;
 
     protected function setUp()
     {
         $this->app = new App();
-        $this->tokenManager = new TokenService();
+        $this->tokenService = new TokenService();
         $this->secret = $this->app->getSecret();
         $this->tokenSalt = $this->app->getTokenSalt();
-        $this->tokenManager->generateToken($this->secret, $this->tokenSalt);
-        $this->token = $this->tokenManager->getToken();
+        $this->tokenService->generateToken($this->secret, $this->tokenSalt);
+        $this->token = $this->tokenService->getToken();
     }
 
     /**
@@ -56,7 +56,7 @@ class TokenServiceTest extends TestCase
      */
     public function validationOfAValidTokenMustBeSuccessful(): void
     {
-        $this->assertTrue($this->tokenManager->isValidToken($this->token, $this->secret));
+        $this->assertTrue($this->tokenService->isValidToken($this->token, $this->secret));
     }
 
     /**
@@ -64,6 +64,6 @@ class TokenServiceTest extends TestCase
      */
     public function validationOfInvalidTokenMustFail(): void
     {
-        $this->assertFalse($this->tokenManager->isValidToken('not valid token', 'not valid secret'));
+        $this->assertFalse($this->tokenService->isValidToken('not valid token', 'not valid secret'));
     }
 }
