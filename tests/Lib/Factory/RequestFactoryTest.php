@@ -12,7 +12,8 @@ class RequestFactoryTest extends TestCase
      */
     public function shouldBeCreatedRequest(): void
     {
-        $request = (new RequestFactory())->create();
+        $factory = new RequestFactory();
+        $request = $factory->create();
 
         $this->assertTrue($request->hasSession());
     }

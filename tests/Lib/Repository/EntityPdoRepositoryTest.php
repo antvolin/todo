@@ -70,7 +70,7 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->entityService->saveEntity($this->app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
         $entity = $this->repository->getEntityById($id);
 
         $this->assertTrue(method_exists($entity, 'getStatus'));
@@ -94,7 +94,7 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingCountEntities(): void
     {
-        $this->entityService->saveEntity($this->app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $this->assertLessThan($this->repository->getCountEntities(), 0);
     }
@@ -111,9 +111,9 @@ class EntityPdoRepositoryTest extends TestCase
      */
     public function shouldBeGettingAllEntities(): void
     {
-        $this->entityService->saveEntity($this->app->getRepository(), uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityService->saveEntity($this->app->getRepository(), uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityService->saveEntity($this->app->getRepository(), uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $this->assertCount(3, $this->repository->getEntities(1));
     }

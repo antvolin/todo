@@ -11,15 +11,15 @@ class TokenServiceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeCreatedTokenManager(): void
+    public function shouldBeCreatedTokenService(): void
     {
         $app = new App();
         $request = $app->getRequest();
         $factory = new TokenServiceFactory($app->getTokenSalt());
-        $tokenManager = $factory->create($request);
+        $service = $factory->create($request);
 
-        $this->assertTrue(method_exists($tokenManager, 'getToken'));
-        $this->assertTrue(method_exists($tokenManager, 'generateToken'));
-        $this->assertTrue(method_exists($tokenManager, 'isValidToken'));
+        $this->assertTrue(method_exists($service, 'getToken'));
+        $this->assertTrue(method_exists($service, 'generateToken'));
+        $this->assertTrue(method_exists($service, 'isValidToken'));
     }
 }

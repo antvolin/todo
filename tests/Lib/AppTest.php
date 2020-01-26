@@ -77,7 +77,7 @@ class AppTest extends TestCase
         $this->assertTrue(method_exists($manager, 'editEntity'));
         $this->assertTrue(method_exists($manager, 'getEntities'));
         $this->assertTrue(method_exists($manager, 'getEntityById'));
-        $this->assertTrue(method_exists($manager, 'saveEntity'));
+        $this->assertTrue(method_exists($manager, 'addEntity'));
     }
 
     /**
@@ -92,7 +92,7 @@ class AppTest extends TestCase
 
         $this->assertTrue(method_exists($repository, 'getCountEntities'));
         $this->assertTrue(method_exists($repository, 'getEntities'));
-        $this->assertTrue(method_exists($repository, 'saveEntity'));
+        $this->assertTrue(method_exists($repository, 'addEntity'));
         $this->assertTrue(method_exists($repository, 'getEntityById'));
     }
 

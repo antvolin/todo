@@ -111,7 +111,7 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      */
-    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int;
+    public function addEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int;
 
     /**
      * @param EntityRepositoryInterface $repository

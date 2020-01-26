@@ -2,11 +2,8 @@
 
 namespace Todo\Lib\Service\Entity;
 
-use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\Email;
 use Todo\Model\EntityInterface;
@@ -98,7 +95,7 @@ class EntityService implements EntityServiceInterface
         $entity->setStatus(new Status(Status::EDITED));
         $entity->setText(new Text($text));
 
-        $repository->saveEntity($entity, $entityId);
+        $repository->addEntity($entity, $entityId);
     }
 
     /**
@@ -114,15 +111,15 @@ class EntityService implements EntityServiceInterface
 
         $entity->setStatus(new Status(Status::DONE));
 
-        $repository->saveEntity($entity, $entity->getId()->getValue());
+        $repository->addEntity($entity, $entity->getId()->getValue());
     }
 
     /**
      * @inheritDoc
      */
-    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int
+    public function addEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int
     {
-        return $repository->saveEntity(
+        return $repository->addEntity(
             new $this->entityClass(
                 new Id(),
                 new UserName($userName),

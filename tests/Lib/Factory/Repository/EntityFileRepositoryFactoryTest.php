@@ -32,7 +32,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
 
         $this->assertTrue(method_exists($repository, 'getCountEntities'));
         $this->assertTrue(method_exists($repository, 'getEntities'));
-        $this->assertTrue(method_exists($repository, 'saveEntity'));
+        $this->assertTrue(method_exists($repository, 'addEntity'));
         $this->assertTrue(method_exists($repository, 'getEntityById'));
     }
 

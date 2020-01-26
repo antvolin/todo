@@ -49,7 +49,7 @@ interface EntityRepositoryInterface
      *
      * @throws PdoErrorsException
      */
-    public function saveEntity(EntityInterface $entity, ?int $entityId = null): int;
+    public function addEntity(EntityInterface $entity, ?int $entityId = null): int;
 
     /**
      * @param int $entityId

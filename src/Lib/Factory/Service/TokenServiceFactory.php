@@ -14,7 +14,7 @@ class TokenServiceFactory implements TokenServiceFactoryInterface
     private $tokenSalt;
 
     /**
-     * @param string $tokenSalt
+     * @inheritDoc
      */
     public function __construct(string $tokenSalt)
     {
@@ -22,13 +22,11 @@ class TokenServiceFactory implements TokenServiceFactoryInterface
     }
 
     /**
-     * @param Request $request
-     *
-     * @return TokenService
+     * @inheritDoc
      */
     public function create(Request $request): TokenService
     {
-        $tokenManager = new TokenService();
+        $tokenService = new TokenService();
 
         if (!$secret = $request->getSession()->get('secret')) {
             $secret = (new App())->getSecret();
@@ -36,8 +34,8 @@ class TokenServiceFactory implements TokenServiceFactoryInterface
             $request->getSession()->set('secret', $secret);
         }
 
-        $tokenManager->generateToken($secret, $this->tokenSalt);
+        $tokenService->generateToken($secret, $this->tokenSalt);
 
-        return $tokenManager;
+        return $tokenService;
     }
 }

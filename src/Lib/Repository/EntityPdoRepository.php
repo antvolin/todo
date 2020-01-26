@@ -96,7 +96,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function saveEntity(EntityInterface $entity, ?int $entityId = null): int
+    public function addEntity(EntityInterface $entity, ?int $entityId = null): int
     {
         $userName = $entity->getUserName();
         $email = $entity->getEmail();

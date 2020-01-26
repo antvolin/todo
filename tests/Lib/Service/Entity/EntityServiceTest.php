@@ -36,6 +36,10 @@ class EntityServiceTest extends TestCase
      */
     private $entityService;
 
+    /**
+     * @throws NotAllowedEntityName
+     * @throws PdoConnectionExceptionAlias
+     */
     protected function setUp()
     {
         $this->app = new App();
@@ -48,15 +52,13 @@ class EntityServiceTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotFoundException
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->entityService->saveEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
         $entity = $this->entityService->getEntityById($this->repository, $id);
 
         $this->assertInstanceOf(EntityInterface::class, $entity);
@@ -67,16 +69,14 @@ class EntityServiceTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException
      */
     public function shouldBeGettingEntitiesArray(): void
     {
-        $this->entityService->saveEntity($this->repository, uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test1', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityService->saveEntity($this->repository, uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test2', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityService->saveEntity($this->repository, uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test3', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->repository, uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test1', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->repository, uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test2', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->repository, uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test3', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $entities = $this->entityService->getEntities($this->repository, 0);
 
@@ -97,9 +97,9 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeGettingCountOfEntities(): void
     {
-        $this->entityService->saveEntity($this->repository, uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityService->saveEntity($this->repository, uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityService->saveEntity($this->repository, uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->repository, uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->repository, uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
+        $this->entityService->addEntity($this->repository, uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
 
         $count = $this->entityService->getCountEntities($this->app->getRepository());
 
@@ -111,17 +111,15 @@ class EntityServiceTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotFoundException
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException
      */
     public function shouldBeDeletingEntity(): void
     {
         $this->expectException(NotFoundException::class);
 
-        $id = $this->entityService->saveEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $this->entityService->deleteEntity($this->repository, $id);
         $this->entityService->getEntityById($this->repository, $id);
@@ -131,19 +129,17 @@ class EntityServiceTest extends TestCase
      * @test
      *
      * @throws CannotBeEmptyException
+     * @throws CannotDoneEntityException
      * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotFoundException
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException
-     * @throws CannotDoneEntityException
      */
     public function shouldBeEditingEntity(): void
     {
         $newText = uniqid('text'.__METHOD__.__CLASS__, true);
-        $id = $this->entityService->saveEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
         $this->entityService->editEntity($this->repository, $id, $newText);
         $entity = $this->entityService->getEntityById($this->repository, $id);
 
@@ -157,15 +153,13 @@ class EntityServiceTest extends TestCase
      * @throws CannotBeEmptyException
      * @throws CannotDoneEntityException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotFoundException
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException
      */
     public function shouldBeDoneEntity(): void
     {
-        $id = $this->entityService->saveEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test111', uniqid('text'.__METHOD__.__CLASS__, true));
+        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test111', uniqid('text'.__METHOD__.__CLASS__, true));
         $this->entityService->doneEntity($this->repository, $id);
         $entity = $this->entityService->getEntityById($this->repository, $id);
 

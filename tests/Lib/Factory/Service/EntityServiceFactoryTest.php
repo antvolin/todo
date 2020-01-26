@@ -27,7 +27,7 @@ class EntityServiceFactoryTest extends TestCase
         $this->assertTrue(method_exists($entityManager, 'createEntity'));
         $this->assertTrue(method_exists($entityManager, 'editEntity'));
         $this->assertTrue(method_exists($entityManager, 'doneEntity'));
-        $this->assertTrue(method_exists($entityManager, 'saveEntity'));
+        $this->assertTrue(method_exists($entityManager, 'addEntity'));
         $this->assertTrue(method_exists($entityManager, 'deleteEntity'));
     }
 

@@ -12,6 +12,7 @@ interface PdoServiceFactoryInterface
      * @param string $dbFolderName
      */
     public function __construct(string $entityName, string $pdoType, string $dbFolderName);
+
     /**
      * @return PdoServiceInterface
      */

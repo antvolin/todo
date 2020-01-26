@@ -65,13 +65,13 @@ class EntityController
     }
 
     /**
-     * @return JsonResponse
+     * @return Response
      *
      * @throws LoaderErrorAlias
      * @throws RuntimeErrorAlias
      * @throws SyntaxErrorAlias
      */
-    public function list(): JsonResponse
+    public function list(): Response
     {
         $page = $this->request->get('page', 1);
         $orderBy = $this->request->get('orderBy');
@@ -89,8 +89,8 @@ class EntityController
 
         $this->request->getSession()->remove('isCreated');
 
-        // return new Response($this->template->render('list.html.twig', $params));
-        return new JsonResponse($params);
+         return new Response($this->template->render('list.html.twig', $params));
+//        return new JsonResponse($params);
     }
 
     /**
@@ -112,7 +112,7 @@ class EntityController
         }
 
         try {
-            $id = $this->entityService->saveEntity($this->entityRepository, $this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+            $id = $this->entityService->addEntity($this->entityRepository, $this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
             return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
         }

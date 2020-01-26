@@ -23,9 +23,7 @@ class PdoServiceFactory implements PdoServiceFactoryInterface
     private $dbFolderName;
 
     /**
-     * @param string $entityName
-     * @param string $pdoType
-     * @param string $dbFolderName
+     * @inheritDoc
      */
     public function __construct(string $entityName, string $pdoType, string $dbFolderName)
     {
@@ -35,7 +33,7 @@ class PdoServiceFactory implements PdoServiceFactoryInterface
     }
 
     /**
-     * @return PdoServiceInterface
+     * @inheritDoc
      */
     public function create(): PdoServiceInterface
     {

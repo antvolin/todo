@@ -57,7 +57,7 @@ class PathServiceTest extends TestCase
         $pdo = new PDO($dsn);
 
         $entityManager = $app->getEntityService();
-        $entityManager->saveEntity($app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $entityManager->addEntity($app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();
 

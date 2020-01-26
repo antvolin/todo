@@ -11,7 +11,7 @@ class PdoServiceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeCreatedPdoManager(): void
+    public function shouldBeCreatablePdoService(): void
     {
         $app = new App();
         $factory = new PdoServiceFactory(
@@ -19,9 +19,9 @@ class PdoServiceFactoryTest extends TestCase
             $app->getStorageType(),
             $app->getDbFolderName()
         );
-        $pdoManager = $factory->create();
+        $service = $factory->create();
 
-        $this->assertTrue(method_exists($pdoManager, 'createTables'));
-        $this->assertTrue(method_exists($pdoManager, 'getPdo'));
+        $this->assertTrue(method_exists($service, 'getPdo'));
+        $this->assertTrue(method_exists($service, 'createTables'));
     }
 }
