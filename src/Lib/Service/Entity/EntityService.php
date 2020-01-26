@@ -71,28 +71,6 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int
-    {
-        return $repository->saveEntity(
-            new $this->entityClass(
-                new Id(),
-                new UserName($userName),
-                new Email($email),
-                new Text($text),
-                new Status()
-            )
-        );
-    }
-
-    /**
-     * @param array $entity
-     *
-     * @return EntityInterface
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     */
     public function createEntity(array $entity): EntityInterface
     {
         $entityClass = $this->entityClass;
@@ -104,14 +82,6 @@ class EntityService implements EntityServiceInterface
             new Text($entity['text']),
             new Status($entity['status'])
         );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void
-    {
-        $repository->deleteEntity($entityId);
     }
 
     /**
@@ -145,5 +115,29 @@ class EntityService implements EntityServiceInterface
         $entity->setStatus(new Status(Status::DONE));
 
         $repository->saveEntity($entity, $entity->getId()->getValue());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int
+    {
+        return $repository->saveEntity(
+            new $this->entityClass(
+                new Id(),
+                new UserName($userName),
+                new Email($email),
+                new Text($text),
+                new Status()
+            )
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void
+    {
+        $repository->deleteEntity($entityId);
     }
 }

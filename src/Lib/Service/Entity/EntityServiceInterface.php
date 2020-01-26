@@ -60,25 +60,15 @@ interface EntityServiceInterface
     public function getCountEntities(EntityRepositoryInterface $repository): int;
 
     /**
-     * @param EntityRepositoryInterface $repository
-     * @param string $userName
-     * @param string $email
-     * @param string $text
+     * @param array $entity
      *
-     * @return int
+     * @return EntityInterface
      *
      * @throws CannotBeEmptyException
-     * @throws NotValidEmailException
      * @throws ForbiddenStatusException
-     * @throws PdoErrorsException
+     * @throws NotValidEmailException
      */
-    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int;
-
-    /**
-     * @param EntityRepositoryInterface $repository
-     * @param int $entityId
-     */
-    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void;
+    public function createEntity(array $entity): EntityInterface;
 
     /**
      * @param EntityRepositoryInterface $repository
@@ -107,4 +97,25 @@ interface EntityServiceInterface
      * @throws CannotDoneEntityException
      */
     public function doneEntity(EntityRepositoryInterface $repository, int $entityId): void;
+
+    /**
+     * @param EntityRepositoryInterface $repository
+     * @param string $userName
+     * @param string $email
+     * @param string $text
+     *
+     * @return int
+     *
+     * @throws CannotBeEmptyException
+     * @throws NotValidEmailException
+     * @throws ForbiddenStatusException
+     * @throws PdoErrorsException
+     */
+    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int;
+
+    /**
+     * @param EntityRepositoryInterface $repository
+     * @param int $entityId
+     */
+    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void;
 }
