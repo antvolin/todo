@@ -51,7 +51,7 @@ class PathService
      */
     public static function getPathToPdoDsn(string $pdoType, string $dbFolderName, string $entityName): string
     {
-        return $pdoType.':'.dirname(__DIR__).'/../../../'.$dbFolderName.$entityName;
+        return $pdoType.':'.dirname(__DIR__).'/../../..'.$dbFolderName.$entityName;
     }
 
     /**

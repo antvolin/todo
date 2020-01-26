@@ -19,8 +19,7 @@ class PagerfantaPaginatorFactory implements PaginatorFactoryInterface
     private $entityPerPage;
 
     /**
-     * @param PaginatorAdapterInterface $adapter
-     * @param int $entityPerPage
+     * @inheritdoc
      */
     public function __construct(PaginatorAdapterInterface $adapter, int $entityPerPage)
     {

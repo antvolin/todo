@@ -14,7 +14,6 @@ use Todo\Lib\Factory\Repository\EntityRepositoryFactory;
 use Todo\Lib\Factory\RequestFactory;
 use Todo\Lib\Factory\TemplateFactory;
 use Todo\Lib\Service\Auth\AuthService;
-use Todo\Lib\Service\Entity\EntityService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
 use Todo\Lib\Service\Secret\SecretGeneratorService;
@@ -202,13 +201,13 @@ class App
      */
     public function getToken(): string
     {
-        return $this->getTokenManagerFactory()->create($this->getRequest())->getToken();
+        return $this->getTokenServiceFactory()->create($this->getRequest())->getToken();
     }
 
     /**
      * @return TokenServiceFactory
      */
-    public function getTokenManagerFactory(): TokenServiceFactoryInterface
+    public function getTokenServiceFactory(): TokenServiceFactoryInterface
     {
         return new TokenServiceFactory($this->getTokenSalt());
     }
@@ -224,21 +223,24 @@ class App
     }
 
     /**
-     * @return EntityService
+     * @param string|null $entityName
+     *
+     * @return EntityServiceInterface
      *
      * @throws Exceptions\NotAllowedEntityName
      */
-    public function getEntityManager(): EntityServiceInterface
+    public function getEntityService(string $entityName = null): EntityServiceInterface
     {
-        $entityManagerFactory = new EntityServiceFactory($this->getEntityClassNamespace());
+        $entityServiceFactory = new EntityServiceFactory($this->getEntityClassNamespace());
 
-        return $entityManagerFactory->create($this->getEntityName(), $this->getRepository());
+        return $entityServiceFactory->create($entityName ?? $this->getEntityName());
     }
 
     /**
      * @return EntityRepositoryInterface
      *
      * @throws Exceptions\NotAllowedEntityName
+     * @throws Exceptions\PdoConnectionException
      */
     public function getRepository(): EntityRepositoryInterface
     {
@@ -251,14 +253,14 @@ class App
      * @return EntityRepositoryFactory
      *
      * @throws Exceptions\NotAllowedEntityName
+     * @throws Exceptions\PdoConnectionException
      */
     public function getRepositoryFactory(): EntityRepositoryFactory
     {
         if ('sqlite' === $this->getStorageType()) {
             $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
-                $this->getEntityName(),
-                $this->getEntityClassNamespace()
+                $this->getEntityService()
             );
         } else {
             $factory = new EntityFileRepositoryFactory($this->getEntityName());
@@ -269,6 +271,8 @@ class App
 
     /**
      * @return PDO
+     *
+     * @throws Exceptions\PdoConnectionException
      */
     public function getPdo(): PDO
     {
@@ -278,9 +282,9 @@ class App
             $this->getDbFolderName()
         );
 
-        $pdoManager = $factory->create();
-        $pdo = $pdoManager->getPdo();
-        $pdoManager->createTables();
+        $pdoService = $factory->create();
+        $pdo = $pdoService->getPdo();
+        $pdoService->createTables();
 
         return $pdo;
     }

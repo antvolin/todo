@@ -3,6 +3,7 @@
 namespace Todo\Lib\Service\Pdo;
 
 use PDO;
+use Todo\Lib\Exceptions\PdoConnectionException;
 
 interface PdoServiceInterface
 {
@@ -15,6 +16,8 @@ interface PdoServiceInterface
 
     /**
      * @return PDO
+     *
+     * @throws PdoConnectionException
      */
     public function getPdo(): PDO;
 

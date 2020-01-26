@@ -2,19 +2,14 @@
 
 namespace Tests\Lib\Factory\Repository;
 
-use Todo\Lib\App;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
-use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 
 class EntityPdoRepositoryFactoryTest extends TestCase
 {
-    /**
-     * @var App
-     */
-    protected $app;
-
     /**
      * @var int
      */
@@ -27,9 +22,8 @@ class EntityPdoRepositoryFactoryTest extends TestCase
 
     protected function setUp()
     {
-        $this->app = new App();
         $this->entityPerPage = 3;
-        $this->pdo = $this->app->getPdo();
+        $this->pdo = $this->createMock(PDO::class);
     }
 
     /**
@@ -37,15 +31,19 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeCreatedEntityPdoRepository(): void
+    public function shouldBeCreatableEntityPdoRepository(): void
     {
-        $factory = new EntityPdoRepositoryFactory($this->pdo, $this->app->getEntityName(), $this->app->getEntityClassNamespace());
+        $service = $this->createMock(EntityServiceInterface::class);
+        $service->method('getEntityName')->willReturn('entity');
+
+        $factory = new EntityPdoRepositoryFactory($this->pdo, $service);
         $repository = $factory->create($this->entityPerPage);
 
+        $this->assertTrue(method_exists($repository, 'getEntityById'));
         $this->assertTrue(method_exists($repository, 'getCountEntities'));
         $this->assertTrue(method_exists($repository, 'getEntities'));
         $this->assertTrue(method_exists($repository, 'saveEntity'));
-        $this->assertTrue(method_exists($repository, 'getEntityById'));
+        $this->assertTrue(method_exists($repository, 'deleteEntity'));
     }
 
     /**
@@ -53,11 +51,14 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeNotCreatedWithNotValidEntityName(): void
+    public function shouldBeNotCreatableWithNotValidEntityName(): void
     {
         $this->expectException(NotAllowedEntityName::class);
 
-        $factory = new EntityPdoRepositoryFactory($this->pdo, 'not valid entity name', 'asd');
+        $service = $this->createMock(EntityServiceInterface::class);
+        $service->method('getEntityName')->willReturn('dsadasd');
+
+        $factory = new EntityPdoRepositoryFactory($this->pdo, $service);
         $factory->create($this->entityPerPage);
     }
 }

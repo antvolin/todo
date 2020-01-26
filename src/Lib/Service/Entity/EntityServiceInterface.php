@@ -15,12 +15,18 @@ use Todo\Model\EntityInterface;
 interface EntityServiceInterface
 {
     /**
-     * @param string $entityClass
-     * @param EntityRepositoryInterface $repository
+     * @param string $entityClassNamespace
+     * @param string $entityName
      */
-    public function __construct(string $entityClass, EntityRepositoryInterface $repository);
+    public function __construct(string $entityClassNamespace, string $entityName);
 
     /**
+     * @return string
+     */
+    public function getEntityName(): string;
+
+    /**
+     * @param EntityRepositoryInterface $repository
      * @param int $id
      *
      * @return EntityInterface
@@ -30,11 +36,11 @@ interface EntityServiceInterface
      * @throws NotValidEmailException
      * @throws NotFoundException
      */
-    public function getEntityById(int $id): EntityInterface;
+    public function getEntityById(EntityRepositoryInterface $repository, int $id): EntityInterface;
 
     /**
+     * @param EntityRepositoryInterface $repository
      * @param int $page
-     *
      * @param string|null $orderBy
      * @param string|null $order
      *
@@ -44,14 +50,17 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array;
+    public function getEntities(EntityRepositoryInterface $repository, int $page, ?string $orderBy = null, ?string $order = null): array;
 
     /**
+     * @param EntityRepositoryInterface $repository
+     *
      * @return int
      */
-    public function getCountEntities(): int;
+    public function getCountEntities(EntityRepositoryInterface $repository): int;
 
     /**
+     * @param EntityRepositoryInterface $repository
      * @param string $userName
      * @param string $email
      * @param string $text
@@ -63,14 +72,16 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      */
-    public function saveEntity(string $userName, string $email, string $text): int;
+    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int;
 
     /**
+     * @param EntityRepositoryInterface $repository
      * @param int $entityId
      */
-    public function deleteEntity(int $entityId): void;
+    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void;
 
     /**
+     * @param EntityRepositoryInterface $repository
      * @param int $entityId
      * @param string $text
      *
@@ -80,10 +91,12 @@ interface EntityServiceInterface
      * @throws NotValidEmailException
      * @throws NotFoundException
      * @throws CannotEditEntityException
+     * @throws CannotDoneEntityException
      */
-    public function editEntity(int $entityId, string $text): void;
+    public function editEntity(EntityRepositoryInterface $repository, int $entityId, string $text): void;
 
     /**
+     * @param EntityRepositoryInterface $repository
      * @param int $entityId
      *
      * @throws CannotBeEmptyException
@@ -93,5 +106,5 @@ interface EntityServiceInterface
      * @throws NotFoundException
      * @throws CannotDoneEntityException
      */
-    public function doneEntity(int $entityId): void;
+    public function doneEntity(EntityRepositoryInterface $repository, int $entityId): void;
 }

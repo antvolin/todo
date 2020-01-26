@@ -2,10 +2,8 @@
 
 namespace Todo\Model;
 
-use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
 
 interface EntityInterface
 {
@@ -49,21 +47,15 @@ interface EntityInterface
 
     /**
      * @param Status|null $status
+     *
+     * @throws CannotDoneEntityException
      */
     public function setStatus(?Status $status): void;
 
     /**
-     * @param string $text
+     * @param Text $text
      *
      * @throws CannotEditEntityException
-     * @throws ForbiddenStatusException
-     * @throws CannotBeEmptyException
      */
-    public function edit(string $text): void;
-
-    /**
-     * @throws CannotDoneEntityException
-     * @throws ForbiddenStatusException
-     */
-    public function done(): void;
+    public function setText(Text $text): void;
 }

@@ -7,7 +7,8 @@ use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Todo\Lib\Service\Entity\EntityService;
+use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Path\PathService;
 
 class PaginatorRequestHandlerService extends RequestHandlerService
@@ -18,21 +19,29 @@ class PaginatorRequestHandlerService extends RequestHandlerService
     private $paginatorFactory;
 
     /**
-     * @var EntityService
+     * @var EntityServiceInterface
      */
-    private $entityManager;
+    private $entityService;
+
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $entityRepository;
 
     /**
      * @param PaginatorFactoryInterface $paginatorFactory
-     * @param EntityService $entityManager
+     * @param EntityServiceInterface $entityManager
+     * @param EntityRepositoryInterface $entityRepository
      */
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
-        EntityService $entityManager
+        EntityServiceInterface $entityManager,
+        EntityRepositoryInterface $entityRepository
     )
     {
         $this->paginatorFactory = $paginatorFactory;
-        $this->entityManager = $entityManager;
+        $this->entityService = $entityManager;
+        $this->entityRepository = $entityRepository;
     }
 
     /**
@@ -51,8 +60,8 @@ class PaginatorRequestHandlerService extends RequestHandlerService
             $orderBy = $request->get('orderBy');
             $order = $request->get('order');
 
-            $entities = $this->entityManager->getEntities($page, $orderBy, $order);
-            $countRows = $this->entityManager->getCountEntities();
+            $entities = $this->entityService->getEntities($this->entityRepository, $page, $orderBy, $order);
+            $countRows = $this->entityService->getCountEntities($this->entityRepository);
 
             $paginator = $this->paginatorFactory->create($entities, $countRows, $page);
 

@@ -7,6 +7,7 @@ use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -46,6 +47,7 @@ class PathServiceTest extends TestCase
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      * @throws PdoErrorsException
+     * @throws PdoConnectionException
      */
     public function shouldBeGettingCorrectPathToPdoDsn(): void
     {
@@ -54,8 +56,8 @@ class PathServiceTest extends TestCase
         $dsn = PathService::getPathToPdoDsn($app->getStorageType(), $app->getDbFolderName(), $entityName);
         $pdo = new PDO($dsn);
 
-        $entityManager = $app->getEntityManager();
-        $entityManager->saveEntity(uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $entityManager = $app->getEntityService();
+        $entityManager->saveEntity($app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
         $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();
 

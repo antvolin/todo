@@ -20,7 +20,7 @@ class AccessRequestHandlerServiceTest extends TestCase
         $request = $app->getRequest();
         $request->query->set('csrf-token', $app->getTokenSalt().':new value');
         $request->getSession()->set('secret', $app->getSecret());
-        $handler = new AccessRequestHandlerService($app->getTokenManagerFactory());
+        $handler = new AccessRequestHandlerService($app->getTokenServiceFactory());
 
         $handler->handle($request);
     }

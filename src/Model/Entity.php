@@ -106,31 +106,22 @@ class Entity implements EntityInterface, JsonSerializable
      */
     public function setStatus(?Status $status): void
     {
+        if (Status::DONE == $this->status->getValue()) {
+            throw new CannotDoneEntityException();
+        }
+
         $this->status = $status;
     }
 
     /**
      * @inheritdoc
      */
-    public function edit(string $text): void
+    public function setText(Text $text): void
     {
-        if (Status::DONE == $this->status) {
+        if (Status::DONE == $this->status->getValue()) {
             throw new CannotEditEntityException();
         }
 
-        $this->status = new Status(Status::EDITED);
-        $this->text = new Text($text);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function done(): void
-    {
-        if (Status::DONE == $this->status) {
-            throw new CannotDoneEntityException();
-        }
-
-        $this->status = new Status(Status::DONE);
+        $this->text = $text;
     }
 }

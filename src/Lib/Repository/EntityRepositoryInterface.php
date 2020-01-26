@@ -50,4 +50,9 @@ interface EntityRepositoryInterface
      * @throws PdoErrorsException
      */
     public function saveEntity(EntityInterface $entity, ?int $entityId = null): int;
+
+    /**
+     * @param int $entityId
+     */
+    public function deleteEntity(int $entityId): void;
 }

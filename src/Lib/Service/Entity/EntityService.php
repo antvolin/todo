@@ -2,6 +2,11 @@
 
 namespace Todo\Lib\Service\Entity;
 
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
+use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\Email;
 use Todo\Model\EntityInterface;
@@ -18,49 +23,57 @@ class EntityService implements EntityServiceInterface
     private $entityClass;
 
     /**
-     * @var EntityRepositoryInterface
+     * @var string
      */
-    private $repository;
+    private $entityName;
 
     /**
      * @inheritDoc
      */
-    public function __construct(string $entityClass, EntityRepositoryInterface $repository)
+    public function __construct(string $entityClassNamespace, string $entityName)
     {
-        $this->entityClass = $entityClass;
-        $this->repository = $repository;
+        $this->entityName = strtolower($entityName);
+        $this->entityClass = $entityClassNamespace.ucfirst($this->entityName);
     }
 
     /**
      * @inheritDoc
      */
-    public function getEntityById(int $id): EntityInterface
+    public function getEntityName(): string
     {
-        return $this->repository->getEntityById($id);
+        return $this->entityName;
     }
 
     /**
      * @inheritDoc
      */
-    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getEntityById(EntityRepositoryInterface $repository, int $id): EntityInterface
     {
-        return $this->repository->getEntities($page, $orderBy, $order);
+        return $repository->getEntityById($id);
     }
 
     /**
      * @inheritDoc
      */
-    public function getCountEntities(): int
+    public function getEntities(EntityRepositoryInterface $repository, int $page, ?string $orderBy = null, ?string $order = null): array
     {
-        return $this->repository->getCountEntities();
+        return $repository->getEntities($page, $orderBy, $order);
     }
 
     /**
      * @inheritDoc
      */
-    public function saveEntity(string $userName, string $email, string $text): int
+    public function getCountEntities(EntityRepositoryInterface $repository): int
     {
-        return $this->repository->saveEntity(
+        return $repository->getCountEntities();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function saveEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int
+    {
+        return $repository->saveEntity(
             new $this->entityClass(
                 new Id(),
                 new UserName($userName),
@@ -72,30 +85,65 @@ class EntityService implements EntityServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * @param array $entity
+     *
+     * @return EntityInterface
+     *
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
      */
-    public function deleteEntity(int $entityId): void
+    public function createEntity(array $entity): EntityInterface
     {
-        $this->repository->deleteEntity($entityId);
+        $entityClass = $this->entityClass;
+
+        return new $entityClass(
+            new Id($entity['id']),
+            new UserName($entity['user_name']),
+            new Email($entity['email']),
+            new Text($entity['text']),
+            new Status($entity['status'])
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function editEntity(int $entityId, string $text): void
+    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void
     {
-        $entity = $this->repository->getEntityById($entityId);
-        $entity->edit($text);
-        $this->repository->saveEntity($entity, $entityId);
+        $repository->deleteEntity($entityId);
     }
 
     /**
      * @inheritDoc
      */
-    public function doneEntity(int $entityId): void
+    public function editEntity(EntityRepositoryInterface $repository, int $entityId, string $text): void
     {
-        $entity = $this->repository->getEntityById($entityId);
-        $entity->done();
-        $this->repository->saveEntity($entity, $entity->getId()->getValue());
+        $entity = $repository->getEntityById($entityId);
+
+        if (Status::DONE == $entity->getStatus()) {
+            throw new CannotEditEntityException();
+        }
+
+        $entity->setStatus(new Status(Status::EDITED));
+        $entity->setText(new Text($text));
+
+        $repository->saveEntity($entity, $entityId);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function doneEntity(EntityRepositoryInterface $repository, int $entityId): void
+    {
+        $entity = $repository->getEntityById($entityId);
+
+        if (Status::DONE == $entity->getStatus()) {
+            throw new CannotDoneEntityException();
+        }
+
+        $entity->setStatus(new Status(Status::DONE));
+
+        $repository->saveEntity($entity, $entity->getId()->getValue());
     }
 }

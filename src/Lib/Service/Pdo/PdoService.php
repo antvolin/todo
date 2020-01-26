@@ -3,6 +3,8 @@
 namespace Todo\Lib\Service\Pdo;
 
 use PDO;
+use PDOException;
+use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Service\Path\PathService;
 
 class PdoService implements PdoServiceInterface
@@ -42,7 +44,14 @@ class PdoService implements PdoServiceInterface
      */
     public function getPdo(): PDO
     {
-        $this->pdo = new PDO(PathService::getPathToPdoDsn($this->pdoType, $this->dbFolderName, $this->entityName));
+        $dsn = PathService::getPathToPdoDsn($this->pdoType, $this->dbFolderName, $this->entityName);
+
+        try {
+            $this->pdo = new PDO($dsn);
+        } catch (PDOException $exception) {
+            throw new PdoConnectionException($exception->getMessage().' with dsn '.$dsn);
+        }
+
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $this->pdo;

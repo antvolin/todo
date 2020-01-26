@@ -95,4 +95,9 @@ class EntityFileRepository implements EntityRepositoryInterface
 
         return $entity->getId()->getValue();
     }
+
+    public function deleteEntity(int $entityId): void
+    {
+        // TODO: Implement deleteEntity() method.
+    }
 }

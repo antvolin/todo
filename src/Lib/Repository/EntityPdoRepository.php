@@ -2,18 +2,11 @@
 
 namespace Todo\Lib\Repository;
 
-use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
-use Todo\Model\Email;
 use Todo\Model\EntityInterface;
-use Todo\Model\Id;
-use Todo\Model\Status;
-use Todo\Model\Text;
-use Todo\Model\UserName;
 use PDO;
 use PDOException;
 
@@ -25,31 +18,31 @@ class EntityPdoRepository implements EntityRepositoryInterface
     private $pdo;
 
     /**
+     * @var EntityServiceInterface
+     */
+    private $entityService;
+
+    /**
      * @var string
      */
     private $entityName;
+
     /**
      * @var int
      */
     private $entityPerPage;
 
     /**
-     * @var string
-     */
-    private $entityClassNamespace;
-
-    /**
      * @param PDO $pdo
-     * @param string $entityName
+     * @param EntityServiceInterface $entityService
      * @param int $entityPerPage
-     * @param string $entityClassNamespace
      */
-    public function __construct(Pdo $pdo, string $entityName, int $entityPerPage, string $entityClassNamespace)
+    public function __construct(Pdo $pdo, EntityServiceInterface $entityService, int $entityPerPage)
     {
         $this->pdo = $pdo;
-        $this->entityName = strtolower($entityName);
+        $this->entityService = $entityService;
+        $this->entityName = $entityService->getEntityName();
         $this->entityPerPage = $entityPerPage;
-        $this->entityClassNamespace = $entityClassNamespace;
     }
 
     /**
@@ -65,7 +58,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
             throw new NotFoundException();
         }
 
-        return $this->createEntity($entity);
+        return $this->entityService->createEntity($entity);
     }
 
     /**
@@ -94,7 +87,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
         $sth->execute();
 
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $entity) {
-            $result[$entity['id']] = $this->createEntity($entity);
+            $result[$entity['id']] = $this->entityService->createEntity($entity);
         }
 
         return $result;
@@ -132,34 +125,12 @@ class EntityPdoRepository implements EntityRepositoryInterface
     }
 
     /**
-     * @param int $entityId
+     * @inheritdoc
      */
     public function deleteEntity(int $entityId): void
     {
         $sth = $this->pdo->prepare("DELETE FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $entityId, PDO::PARAM_INT);
         $sth->execute();
-    }
-
-    /**
-     * @param array $entity
-     *
-     * @return EntityInterface
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     */
-    private function createEntity(array $entity): EntityInterface
-    {
-        $entityName = $this->entityClassNamespace.ucfirst($this->entityName);
-
-        return new $entityName(
-            new Id($entity['id']),
-            new UserName($entity['user_name']),
-            new Email($entity['email']),
-            new Text($entity['text']),
-            new Status($entity['status'])
-        );
     }
 }

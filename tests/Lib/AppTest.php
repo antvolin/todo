@@ -5,6 +5,7 @@ namespace Tests\Lib;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
 
 class AppTest extends TestCase
 {
@@ -56,7 +57,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingTokenManagerFactory(): void
     {
-        $factory = $this->app->getTokenManagerFactory();
+        $factory = $this->app->getTokenServiceFactory();
 
         $this->assertTrue(method_exists($factory, 'create'));
     }
@@ -68,7 +69,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingEntityManager(): void
     {
-        $manager = $this->app->getEntityManager();
+        $manager = $this->app->getEntityService();
 
         $this->assertTrue(method_exists($manager, 'getCountEntities'));
         $this->assertTrue(method_exists($manager, 'deleteEntity'));
@@ -83,6 +84,7 @@ class AppTest extends TestCase
      * @test
      *
      * @throws NotAllowedEntityName
+     * @throws PdoConnectionExceptionAlias
      */
     public function shouldBeGettingRepository(): void
     {
@@ -98,6 +100,7 @@ class AppTest extends TestCase
      * @test
      *
      * @throws NotAllowedEntityName
+     * @throws PdoConnectionExceptionAlias
      */
     public function shouldBeGettingRepositoryFactory(): void
     {
@@ -108,6 +111,8 @@ class AppTest extends TestCase
 
     /**
      * @test
+     *
+     * @throws PdoConnectionExceptionAlias
      */
     public function shouldBeGettingPdo(): void
     {

@@ -4,6 +4,7 @@ namespace Todo\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\PdoErrorsException;
@@ -14,7 +15,8 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Todo\Lib\Service\Entity\EntityService;
+use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Twig\Environment;
 use Twig\Error\LoaderError as LoaderErrorAlias;
@@ -29,9 +31,14 @@ class EntityController
     private $request;
 
     /**
-     * @var EntityService
+     * @var EntityServiceInterface
      */
-    private $entityManager;
+    private $entityService;
+
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $entityRepository;
 
     /**
      * @var Environment
@@ -40,17 +47,20 @@ class EntityController
 
     /**
      * @param Request $request
-     * @param EntityService $entityManager
+     * @param EntityServiceInterface $entityManager
+     * @param EntityRepositoryInterface $entityRepository
      * @param Environment $template
      */
     public function __construct(
         Request $request,
-        EntityService $entityManager,
+        EntityServiceInterface $entityManager,
+        EntityRepositoryInterface $entityRepository,
         Environment $template
     )
     {
         $this->request = $request;
-        $this->entityManager = $entityManager;
+        $this->entityService = $entityManager;
+        $this->entityRepository = $entityRepository;
         $this->template = $template;
     }
 
@@ -102,7 +112,7 @@ class EntityController
         }
 
         try {
-            $id = $this->entityManager->saveEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+            $id = $this->entityService->saveEntity($this->entityRepository, $this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
             return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
         }
@@ -125,19 +135,20 @@ class EntityController
      * @throws LoaderErrorAlias
      * @throws RuntimeErrorAlias
      * @throws SyntaxErrorAlias
+     * @throws CannotDoneEntityException
      */
     public function edit()
     {
         if ('POST' !== $this->request->getMethod()) {
             $id = func_get_args()[0];
-            $text = $this->entityManager->getEntityById($id)->getText();
+            $text = $this->entityService->getEntityById($this->entityRepository, $id)->getText();
             $token = $this->request->get('token');
 
             return new Response($this->template->render('form_edit.html.twig', ['id' => $id, 'text' => $text, 'token' => $token]));
         }
 
         try {
-            $this->entityManager->editEntity($this->request->get('id'), $this->request->get('text'));
+            $this->entityService->editEntity($this->entityRepository, $this->request->get('id'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
             $params = ['error' => $exception->getMessage()];
 
@@ -157,7 +168,7 @@ class EntityController
     public function done()
     {
         try {
-            $this->entityManager->doneEntity(func_get_args()[0]);
+            $this->entityService->doneEntity($this->entityRepository, func_get_args()[0]);
         } catch (Exception $exception) {
             return new Response($this->template->render('done_error.html.twig', ['error' => $exception->getMessage()]));
         }

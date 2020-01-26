@@ -5,11 +5,13 @@ namespace Tests\Controller;
 use Todo\Controller\EntityController;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\NotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
+use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,7 +38,7 @@ class EntityControllerTest extends TestCase
     /**
      * @var EntityServiceInterface
      */
-    protected $entityManager;
+    protected $entityService;
 
     /**
      * @var Request
@@ -45,19 +47,22 @@ class EntityControllerTest extends TestCase
 
     /**
      * @throws NotAllowedEntityName
+     * @throws PdoConnectionException
      */
     protected function setUp()
     {
         $this->app = new App();
         $this->request = $this->app->getRequest();
-        $this->entityManager = $this->app->getEntityManager();
-        $this->controller = new EntityController($this->request, $this->entityManager, $this->app->getTemplate());
+        $this->entityService = $this->app->getEntityService();
+        $this->controller = new EntityController($this->request, $this->entityService, $this->app->getRepository(), $this->app->getTemplate());
     }
 
     /**
      * @test
      *
      * @throws LoaderError
+     * @throws NotAllowedEntityName
+     * @throws PdoConnectionException
      * @throws RuntimeError
      * @throws SyntaxError
      */
@@ -65,7 +70,8 @@ class EntityControllerTest extends TestCase
     {
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityManager
+            $this->entityService,
+            $this->app->getRepository()
         );
         $handler->handle($this->request);
 
@@ -108,18 +114,21 @@ class EntityControllerTest extends TestCase
     /**
      * @test
      *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
+     * @throws LoaderError
+     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
+     * @throws PdoConnectionException
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function shouldBeGettingCreatePage(): void
     {
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityManager
+            $this->entityService,
+            $this->app->getRepository()
         );
         $handler->handle($this->request);
 
@@ -132,16 +141,22 @@ class EntityControllerTest extends TestCase
     /**
      * @test
      *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
+     * @throws LoaderError
+     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
+     * @throws PdoConnectionException
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function shouldBeEntityCreatable(): void
     {
-        $handler = new PaginatorRequestHandlerService($this->app->getPaginatorFactory(), $this->entityManager);
+        $handler = new PaginatorRequestHandlerService(
+            $this->app->getPaginatorFactory(),
+            $this->entityService,
+            $this->app->getRepository()
+        );
         $handler->handle($this->request);
         $this->request->setMethod('POST');
         $this->request->request->set('user_name', uniqid('user_name'.__METHOD__.__CLASS__, true));
@@ -158,18 +173,25 @@ class EntityControllerTest extends TestCase
      * @test
      *
      * @throws CannotBeEmptyException
+     * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
      * @throws LoaderError
+     * @throws NotAllowedEntityName
+     * @throws NotFoundException
      * @throws NotValidEmailException
+     * @throws PdoConnectionException
+     * @throws PdoErrorsException
      * @throws RuntimeError
      * @throws SyntaxError
-     * @throws CannotEditEntityException
-     * @throws NotFoundException
-     * @throws PdoErrorsException
+     * @throws CannotDoneEntityException
      */
     public function shouldBeEntityEditable(): void
     {
-        $handler = new PaginatorRequestHandlerService($this->app->getPaginatorFactory(), $this->entityManager);
+        $handler = new PaginatorRequestHandlerService(
+            $this->app->getPaginatorFactory(),
+            $this->entityService,
+            $this->app->getRepository()
+        );
         $handler->handle($this->request);
         $this->request->setMethod('POST');
 
@@ -191,13 +213,19 @@ class EntityControllerTest extends TestCase
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
      * @throws LoaderError
+     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
+     * @throws PdoConnectionException
      * @throws RuntimeError
      * @throws SyntaxError
      */
     public function shouldBeEntityDone(): void
     {
-        $handler = new PaginatorRequestHandlerService($this->app->getPaginatorFactory(), $this->entityManager);
+        $handler = new PaginatorRequestHandlerService(
+            $this->app->getPaginatorFactory(),
+            $this->entityService,
+            $this->app->getRepository()
+        );
         $handler->handle($this->request);
         $this->request->setMethod('POST');
 

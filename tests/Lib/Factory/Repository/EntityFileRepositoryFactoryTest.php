@@ -24,7 +24,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeCreatedEntityFileRepository(): void
+    public function shouldBeCreatableEntityFileRepository(): void
     {
         $app = new App();
         $factory = new EntityFileRepositoryFactory($app->getEntityName());
@@ -41,7 +41,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeNotCreatedWithNotValidEntityName(): void
+    public function shouldBeNotCreatableWithNotValidEntityName(): void
     {
         $this->expectException(NotAllowedEntityName::class);
 

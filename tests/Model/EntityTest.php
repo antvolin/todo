@@ -78,14 +78,16 @@ class EntityTest extends TestCase
     /**
      * @test
      *
-     * @throws CannotEditEntityException
-     * @throws ForbiddenStatusException
      * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws CannotDoneEntityException
+     * @throws CannotEditEntityException
      */
     public function shouldBeEditable(): void
     {
         $newText = 'new test text';
-        $this->entity->edit($newText);
+        $this->entity->setText(new Text($newText));
+        $this->entity->setStatus(new Status(Status::EDITED));
         $this->assertEquals($newText, $this->entity->getText());
         $this->assertEquals(Status::EDITED, $this->entity->getStatus());
     }
@@ -93,15 +95,16 @@ class EntityTest extends TestCase
     /**
      * @test
      *
-     * @throws CannotEditEntityException
-     * @throws ForbiddenStatusException
      * @throws CannotBeEmptyException
+     * @throws CannotDoneEntityException
+     * @throws ForbiddenStatusException
+     * @throws CannotEditEntityException
      */
     public function shouldBeNotEditableIfStatusDone(): void
     {
         $this->expectException(CannotEditEntityException::class);
         $this->entity->setStatus(new Status(Status::DONE));
-        $this->entity->edit('new test text');
+        $this->entity->setText(new Text('new test text'));
     }
 
     /**
@@ -112,20 +115,20 @@ class EntityTest extends TestCase
      */
     public function shouldBeDone(): void
     {
-        $this->entity->done();
+        $this->entity->setStatus(new Status(Status::DONE));
         $this->assertEquals(Status::DONE, $this->entity->getStatus());
     }
 
     /**
      * @test
      *
-     * @throws CannotDoneEntityException
      * @throws ForbiddenStatusException
+     * @throws CannotDoneEntityException
      */
     public function shouldBeNotDoneIfStatusDone(): void
     {
         $this->expectException(CannotDoneEntityException::class);
         $this->entity->setStatus(new Status(Status::DONE));
-        $this->entity->done();
+        $this->entity->setStatus(new Status(Status::DONE));
     }
 }

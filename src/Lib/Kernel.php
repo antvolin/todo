@@ -4,6 +4,7 @@ namespace Todo\Lib;
 
 use Todo\Controller\AuthController;
 use Todo\Controller\EntityController;
+use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Entity\EntityService;
 use Todo\Lib\Service\Path\PathService;
@@ -33,7 +34,12 @@ class Kernel
     /**
      * @var EntityService
      */
-    private $entityManager;
+    private $entityService;
+
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $entityRepository;
 
     /**
      * @var App
@@ -58,6 +64,7 @@ class Kernel
      * @throws RuntimeError
      * @throws SyntaxError
      * @throws Exceptions\NotAllowedEntityName
+     * @throws Exceptions\PdoConnectionException
      */
 	public function process(): void
     {
@@ -65,7 +72,8 @@ class Kernel
         $this->request->request->set('token', $this->app->getToken());
         $this->authService = $this->app->getAuthService($this->request);
         $this->template = $this->app->getTemplate();
-        $this->entityManager = $this->app->getEntityManager();
+        $this->entityRepository = $this->app->getRepository();
+        $this->entityService = $this->app->getEntityService();
 
         $this->handleRequest();
 
@@ -91,12 +99,13 @@ class Kernel
     {
         $filterRequestHandler = new FilterRequestHandlerService();
         $accessRequestHandler = new AccessRequestHandlerService(
-            $this->app->getTokenManagerFactory()
+            $this->app->getTokenServiceFactory()
         );
         $roleRequestHandler = new RoleRequestHandlerService();
         $pagingRequestHandler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityManager
+            $this->entityService,
+            $this->entityRepository
         );
 
         $filterRequestHandler
@@ -125,7 +134,8 @@ class Kernel
     {
         return new EntityController(
             $this->request,
-            $this->entityManager,
+            $this->entityService,
+            $this->entityRepository,
             $this->template
         );
     }
