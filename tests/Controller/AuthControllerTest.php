@@ -2,45 +2,45 @@
 
 namespace Tests\Controller;
 
-use Todo\Controller\AuthController;
-use Todo\Lib\App;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Todo\Controller\AuthController;
+use Todo\Lib\App;
 
 class AuthControllerTest extends TestCase
 {
     /**
-     * @var App
+     * @var Request
      */
-    protected $app;
+    private $request;
+
+    /**
+     * @var string
+     */
+    private $token;
 
     /**
      * @var AuthController
      */
-    protected $controller;
+    private $controller;
 
     protected function setUp()
     {
-        $this->app = new App();
-
-        $this->controller = new AuthController($this->app->getAuthService($this->app->getRequest()), $this->app->getTemplate());
+        $app = new App();
+        $this->request = $app->getRequest();
+        $this->token = $app->getToken();
+        $this->controller = new AuthController($app->getAuthService($this->request), $app->getTemplate());
     }
 
     /**
      * @test
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeNotLoginIfNotAdmin(): void
     {
-        $request = $this->app->getRequest();
-        $request->request->set('token', $this->app->getToken());
+        $request = $this->request;
+        $request->request->set('token', $this->token);
         $request->setMethod('POST');
         $response = $this->controller->login();
 
@@ -50,15 +50,11 @@ class AuthControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeLoginIfAdmin(): void
     {
-        $request = $this->app->getRequest();
-        $request->request->set('token', $this->app->getToken());
+        $request = $this->request;
+        $request->request->set('token', $this->token);
         $request->request->set('user', App::getUser());
         $request->request->set('password', App::getPassword());
         $request->setMethod('POST');
@@ -70,15 +66,11 @@ class AuthControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeGettingLoginPage(): void
     {
-        $request = $this->app->getRequest();
-        $request->request->set('token', $this->app->getToken());
+        $request = $this->request;
+        $request->request->set('token', $this->token);
         $response = $this->controller->login();
 
         $this->assertInstanceOf(Response::class, $response);
@@ -87,15 +79,11 @@ class AuthControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeLogout(): void
     {
-        $request = $this->app->getRequest();
-        $request->request->set('token', $this->app->getToken());
+        $request = $this->request;
+        $request->request->set('token', $this->token);
         $request->request->set('user', App::getUser());
         $request->request->set('password', App::getPassword());
         $request->setMethod('POST');

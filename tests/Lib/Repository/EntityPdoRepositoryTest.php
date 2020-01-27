@@ -38,7 +38,7 @@ class EntityPdoRepositoryTest extends TestCase
      * @throws NotAllowedEntityName
      * @throws PdoConnectionException
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->entityName = App::getEntityName();
 

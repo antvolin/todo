@@ -3,6 +3,7 @@
 namespace Tests\Lib\Factory\Repository;
 
 use PDO;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
@@ -14,12 +15,12 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     /**
      * @var int
      */
-    protected $entityPerPage;
+    private $entityPerPage;
 
     /**
-     * @var Pdo
+     * @var MockObject
      */
-    protected $pdo;
+    private $pdo;
 
     protected function setUp()
     {

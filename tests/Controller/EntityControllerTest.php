@@ -2,6 +2,10 @@
 
 namespace Tests\Controller;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Todo\Controller\EntityController;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
@@ -13,10 +17,7 @@ use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
 use Todo\Lib\Traits\TestValueGenerator;
@@ -26,24 +27,24 @@ class EntityControllerTest extends TestCase
     use TestValueGenerator;
 
     /**
-     * @var App
+     * @var PaginatorFactoryInterface
      */
-    protected $app;
+    private $paginatorFactory;
 
     /**
      * @var EntityController
      */
-    protected $controller;
+    private $controller;
 
     /**
      * @var EntityServiceInterface
      */
-    protected $entityService;
+    private $entityService;
 
     /**
      * @var Request
      */
-    protected $request;
+    private $request;
 
     /**
      * @throws NotAllowedEntityName
@@ -51,11 +52,12 @@ class EntityControllerTest extends TestCase
      */
     protected function setUp()
     {
-        $this->app = new App();
-        $this->request = $this->app->getRequest();
-        $this->entityService = $this->app->getEntityService();
-        $this->entityService->setRepository($this->app->getRepository());
-        $this->controller = new EntityController($this->request, $this->entityService, $this->app->getTemplate());
+        $app = new App();
+        $this->paginatorFactory = $app->getPaginatorFactory();
+        $this->request = $app->getRequest();
+        $this->entityService = $app->getEntityService();
+        $this->entityService->setRepository($app->getRepository());
+        $this->controller = new EntityController($this->request, $this->entityService, $app->getTemplate());
     }
 
     /**
@@ -66,7 +68,7 @@ class EntityControllerTest extends TestCase
         $this->markTestIncomplete();
 
         $handler = new PaginatorRequestHandlerService(
-            $this->app->getPaginatorFactory(),
+            $this->paginatorFactory,
             $this->entityService
         );
         $handler->handle($this->request);
@@ -115,7 +117,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeGettingCreatePage(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            $this->app->getPaginatorFactory(),
+            $this->paginatorFactory,
             $this->entityService
         );
         $handler->handle($this->request);
@@ -136,7 +138,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityCreatable(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            $this->app->getPaginatorFactory(),
+            $this->paginatorFactory,
             $this->entityService
         );
         $handler->handle($this->request);
@@ -165,7 +167,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityEditable(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            $this->app->getPaginatorFactory(),
+            $this->paginatorFactory,
             $this->entityService
         );
         $handler->handle($this->request);
@@ -193,7 +195,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityDone(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            $this->app->getPaginatorFactory(),
+            $this->paginatorFactory,
             $this->entityService
         );
         $handler->handle($this->request);

@@ -13,17 +13,17 @@ class FilterRequestHandlerServiceTest extends TestCase
     /**
      * @var string
      */
-    protected $originalText;
+    private $originalText;
 
     /**
      * @var Request
      */
-    protected $request;
+    private $request;
 
     /**
      * @var RequestHandlerService
      */
-    protected $filterRequestHandler;
+    private $filterRequestHandler;
 
     protected function setUp()
     {

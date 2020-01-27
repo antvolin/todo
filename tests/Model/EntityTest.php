@@ -21,32 +21,32 @@ class EntityTest extends TestCase
     /**
      * @var Id
      */
-    protected $id;
+    private $id;
 
     /**
      * @var UserName
      */
-    protected $userName;
+    private $userName;
 
     /**
      * @var Email
      */
-    protected $email;
+    private $email;
 
     /**
      * @var Text
      */
-    protected $text;
+    private $text;
 
     /**
      * @var Status
      */
-    protected $status;
+    private $status;
 
     /**
      * @var EntityInterface
      */
-    protected $entity;
+    private $entity;
 
     /**
      * @throws CannotBeEmptyException

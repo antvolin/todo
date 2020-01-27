@@ -12,7 +12,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
     /**
      * @var int
      */
-    protected $entityPerPage;
+    private $entityPerPage;
 
     protected function setUp()
     {

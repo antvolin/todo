@@ -2,6 +2,8 @@
 
 namespace Tests\Lib\Service\Path;
 
+use PDO;
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
@@ -9,8 +11,6 @@ use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
-use PDO;
-use PHPUnit\Framework\TestCase;
 use Todo\Lib\Service\Path\PathService;
 use Todo\Lib\Traits\TestValueGenerator;
 

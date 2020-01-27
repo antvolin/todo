@@ -12,7 +12,7 @@ class AppTest extends TestCase
     /**
      * @var App
      */
-    protected $app;
+    private $app;
 
     protected function setUp()
     {

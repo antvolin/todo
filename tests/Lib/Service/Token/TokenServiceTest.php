@@ -9,35 +9,30 @@ use PHPUnit\Framework\TestCase;
 class TokenServiceTest extends TestCase
 {
     /**
-     * @var App
+     * @var string
      */
-    protected $app;
+    private $secret;
 
     /**
      * @var string
      */
-    protected $secret;
+    private $token;
 
     /**
      * @var string
      */
-    protected $token;
-
-    /**
-     * @var string
-     */
-    protected $tokenSalt;
+    private $tokenSalt;
 
     /**
      * @var TokenService
      */
-    protected $tokenService;
+    private $tokenService;
 
     protected function setUp()
     {
-        $this->app = new App();
+        $app = new App();
         $this->tokenService = new TokenService();
-        $this->secret = $this->app->getSecret();
+        $this->secret = $app->getSecret();
         $this->tokenSalt = App::getTokenSalt();
         $this->tokenService->generateToken($this->secret, $this->tokenSalt);
         $this->token = $this->tokenService->getToken();

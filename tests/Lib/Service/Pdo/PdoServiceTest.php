@@ -13,28 +13,21 @@ class PdoServiceTest extends TestCase
     /**
      * PdoService $pdoService
      */
-    protected $pdoService;
+    private $pdoService;
 
-    /**
-     * Pdo $pdo
-     */
-    protected $pdo;
-
-    /**
-     * @throws PdoConnectionException
-     */
     protected function setUp()
     {
         $this->pdoService = new PdoService(App::getEntityName(), App::getStorageType(), App::getDbFolderName());
-        $this->pdo = $this->pdoService->getPdo();
     }
 
     /**
      * @test
+     *
+     * @throws PdoConnectionException
      */
     public function shouldBeGettingPdo(): void
     {
-        $this->assertInstanceOf(PDO::class, $this->pdo);
+        $this->assertInstanceOf(PDO::class, $this->pdoService->getPdo());
     }
 
     /**
@@ -42,6 +35,7 @@ class PdoServiceTest extends TestCase
      */
     public function shouldBeCreatedTables(): void
     {
+        $this->pdoService->getPdo();
         $this->assertTrue($this->pdoService->createTables());
     }
 }

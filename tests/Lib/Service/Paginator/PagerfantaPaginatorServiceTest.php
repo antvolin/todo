@@ -13,22 +13,22 @@ class PagerfantaPaginatorServiceTest extends TestCase
     /**
      * @var PagerfantaPaginatorService
      */
-    protected $paginator;
+    private $paginator;
 
     /**
      * @var int
      */
-    protected $prevPage;
+    private $prevPage;
 
     /**
      * @var int
      */
-    protected $currentPage;
+    private $currentPage;
 
     /**
      * @var int
      */
-    protected $nextPage;
+    private $nextPage;
 
     protected function setUp()
     {

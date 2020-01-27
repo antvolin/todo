@@ -11,34 +11,29 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthServiceTest extends TestCase
 {
     /**
-     * @var App
-     */
-    protected $app;
-
-    /**
      * @var AuthService
      */
-    protected $service;
+    private $service;
 
     /**
      * @var Request
      */
-    protected $request;
+    private $request;
 
     /**
      * @var string
      */
-    protected $user;
+    private $user;
 
     /**
      * @var string
      */
-    protected $password;
+    private $password;
 
     protected function setUp()
     {
-        $this->app = new App();
-        $this->request = $this->app->getRequest();
+        $app = new App();
+        $this->request = $app->getRequest();
         $this->user = App::getUser();
         $this->password = App::getPassword();
         $this->service = new AuthService($this->request, $this->user, $this->password);
