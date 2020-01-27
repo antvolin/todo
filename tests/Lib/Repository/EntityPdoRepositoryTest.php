@@ -8,7 +8,7 @@ use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
+use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Factory\Service\EntityServiceFactory;
 use Todo\Lib\Repository\EntityPdoRepository;
@@ -43,11 +43,17 @@ class EntityPdoRepositoryTest extends TestCase
     protected $entityClassNamespace;
 
     /**
+     * @var string
+     */
+    private $email;
+
+    /**
      * @throws NotAllowedEntityName
-     * @throws PdoConnectionExceptionAlias
+     * @throws PdoConnectionException
      */
     public function setUp()
     {
+        $this->email = 'test@test.test';
         $this->app = new App();
         $pdo = $this->app->getPdo();
         $this->entityName = App::getEntityName();
@@ -65,12 +71,15 @@ class EntityPdoRepositoryTest extends TestCase
      * @throws NotAllowedEntityName
      * @throws EntityNotFoundException
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
+     * @throws PdoConnectionException
      * @throws PdoErrorsException
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $text = $this->generateText(__METHOD__, __CLASS__);
+
+        $id = $this->entityService->addEntity($this->app->getRepository(), $userName, $this->email, $text);
         $entity = $this->repository->getEntityById($id);
 
         $this->assertTrue(method_exists($entity, 'getStatus'));
@@ -89,12 +98,15 @@ class EntityPdoRepositoryTest extends TestCase
      * @throws ForbiddenStatusException
      * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
+     * @throws PdoConnectionException
      * @throws PdoErrorsException
      */
     public function shouldBeGettingCountEntities(): void
     {
-        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $text = $this->generateText(__METHOD__, __CLASS__);
+
+        $this->entityService->addEntity($this->app->getRepository(), $userName, $this->email, $text);
 
         $this->assertLessThan($this->repository->getCountEntities(), 0);
     }
@@ -106,15 +118,63 @@ class EntityPdoRepositoryTest extends TestCase
      * @throws ForbiddenStatusException
      * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
+     * @throws PdoConnectionException
      * @throws PdoErrorsException
      */
     public function shouldBeGettingAllEntities(): void
     {
-        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityService->addEntity($this->app->getRepository(), uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $userName1 = $this->generateUserName(__METHOD__, __CLASS__, 1);
+        $userName2 = $this->generateUserName(__METHOD__, __CLASS__, 2);
+        $userName3 = $this->generateUserName(__METHOD__, __CLASS__, 3);
+
+        $text1 = $this->generateText(__METHOD__, __CLASS__, 1);
+        $text2 = $this->generateText(__METHOD__, __CLASS__, 2);
+        $text3 = $this->generateText(__METHOD__, __CLASS__, 3);
+
+        $this->entityService->addEntity($this->app->getRepository(), $userName1, $this->email, $text1);
+        $this->entityService->addEntity($this->app->getRepository(), $userName2, $this->email, $text2);
+        $this->entityService->addEntity($this->app->getRepository(), $userName3, $this->email, $text3);
 
         $this->assertCount(3, $this->repository->getEntities(1));
+    }
+
+    /**
+     * @param string $method
+     * @param string $class
+     * @param int $postfix
+     *
+     * @return string
+     */
+    private function generateUserName(string $method, string $class, int $postfix = 1): string
+    {
+        $fieldName = 'email';
+        $fieldValue = sprintf('%s_%s_%s_%s', $fieldName, $method, $class, $postfix);
+
+        return $this->generateField($fieldValue);
+    }
+
+    /**
+     * @param string $method
+     * @param string $class
+     * @param int $postfix
+     *
+     * @return string
+     */
+    private function generateText(string $method, string $class, int $postfix = 1): string
+    {
+        $fieldName = 'text';
+        $fieldValue = sprintf('%s_%s_%s_%s', $fieldName, $method, $class, $postfix);
+
+        return $this->generateField($fieldValue);
+    }
+
+    /**
+     * @param string $fieldValue
+     *
+     * @return string
+     */
+    private function generateField(string $fieldValue): string
+    {
+        return uniqid($fieldValue, true);
     }
 }
