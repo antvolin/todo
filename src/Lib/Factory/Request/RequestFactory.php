@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Lib\Factory;
+namespace Todo\Lib\Factory\Request;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;

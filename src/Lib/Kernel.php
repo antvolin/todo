@@ -4,6 +4,7 @@ namespace Todo\Lib;
 
 use Todo\Controller\AuthController;
 use Todo\Controller\EntityController;
+use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Entity\EntityService;
@@ -14,10 +15,6 @@ use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
 use Todo\Lib\Service\RequestHandler\RoleRequestHandlerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class Kernel
 {
@@ -27,7 +24,7 @@ class Kernel
     private $request;
 
     /**
-     * @var Environment
+     * @var TemplateAdapterInterface
      */
     private $template;
 
@@ -60,9 +57,6 @@ class Kernel
     }
 
     /**
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      * @throws Exceptions\NotAllowedEntityName
      * @throws Exceptions\PdoConnectionException
      */

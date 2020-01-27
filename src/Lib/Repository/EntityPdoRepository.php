@@ -3,7 +3,7 @@
 namespace Todo\Lib\Repository;
 
 use Todo\Lib\Exceptions\PdoErrorsException;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
@@ -55,7 +55,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
         $sth->execute();
 
         if (!$entity = $sth->fetch(PDO::FETCH_ASSOC)) {
-            throw new NotFoundException();
+            throw new EntityNotFoundException();
         }
 
         return $this->entityService->createEntity($entity);

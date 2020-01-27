@@ -2,11 +2,8 @@
 
 namespace Todo\Controller;
 
+use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Auth\AuthService;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,17 +15,17 @@ class AuthController
     private $authService;
 
     /**
-     * @var Environment
+     * @var TemplateAdapterInterface
      */
     private $template;
 
     /**
      * @param AuthService $authService
-     * @param Environment $template
+     * @param TemplateAdapterInterface $template
      */
     public function __construct(
         AuthService $authService,
-        Environment $template
+        TemplateAdapterInterface $template
     )
     {
         $this->authService = $authService;
@@ -37,10 +34,6 @@ class AuthController
 
     /**
      * @return RedirectResponse|Response
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function login()
     {

@@ -6,7 +6,7 @@ use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
 use Todo\Lib\Exceptions\PdoErrorsException;
@@ -63,7 +63,7 @@ class EntityPdoRepositoryTest extends TestCase
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
      * @throws NotAllowedEntityName
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws NotValidEmailException
      * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException

@@ -8,7 +8,7 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\EntityInterface;
 
@@ -34,7 +34,7 @@ interface EntityServiceInterface
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      */
     public function getEntityById(EntityRepositoryInterface $repository, int $id): EntityInterface;
 
@@ -79,7 +79,7 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      * @throws NotValidEmailException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws CannotEditEntityException
      * @throws CannotDoneEntityException
      */
@@ -93,7 +93,7 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      * @throws NotValidEmailException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws CannotDoneEntityException
      */
     public function doneEntity(EntityRepositoryInterface $repository, int $entityId): void;

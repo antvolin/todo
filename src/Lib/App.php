@@ -2,6 +2,7 @@
 
 namespace Todo\Lib;
 
+use Todo\Lib\Factory\Request\RequestFactory;
 use Todo\Lib\Factory\Service\EntityServiceFactory;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
 use Todo\Lib\Factory\Service\TokenServiceFactory;
@@ -11,8 +12,8 @@ use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityRepositoryFactory;
-use Todo\Lib\Factory\RequestFactory;
-use Todo\Lib\Factory\TemplateFactory;
+use Todo\Lib\Factory\Template\TemplateAdapterInterface;
+use Todo\Lib\Factory\Template\TemplateFactory;
 use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
@@ -20,7 +21,6 @@ use Todo\Lib\Service\Secret\SecretGeneratorService;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use PDO;
 use Symfony\Component\HttpFoundation\Request;
-use Twig\Environment;
 
 class App
 {
@@ -213,9 +213,9 @@ class App
     }
 
     /**
-     * @return Environment
+     * @return TemplateAdapterInterface
      */
-    public function getTemplate(): Environment
+    public function getTemplate(): TemplateAdapterInterface
     {
         $factory = new TemplateFactory();
 

@@ -1,21 +1,14 @@
 <?php
 
-namespace Tests\Lib\Factory;
+namespace Tests\Lib\Factory\Template;
 
-use Todo\Lib\Factory\TemplateFactory;
 use PHPUnit\Framework\TestCase;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Todo\Lib\Factory\Template\TemplateFactory;
 
 class TemplateFactoryTest extends TestCase
 {
     /**
      * @test
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeCreatedTemplate(): void
     {

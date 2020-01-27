@@ -8,7 +8,7 @@ use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
@@ -52,7 +52,7 @@ class EntityServiceTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws NotValidEmailException
      * @throws PdoErrorsException
      */
@@ -111,13 +111,13 @@ class EntityServiceTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws NotValidEmailException
      * @throws PdoErrorsException
      */
     public function shouldBeDeletingEntity(): void
     {
-        $this->expectException(NotFoundException::class);
+        $this->expectException(EntityNotFoundException::class);
 
         $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
 
@@ -132,7 +132,7 @@ class EntityServiceTest extends TestCase
      * @throws CannotDoneEntityException
      * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws NotValidEmailException
      * @throws PdoErrorsException
      */
@@ -153,7 +153,7 @@ class EntityServiceTest extends TestCase
      * @throws CannotBeEmptyException
      * @throws CannotDoneEntityException
      * @throws ForbiddenStatusException
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws NotValidEmailException
      * @throws PdoErrorsException
      */

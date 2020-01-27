@@ -6,7 +6,7 @@ use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Model\EntityInterface;
 
 interface EntityRepositoryInterface
@@ -16,7 +16,7 @@ interface EntityRepositoryInterface
      *
      * @return EntityInterface
      *
-     * @throws NotFoundException
+     * @throws EntityNotFoundException
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException

@@ -9,7 +9,7 @@ use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
@@ -173,17 +173,14 @@ class EntityControllerTest extends TestCase
      * @test
      *
      * @throws CannotBeEmptyException
+     * @throws CannotDoneEntityException
      * @throws CannotEditEntityException
+     * @throws EntityNotFoundException
      * @throws ForbiddenStatusException
-     * @throws LoaderError
      * @throws NotAllowedEntityName
-     * @throws NotFoundException
      * @throws NotValidEmailException
      * @throws PdoConnectionException
      * @throws PdoErrorsException
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws CannotDoneEntityException
      */
     public function shouldBeEntityEditable(): void
     {

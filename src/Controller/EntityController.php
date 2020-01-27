@@ -9,19 +9,16 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\NotFoundException;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
-use Twig\Environment;
-use Twig\Error\LoaderError as LoaderErrorAlias;
-use Twig\Error\RuntimeError as RuntimeErrorAlias;
-use Twig\Error\SyntaxError as SyntaxErrorAlias;
 
 class EntityController
 {
@@ -41,7 +38,7 @@ class EntityController
     private $entityRepository;
 
     /**
-     * @var Environment
+     * @var TemplateAdapterInterface
      */
     private $template;
 
@@ -49,13 +46,13 @@ class EntityController
      * @param Request $request
      * @param EntityServiceInterface $entityManager
      * @param EntityRepositoryInterface $entityRepository
-     * @param Environment $template
+     * @param TemplateAdapterInterface $template
      */
     public function __construct(
         Request $request,
         EntityServiceInterface $entityManager,
         EntityRepositoryInterface $entityRepository,
-        Environment $template
+        TemplateAdapterInterface $template
     )
     {
         $this->request = $request;
@@ -66,10 +63,6 @@ class EntityController
 
     /**
      * @return Response
-     *
-     * @throws LoaderErrorAlias
-     * @throws RuntimeErrorAlias
-     * @throws SyntaxErrorAlias
      */
     public function list(): Response
     {
@@ -96,12 +89,9 @@ class EntityController
     /**
      * @return RedirectResponse|Response
      *
-     * @throws ForbiddenStatusException
      * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
      * @throws NotValidEmailException
-     * @throws LoaderErrorAlias
-     * @throws RuntimeErrorAlias
-     * @throws SyntaxErrorAlias
      */
     public function create()
     {
@@ -127,15 +117,12 @@ class EntityController
      * @return RedirectResponse|Response
      *
      * @throws CannotBeEmptyException
+     * @throws CannotDoneEntityException
      * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
-     * @throws PdoErrorsException
+     * @throws EntityNotFoundException
      * @throws NotValidEmailException
-     * @throws NotFoundException
-     * @throws LoaderErrorAlias
-     * @throws RuntimeErrorAlias
-     * @throws SyntaxErrorAlias
-     * @throws CannotDoneEntityException
+     * @throws PdoErrorsException
      */
     public function edit()
     {
@@ -160,10 +147,6 @@ class EntityController
 
     /**
      * @return RedirectResponse|Response
-     *
-     * @throws LoaderErrorAlias
-     * @throws RuntimeErrorAlias
-     * @throws SyntaxErrorAlias
      */
     public function done()
     {
