@@ -3,16 +3,16 @@
 namespace Tests\Lib\Factory\Template;
 
 use PHPUnit\Framework\TestCase;
-use Todo\Lib\Factory\Template\TemplateFactory;
+use Todo\Lib\Factory\Template\TwigTemplateFactory;
 
-class TemplateFactoryTest extends TestCase
+class TwigTemplateFactoryTest extends TestCase
 {
     /**
      * @test
      */
-    public function shouldBeCreatedTemplate(): void
+    public function shouldBeCreatedTwigTemplate(): void
     {
-        $factory = new TemplateFactory();
+        $factory = new TwigTemplateFactory();
         $template = $factory->create();
 
         $this->assertNotEmpty($template->render('list.html.twig'));

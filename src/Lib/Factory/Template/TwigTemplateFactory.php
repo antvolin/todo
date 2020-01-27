@@ -6,7 +6,7 @@ use Todo\Lib\Service\Path\PathService;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-class TemplateFactory implements TemplateFactoryInterface
+class TwigTemplateFactory implements TemplateFactoryInterface
 {
     /**
      * @return TemplateAdapterInterface

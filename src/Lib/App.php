@@ -13,7 +13,7 @@ use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityRepositoryFactory;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
-use Todo\Lib\Factory\Template\TemplateFactory;
+use Todo\Lib\Factory\Template\TwigTemplateFactory;
 use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
@@ -43,6 +43,11 @@ class App
      * @var string
      */
     private static $entityClassNamespace;
+
+    /**
+     * @var string
+     */
+    private static $templateType;
 
     /**
      * @var string
@@ -91,6 +96,7 @@ class App
         self::$storageType = $_ENV['STORAGE_TYPE'];
         self::$user = $_ENV['APP_USER'];
         self::$password = $_ENV['APP_PASSWORD'];
+        self::$templateType = $_ENV['TEMPLATE'];
     }
 
     /**
@@ -115,6 +121,14 @@ class App
     public static function getEntityPerPage(): int
     {
         return self::$entityPerPage;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getTemplateType(): string
+    {
+        return self::$templateType;
     }
 
     /**
@@ -217,7 +231,9 @@ class App
      */
     public function getTemplate(): TemplateAdapterInterface
     {
-        $factory = new TemplateFactory();
+        if ('twig' === self::getTemplateType()) {
+            $factory = new TwigTemplateFactory();
+        }
 
         return $factory->create();
     }
