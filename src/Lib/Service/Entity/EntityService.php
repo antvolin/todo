@@ -25,6 +25,11 @@ class EntityService implements EntityServiceInterface
     private $entityName;
 
     /**
+     * @var EntityRepositoryInterface $repository
+     */
+    private $repository;
+
+    /**
      * @inheritDoc
      */
     public function __construct(string $entityClassNamespace, string $entityName)
@@ -44,25 +49,33 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function getEntityById(EntityRepositoryInterface $repository, int $id): EntityInterface
+    public function getEntityById(int $id): EntityInterface
     {
-        return $repository->getEntityById($id);
+        return $this->repository->getEntityById($id);
     }
 
     /**
      * @inheritDoc
      */
-    public function getEntities(EntityRepositoryInterface $repository, int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
     {
-        return $repository->getEntities($page, $orderBy, $order);
+        return $this->repository->getEntities($page, $orderBy, $order);
     }
 
     /**
      * @inheritDoc
      */
-    public function getCountEntities(EntityRepositoryInterface $repository): int
+    public function getCountEntities(): int
     {
-        return $repository->getCountEntities();
+        return $this->repository->getCountEntities();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setRepository(EntityRepositoryInterface $repository): void
+    {
+        $this->repository = $repository;
     }
 
     /**
@@ -84,9 +97,9 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function editEntity(EntityRepositoryInterface $repository, int $entityId, string $text): void
+    public function editEntity(int $entityId, string $text): void
     {
-        $entity = $repository->getEntityById($entityId);
+        $entity = $this->repository->getEntityById($entityId);
 
         if (Status::DONE == $entity->getStatus()) {
             throw new CannotEditEntityException();
@@ -95,15 +108,15 @@ class EntityService implements EntityServiceInterface
         $entity->setStatus(new Status(Status::EDITED));
         $entity->setText(new Text($text));
 
-        $repository->addEntity($entity, $entityId);
+        $this->repository->addEntity($entity, $entityId);
     }
 
     /**
      * @inheritDoc
      */
-    public function doneEntity(EntityRepositoryInterface $repository, int $entityId): void
+    public function doneEntity(int $entityId): void
     {
-        $entity = $repository->getEntityById($entityId);
+        $entity = $this->repository->getEntityById($entityId);
 
         if (Status::DONE == $entity->getStatus()) {
             throw new CannotDoneEntityException();
@@ -111,15 +124,15 @@ class EntityService implements EntityServiceInterface
 
         $entity->setStatus(new Status(Status::DONE));
 
-        $repository->addEntity($entity, $entity->getId()->getValue());
+        $this->repository->addEntity($entity, $entity->getId()->getValue());
     }
 
     /**
      * @inheritDoc
      */
-    public function addEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int
+    public function addEntity(string $userName, string $email, string $text): int
     {
-        return $repository->addEntity(
+        return $this->repository->addEntity(
             new $this->entityClass(
                 new Id(),
                 new UserName($userName),
@@ -133,8 +146,8 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void
+    public function deleteEntity(int $entityId): void
     {
-        $repository->deleteEntity($entityId);
+        $this->repository->deleteEntity($entityId);
     }
 }

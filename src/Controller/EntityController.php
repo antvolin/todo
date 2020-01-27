@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
-use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 
@@ -33,11 +32,6 @@ class EntityController
     private $entityService;
 
     /**
-     * @var EntityRepositoryInterface
-     */
-    private $entityRepository;
-
-    /**
      * @var TemplateAdapterInterface
      */
     private $template;
@@ -45,19 +39,16 @@ class EntityController
     /**
      * @param Request $request
      * @param EntityServiceInterface $entityManager
-     * @param EntityRepositoryInterface $entityRepository
      * @param TemplateAdapterInterface $template
      */
     public function __construct(
         Request $request,
         EntityServiceInterface $entityManager,
-        EntityRepositoryInterface $entityRepository,
         TemplateAdapterInterface $template
     )
     {
         $this->request = $request;
         $this->entityService = $entityManager;
-        $this->entityRepository = $entityRepository;
         $this->template = $template;
     }
 
@@ -102,7 +93,7 @@ class EntityController
         }
 
         try {
-            $id = $this->entityService->addEntity($this->entityRepository, $this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+            $id = $this->entityService->addEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
             return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
         }
@@ -128,14 +119,14 @@ class EntityController
     {
         if ('POST' !== $this->request->getMethod()) {
             $id = func_get_args()[0];
-            $text = $this->entityService->getEntityById($this->entityRepository, $id)->getText();
+            $text = $this->entityService->getEntityById($id)->getText();
             $token = $this->request->get('token');
 
             return new Response($this->template->render('form_edit.html.twig', ['id' => $id, 'text' => $text, 'token' => $token]));
         }
 
         try {
-            $this->entityService->editEntity($this->entityRepository, $this->request->get('id'), $this->request->get('text'));
+            $this->entityService->editEntity($this->request->get('id'), $this->request->get('text'));
         } catch (InvalidArgumentException $exception) {
             $params = ['error' => $exception->getMessage()];
 
@@ -151,7 +142,7 @@ class EntityController
     public function done()
     {
         try {
-            $this->entityService->doneEntity($this->entityRepository, func_get_args()[0]);
+            $this->entityService->doneEntity(func_get_args()[0]);
         } catch (Exception $exception) {
             return new Response($this->template->render('done_error.html.twig', ['error' => $exception->getMessage()]));
         }

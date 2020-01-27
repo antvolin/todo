@@ -66,8 +66,8 @@ class Kernel
         $this->request->request->set('token', $this->app->getToken());
         $this->authService = $this->app->getAuthService($this->request);
         $this->template = $this->app->getTemplate();
-        $this->entityRepository = $this->app->getRepository();
         $this->entityService = $this->app->getEntityService();
+        $this->entityService->setRepository($this->app->getRepository());
 
         $this->handleRequest();
 
@@ -98,8 +98,7 @@ class Kernel
         $roleRequestHandler = new RoleRequestHandlerService();
         $pagingRequestHandler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityService,
-            $this->entityRepository
+            $this->entityService
         );
 
         $filterRequestHandler
@@ -129,7 +128,6 @@ class Kernel
         return new EntityController(
             $this->request,
             $this->entityService,
-            $this->entityRepository,
             $this->template
         );
     }

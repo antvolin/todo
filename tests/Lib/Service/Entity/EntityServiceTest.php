@@ -9,27 +9,19 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\EntityNotFoundException;
-use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
+use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Repository\EntityRepositoryInterface as EntityRepositoryInterfaceAlias;
 use Todo\Lib\Service\Entity\EntityService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
+use Todo\Lib\Traits\TestValueGenerator;
 use Todo\Model\EntityInterface;
 use Todo\Model\Status;
 use PHPUnit\Framework\TestCase;
 
 class EntityServiceTest extends TestCase
 {
-    /**
-     * @var App
-     */
-    private $app;
-
-    /**
-     * @var EntityRepositoryInterfaceAlias
-     */
-    private $repository;
+    use TestValueGenerator;
 
     /**
      * @var EntityServiceInterface
@@ -38,13 +30,13 @@ class EntityServiceTest extends TestCase
 
     /**
      * @throws NotAllowedEntityName
-     * @throws PdoConnectionExceptionAlias
+     * @throws PdoConnectionException
      */
     protected function setUp()
     {
-        $this->app = new App();
-        $this->repository = $this->app->getRepository();
+        $app = new App();
         $this->entityService = new EntityService(App::getEntityClassNamespace(), App::getEntityName());
+        $this->entityService->setRepository($app->getRepository());
     }
 
     /**
@@ -58,8 +50,12 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeGettingEntityById(): void
     {
-        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
-        $entity = $this->entityService->getEntityById($this->repository, $id);
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $email = $this->generateEmail();
+        $text = $this->generateText(__METHOD__, __CLASS__);
+
+        $id = $this->entityService->addEntity($userName, $email, $text);
+        $entity = $this->entityService->getEntityById($id);
 
         $this->assertInstanceOf(EntityInterface::class, $entity);
     }
@@ -74,11 +70,19 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeGettingEntitiesArray(): void
     {
-        $this->entityService->addEntity($this->repository, uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test1', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityService->addEntity($this->repository, uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test2', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityService->addEntity($this->repository, uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test3', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $userName1 = $this->generateUserName(__METHOD__, __CLASS__, 1);
+        $userName2 = $this->generateUserName(__METHOD__, __CLASS__, 2);
+        $userName3 = $this->generateUserName(__METHOD__, __CLASS__, 3);
+        $text1 = $this->generateText(__METHOD__, __CLASS__, 1);
+        $text2 = $this->generateText(__METHOD__, __CLASS__, 2);
+        $text3 = $this->generateText(__METHOD__, __CLASS__, 3);
+        $email = $this->generateEmail();
 
-        $entities = $this->entityService->getEntities($this->repository, 0);
+        $this->entityService->addEntity($userName1, $email, $text1);
+        $this->entityService->addEntity($userName2, $email, $text2);
+        $this->entityService->addEntity($userName3, $email, $text3);
+
+        $entities = $this->entityService->getEntities(0);
 
         foreach ($entities as $entity) {
             $this->assertInstanceOf(EntityInterface::class, $entity);
@@ -90,18 +94,24 @@ class EntityServiceTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionExceptionAlias
      * @throws PdoErrorsException
      */
     public function shouldBeGettingCountOfEntities(): void
     {
-        $this->entityService->addEntity($this->repository, uniqid('user_name1'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text1'.__METHOD__.__CLASS__, true));
-        $this->entityService->addEntity($this->repository, uniqid('user_name2'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text2'.__METHOD__.__CLASS__, true));
-        $this->entityService->addEntity($this->repository, uniqid('user_name3'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text3'.__METHOD__.__CLASS__, true));
+        $userName1 = $this->generateUserName(__METHOD__, __CLASS__, 1);
+        $userName2 = $this->generateUserName(__METHOD__, __CLASS__, 2);
+        $userName3 = $this->generateUserName(__METHOD__, __CLASS__, 3);
+        $text1 = $this->generateText(__METHOD__, __CLASS__, 1);
+        $text2 = $this->generateText(__METHOD__, __CLASS__, 2);
+        $text3 = $this->generateText(__METHOD__, __CLASS__, 3);
+        $email = $this->generateEmail();
 
-        $count = $this->entityService->getCountEntities($this->app->getRepository());
+        $this->entityService->addEntity($userName1, $email, $text1);
+        $this->entityService->addEntity($userName2, $email, $text2);
+        $this->entityService->addEntity($userName3, $email, $text3);
+
+        $count = $this->entityService->getCountEntities();
 
         $this->assertLessThan($count, 0);
     }
@@ -119,10 +129,14 @@ class EntityServiceTest extends TestCase
     {
         $this->expectException(EntityNotFoundException::class);
 
-        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $text = $this->generateText(__METHOD__, __CLASS__);
+        $email = $this->generateEmail();
 
-        $this->entityService->deleteEntity($this->repository, $id);
-        $this->entityService->getEntityById($this->repository, $id);
+        $id = $this->entityService->addEntity($userName, $email, $text);
+
+        $this->entityService->deleteEntity($id);
+        $this->entityService->getEntityById($id);
     }
 
     /**
@@ -138,10 +152,16 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeEditingEntity(): void
     {
-        $newText = uniqid('text'.__METHOD__.__CLASS__, true);
-        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
-        $this->entityService->editEntity($this->repository, $id, $newText);
-        $entity = $this->entityService->getEntityById($this->repository, $id);
+        $newText = $this->generateText(__METHOD__, __CLASS__, 1);
+
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $text = $this->generateText(__METHOD__, __CLASS__);
+        $email = $this->generateEmail();
+
+        $id = $this->entityService->addEntity($userName, $email, $text);
+
+        $this->entityService->editEntity($id, $newText);
+        $entity = $this->entityService->getEntityById($id);
 
         $this->assertEquals(Status::EDITED, $entity->getStatus());
         $this->assertEquals($newText, $entity->getText());
@@ -159,9 +179,13 @@ class EntityServiceTest extends TestCase
      */
     public function shouldBeDoneEntity(): void
     {
-        $id = $this->entityService->addEntity($this->repository, uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test111', uniqid('text'.__METHOD__.__CLASS__, true));
-        $this->entityService->doneEntity($this->repository, $id);
-        $entity = $this->entityService->getEntityById($this->repository, $id);
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $text = $this->generateText(__METHOD__, __CLASS__);
+        $email = $this->generateEmail();
+
+        $id = $this->entityService->addEntity($userName, $email, $text);
+        $this->entityService->doneEntity($id);
+        $entity = $this->entityService->getEntityById($id);
 
         $this->assertEquals(Status::DONE, $entity->getStatus());
     }

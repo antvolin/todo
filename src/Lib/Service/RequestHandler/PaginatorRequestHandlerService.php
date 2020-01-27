@@ -6,10 +6,9 @@ use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Path\PathService;
+use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorRequestHandlerService extends RequestHandlerService
 {
@@ -24,24 +23,16 @@ class PaginatorRequestHandlerService extends RequestHandlerService
     private $entityService;
 
     /**
-     * @var EntityRepositoryInterface
-     */
-    private $entityRepository;
-
-    /**
      * @param PaginatorFactoryInterface $paginatorFactory
      * @param EntityServiceInterface $entityManager
-     * @param EntityRepositoryInterface $entityRepository
      */
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
-        EntityServiceInterface $entityManager,
-        EntityRepositoryInterface $entityRepository
+        EntityServiceInterface $entityManager
     )
     {
         $this->paginatorFactory = $paginatorFactory;
         $this->entityService = $entityManager;
-        $this->entityRepository = $entityRepository;
     }
 
     /**
@@ -60,8 +51,8 @@ class PaginatorRequestHandlerService extends RequestHandlerService
             $orderBy = $request->get('orderBy');
             $order = $request->get('order');
 
-            $entities = $this->entityService->getEntities($this->entityRepository, $page, $orderBy, $order);
-            $countRows = $this->entityService->getCountEntities($this->entityRepository);
+            $entities = $this->entityService->getEntities($page, $orderBy, $order);
+            $countRows = $this->entityService->getCountEntities();
 
             $paginator = $this->paginatorFactory->create($entities, $countRows, $page);
 

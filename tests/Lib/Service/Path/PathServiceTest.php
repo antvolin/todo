@@ -12,9 +12,12 @@ use Todo\Lib\Exceptions\PdoErrorsException;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\Service\Path\PathService;
+use Todo\Lib\Traits\TestValueGenerator;
 
 class PathServiceTest extends TestCase
 {
+    use TestValueGenerator;
+
     /**
      * @test
      */
@@ -56,8 +59,13 @@ class PathServiceTest extends TestCase
         $dsn = PathService::getPathToPdoDsn(App::getStorageType(), App::getDbFolderName(), $entityName);
         $pdo = new PDO($dsn);
 
-        $entityManager = $app->getEntityService();
-        $entityManager->addEntity($app->getRepository(), uniqid('user_name'.__METHOD__.__CLASS__, true), 'test@test.test', uniqid('text'.__METHOD__.__CLASS__, true));
+        $entityService = $app->getEntityService();
+        $entityService->setRepository($app->getRepository());
+
+        $userName = $this->generateUserName(__METHOD__, __CLASS__);
+        $text = $this->generateText(__METHOD__, __CLASS__);
+        $email = $this->generateEmail();
+        $entityService->addEntity($userName, $email, $text);
 
         $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();
 

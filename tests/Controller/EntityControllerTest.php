@@ -19,12 +19,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Todo\Lib\Traits\TestValueGenerator;
 
 class EntityControllerTest extends TestCase
 {
+    use TestValueGenerator;
+
     /**
      * @var App
      */
@@ -54,17 +54,12 @@ class EntityControllerTest extends TestCase
         $this->app = new App();
         $this->request = $this->app->getRequest();
         $this->entityService = $this->app->getEntityService();
-        $this->controller = new EntityController($this->request, $this->entityService, $this->app->getRepository(), $this->app->getTemplate());
+        $this->entityService->setRepository($this->app->getRepository());
+        $this->controller = new EntityController($this->request, $this->entityService, $this->app->getTemplate());
     }
 
     /**
      * @test
-     *
-     * @throws LoaderError
-     * @throws NotAllowedEntityName
-     * @throws PdoConnectionException
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeGettingParamsForEntityListPage(): void
     {
@@ -72,8 +67,7 @@ class EntityControllerTest extends TestCase
 
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityService,
-            $this->app->getRepository()
+            $this->entityService
         );
         $handler->handle($this->request);
 
@@ -116,19 +110,13 @@ class EntityControllerTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws LoaderError
-     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionException
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeGettingCreatePage(): void
     {
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityService,
-            $this->app->getRepository()
+            $this->entityService
         );
         $handler->handle($this->request);
 
@@ -143,25 +131,19 @@ class EntityControllerTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws LoaderError
-     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionException
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeEntityCreatable(): void
     {
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityService,
-            $this->app->getRepository()
+            $this->entityService
         );
         $handler->handle($this->request);
         $this->request->setMethod('POST');
-        $this->request->request->set('user_name', uniqid('user_name'.__METHOD__.__CLASS__, true));
-        $this->request->request->set('email', 'test@test.test');
-        $this->request->request->set('text', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->request->request->set('user_name', $this->generateUserName(__METHOD__, __CLASS__));
+        $this->request->request->set('email', $this->generateEmail());
+        $this->request->request->set('text', $this->generateText(__METHOD__, __CLASS__));
 
         $response = $this->controller->create();
 
@@ -177,24 +159,21 @@ class EntityControllerTest extends TestCase
      * @throws CannotEditEntityException
      * @throws EntityNotFoundException
      * @throws ForbiddenStatusException
-     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionException
      * @throws PdoErrorsException
      */
     public function shouldBeEntityEditable(): void
     {
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityService,
-            $this->app->getRepository()
+            $this->entityService
         );
         $handler->handle($this->request);
         $this->request->setMethod('POST');
 
-        $this->request->request->set('user_name', uniqid('user_name'.__METHOD__.__CLASS__, true));
-        $this->request->request->set('email', 'test@test.test');
-        $this->request->request->set('text', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->request->request->set('user_name', $this->generateUserName(__METHOD__, __CLASS__));
+        $this->request->request->set('email', $this->generateEmail());
+        $this->request->request->set('text', $this->generateText(__METHOD__, __CLASS__));
 
         $this->controller->create();
         $this->request->request->set('id', $this->request->request->get('entity_id'));
@@ -209,26 +188,20 @@ class EntityControllerTest extends TestCase
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
-     * @throws LoaderError
-     * @throws NotAllowedEntityName
      * @throws NotValidEmailException
-     * @throws PdoConnectionException
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function shouldBeEntityDone(): void
     {
         $handler = new PaginatorRequestHandlerService(
             $this->app->getPaginatorFactory(),
-            $this->entityService,
-            $this->app->getRepository()
+            $this->entityService
         );
         $handler->handle($this->request);
         $this->request->setMethod('POST');
 
-        $this->request->request->set('user_name', uniqid('user_name'.__METHOD__.__CLASS__, true));
-        $this->request->request->set('email', 'test@test.test');
-        $this->request->request->set('text', uniqid('text'.__METHOD__.__CLASS__, true));
+        $this->request->request->set('user_name', $this->generateUserName(__METHOD__, __CLASS__));
+        $this->request->request->set('email', $this->generateEmail());
+        $this->request->request->set('text', $this->generateText(__METHOD__, __CLASS__));
 
         $this->controller->create();
         $response = $this->controller->done($this->request->request->get('entity_id'));

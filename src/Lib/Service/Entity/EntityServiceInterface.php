@@ -26,7 +26,6 @@ interface EntityServiceInterface
     public function getEntityName(): string;
 
     /**
-     * @param EntityRepositoryInterface $repository
      * @param int $id
      *
      * @return EntityInterface
@@ -36,10 +35,9 @@ interface EntityServiceInterface
      * @throws NotValidEmailException
      * @throws EntityNotFoundException
      */
-    public function getEntityById(EntityRepositoryInterface $repository, int $id): EntityInterface;
+    public function getEntityById(int $id): EntityInterface;
 
     /**
-     * @param EntityRepositoryInterface $repository
      * @param int $page
      * @param string|null $orderBy
      * @param string|null $order
@@ -50,14 +48,17 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getEntities(EntityRepositoryInterface $repository, int $page, ?string $orderBy = null, ?string $order = null): array;
+    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array;
+
+    /**
+     * @return int
+     */
+    public function getCountEntities(): int;
 
     /**
      * @param EntityRepositoryInterface $repository
-     *
-     * @return int
      */
-    public function getCountEntities(EntityRepositoryInterface $repository): int;
+    public function setRepository(EntityRepositoryInterface $repository): void;
 
     /**
      * @param array $entity
@@ -71,7 +72,6 @@ interface EntityServiceInterface
     public function createEntity(array $entity): EntityInterface;
 
     /**
-     * @param EntityRepositoryInterface $repository
      * @param int $entityId
      * @param string $text
      *
@@ -83,10 +83,9 @@ interface EntityServiceInterface
      * @throws CannotEditEntityException
      * @throws CannotDoneEntityException
      */
-    public function editEntity(EntityRepositoryInterface $repository, int $entityId, string $text): void;
+    public function editEntity(int $entityId, string $text): void;
 
     /**
-     * @param EntityRepositoryInterface $repository
      * @param int $entityId
      *
      * @throws CannotBeEmptyException
@@ -96,10 +95,9 @@ interface EntityServiceInterface
      * @throws EntityNotFoundException
      * @throws CannotDoneEntityException
      */
-    public function doneEntity(EntityRepositoryInterface $repository, int $entityId): void;
+    public function doneEntity(int $entityId): void;
 
     /**
-     * @param EntityRepositoryInterface $repository
      * @param string $userName
      * @param string $email
      * @param string $text
@@ -111,11 +109,10 @@ interface EntityServiceInterface
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      */
-    public function addEntity(EntityRepositoryInterface $repository, string $userName, string $email, string $text): int;
+    public function addEntity(string $userName, string $email, string $text): int;
 
     /**
-     * @param EntityRepositoryInterface $repository
      * @param int $entityId
      */
-    public function deleteEntity(EntityRepositoryInterface $repository, int $entityId): void;
+    public function deleteEntity(int $entityId): void;
 }
