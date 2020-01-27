@@ -2,6 +2,8 @@
 
 namespace Tests\Lib\Factory\Service;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Todo\Lib\App;
 use Todo\Lib\Factory\Service\TokenServiceFactory;
 use PHPUnit\Framework\TestCase;
@@ -11,11 +13,14 @@ class TokenServiceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeCreatedTokenService(): void
+    public function shouldBeCreatableTokenService(): void
     {
-        $app = new App();
-        $request = $app->getRequest();
-        $factory = new TokenServiceFactory($app->getTokenSalt());
+        $request = $this->createMock(Request::class);
+        $session = $this->createMock(SessionInterface::class);
+        $request->method('getSession')
+            ->willReturn($session);
+
+        $factory = new TokenServiceFactory(App::getTokenSalt());
         $service = $factory->create($request);
 
         $this->assertTrue(method_exists($service, 'getToken'));

@@ -50,8 +50,8 @@ class EntityPdoRepositoryTest extends TestCase
     {
         $this->app = new App();
         $pdo = $this->app->getPdo();
-        $this->entityName = $this->app->getEntityName();
-        $this->entityClassNamespace = $this->app->getEntityClassNamespace();
+        $this->entityName = App::getEntityName();
+        $this->entityClassNamespace = App::getEntityClassNamespace();
         $this->repository = new EntityPdoRepository($pdo, $this->app->getEntityService(), 3);
         $factory = new EntityServiceFactory($this->entityClassNamespace);
         $this->entityService = $factory->create($this->entityName);

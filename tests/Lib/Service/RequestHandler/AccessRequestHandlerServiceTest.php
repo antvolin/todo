@@ -18,7 +18,7 @@ class AccessRequestHandlerServiceTest extends TestCase
 
         $app = new App();
         $request = $app->getRequest();
-        $request->query->set('csrf-token', $app->getTokenSalt().':new value');
+        $request->query->set('csrf-token', App::getTokenSalt().':new value');
         $request->getSession()->set('secret', $app->getSecret());
         $handler = new AccessRequestHandlerService($app->getTokenServiceFactory());
 

@@ -44,7 +44,7 @@ class EntityServiceTest extends TestCase
     {
         $this->app = new App();
         $this->repository = $this->app->getRepository();
-        $this->entityService = new EntityService($this->app->getEntityClassNamespace(), $this->app->getEntityName());
+        $this->entityService = new EntityService(App::getEntityClassNamespace(), App::getEntityName());
     }
 
     /**

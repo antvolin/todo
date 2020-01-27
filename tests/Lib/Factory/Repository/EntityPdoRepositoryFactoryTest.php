@@ -4,6 +4,7 @@ namespace Tests\Lib\Factory\Repository;
 
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\App;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
@@ -34,7 +35,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     public function shouldBeCreatableEntityPdoRepository(): void
     {
         $service = $this->createMock(EntityServiceInterface::class);
-        $service->method('getEntityName')->willReturn('entity');
+        $service->method('getEntityName')->willReturn(App::getEntityName());
 
         $factory = new EntityPdoRepositoryFactory($this->pdo, $service);
         $repository = $factory->create($this->entityPerPage);

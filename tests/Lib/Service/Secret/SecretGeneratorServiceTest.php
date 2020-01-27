@@ -13,12 +13,11 @@ class SecretGeneratorServiceTest extends TestCase
      */
     public function secretShouldBeGeneratedValidSecret(): void
     {
-        $app = new App();
-        $tokenSecretPrefix = $app->getTokenSecretPrefix();
-        $generator = new SecretGeneratorService($tokenSecretPrefix, $app->getTokenSecret());
+        $tokenSecretPrefix = App::getTokenSecretPrefix();
+        $generator = new SecretGeneratorService($tokenSecretPrefix, App::getTokenSecret());
         $secretPrefix = uniqid($tokenSecretPrefix, true);
         $secret = $generator->generateSecret($secretPrefix);
 
-        $this->assertEquals(md5($app->getTokenSecret().$secretPrefix), $secret);
+        $this->assertEquals(md5(App::getTokenSecret().$secretPrefix), $secret);
     }
 }

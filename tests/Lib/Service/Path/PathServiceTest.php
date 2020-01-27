@@ -52,8 +52,8 @@ class PathServiceTest extends TestCase
     public function shouldBeGettingCorrectPathToPdoDsn(): void
     {
         $app = new App();
-        $entityName = $app->getEntityName();
-        $dsn = PathService::getPathToPdoDsn($app->getStorageType(), $app->getDbFolderName(), $entityName);
+        $entityName = App::getEntityName();
+        $dsn = PathService::getPathToPdoDsn(App::getStorageType(), App::getDbFolderName(), $entityName);
         $pdo = new PDO($dsn);
 
         $entityManager = $app->getEntityService();

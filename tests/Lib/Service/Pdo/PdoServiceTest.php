@@ -5,6 +5,7 @@ namespace Tests\Lib\Service\Pdo;
 use Todo\Lib\App;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Service\Pdo\PdoService;
 
 class PdoServiceTest extends TestCase
@@ -19,10 +20,12 @@ class PdoServiceTest extends TestCase
      */
     protected $pdo;
 
+    /**
+     * @throws PdoConnectionException
+     */
     protected function setUp()
     {
-        $app = new App();
-        $this->pdoService = new PdoService($app->getEntityName(), $app->getStorageType(), $app->getDbFolderName());
+        $this->pdoService = new PdoService(App::getEntityName(), App::getStorageType(), App::getDbFolderName());
         $this->pdo = $this->pdoService->getPdo();
     }
 

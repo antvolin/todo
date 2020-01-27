@@ -16,9 +16,8 @@ class EntityServiceFactoryTest extends TestCase
      */
     public function shouldBeCreatableEntityServiceWithValidName(): void
     {
-        $app = new App();
-        $factory = new EntityServiceFactory($app->getEntityClassNamespace());
-        $entityManager = $factory->create($app->getEntityName());
+        $factory = new EntityServiceFactory(App::getEntityClassNamespace());
+        $entityManager = $factory->create(App::getEntityName());
 
         $this->assertTrue(method_exists($entityManager, 'getEntityName'));
         $this->assertTrue(method_exists($entityManager, 'getEntityById'));
@@ -40,8 +39,7 @@ class EntityServiceFactoryTest extends TestCase
     {
         $this->expectException(NotAllowedEntityName::class);
 
-        $app = new App();
-        $factory = new EntityServiceFactory($app->getEntityClassNamespace());
+        $factory = new EntityServiceFactory(App::getEntityClassNamespace());
         $factory->create('Not valid entity name');
     }
 }

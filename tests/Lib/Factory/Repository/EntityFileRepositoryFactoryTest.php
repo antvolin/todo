@@ -26,8 +26,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatableEntityFileRepository(): void
     {
-        $app = new App();
-        $factory = new EntityFileRepositoryFactory($app->getEntityName());
+        $factory = new EntityFileRepositoryFactory(App::getEntityName());
         $repository = $factory->create($this->entityPerPage);
 
         $this->assertTrue(method_exists($repository, 'getCountEntities'));

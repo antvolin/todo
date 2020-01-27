@@ -39,8 +39,8 @@ class AuthServiceTest extends TestCase
     {
         $this->app = new App();
         $this->request = $this->app->getRequest();
-        $this->user = $this->app->getUser();
-        $this->password = $this->app->getPassword();
+        $this->user = App::getUser();
+        $this->password = App::getPassword();
         $this->service = new AuthService($this->request, $this->user, $this->password);
     }
 

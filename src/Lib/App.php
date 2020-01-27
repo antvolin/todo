@@ -32,145 +32,145 @@ class App
     /**
      * @var string
      */
-    private $entityName;
+    private static $entityName;
 
     /**
      * @var int
      */
-    private $entityPerPage;
+    private static $entityPerPage;
 
     /**
      * @var string
      */
-    private $entityClassNamespace;
+    private static $entityClassNamespace;
 
     /**
      * @var string
      */
-    private $tokenSecretPrefix;
+    private static $tokenSecretPrefix;
 
     /**
      * @var string
      */
-    private $tokenSecret;
+    private static $tokenSecret;
 
     /**
      * @var string
      */
-    private $tokenSalt;
+    private static $tokenSalt;
 
     /**
      * @var string
      */
-    private $dbFolderName;
+    private static $dbFolderName;
 
     /**
      * @var string
      */
-    private $storageType;
+    private static $storageType;
 
     /**
      * @var string
      */
-    private $user;
+    private static $user;
 
     /**
      * @var string
      */
-    private $password;
+    private static $password;
 
     public function __construct()
     {
-        $this->entityName = $_ENV['ENTITY_NAME'];
-        $this->entityPerPage = $_ENV['ENTITY_PER_PAGE'];
-        $this->entityClassNamespace = $_ENV['ENTITY_CLASS_NAMESPACE'];
-        $this->tokenSecretPrefix = $_ENV['TOKEN_SECRET_PREFIX'];
-        $this->tokenSecret = $_ENV['TOKEN_SECRET'];
-        $this->tokenSalt = $_ENV['TOKEN_SALT'];
-        $this->dbFolderName = $_ENV['DB_FOLDER_NAME'];
-        $this->storageType = $_ENV['STORAGE_TYPE'];
-        $this->user = $_ENV['APP_USER'];
-        $this->password = $_ENV['APP_PASSWORD'];
+        self::$entityName = $_ENV['ENTITY_NAME'];
+        self::$entityPerPage = $_ENV['ENTITY_PER_PAGE'];
+        self::$entityClassNamespace = $_ENV['ENTITY_CLASS_NAMESPACE'];
+        self::$tokenSecretPrefix = $_ENV['TOKEN_SECRET_PREFIX'];
+        self::$tokenSecret = $_ENV['TOKEN_SECRET'];
+        self::$tokenSalt = $_ENV['TOKEN_SALT'];
+        self::$dbFolderName = $_ENV['DB_FOLDER_NAME'];
+        self::$storageType = $_ENV['STORAGE_TYPE'];
+        self::$user = $_ENV['APP_USER'];
+        self::$password = $_ENV['APP_PASSWORD'];
     }
 
     /**
      * @return string
      */
-    public function getEntityName(): string
+    public static function getEntityName(): string
     {
-        return $this->entityName;
+        return self::$entityName;
     }
 
     /**
      * @return string
      */
-    public function getEntityClassNamespace(): string
+    public static function getEntityClassNamespace(): string
     {
-        return $this->entityClassNamespace;
+        return self::$entityClassNamespace;
     }
 
     /**
      * @return int
      */
-    public function getEntityPerPage(): int
+    public static function getEntityPerPage(): int
     {
-        return $this->entityPerPage;
+        return self::$entityPerPage;
     }
 
     /**
      * @return string
      */
-    public function getTokenSecretPrefix(): string
+    public static function getTokenSecretPrefix(): string
     {
-        return $this->tokenSecretPrefix;
+        return self::$tokenSecretPrefix;
     }
 
     /**
      * @return string
      */
-    public function getTokenSecret(): string
+    public static function getTokenSecret(): string
     {
-        return $this->tokenSecret;
+        return self::$tokenSecret;
     }
 
     /**
      * @return string
      */
-    public function getTokenSalt(): string
+    public static function getTokenSalt(): string
     {
-        return $this->tokenSalt;
+        return self::$tokenSalt;
     }
 
     /**
      * @return string
      */
-    public function getDbFolderName(): string
+    public static function getDbFolderName(): string
     {
-        return $this->dbFolderName;
+        return self::$dbFolderName;
     }
 
     /**
      * @return string
      */
-    public function getStorageType(): string
+    public static function getStorageType(): string
     {
-        return $this->storageType;
+        return self::$storageType;
     }
 
     /**
      * @return string
      */
-    public function getUser(): string
+    public static function getUser(): string
     {
-        return $this->user;
+        return self::$user;
     }
 
     /**
      * @return string
      */
-    public function getPassword(): string
+    public static function getPassword(): string
     {
-        return $this->password;
+        return self::$password;
     }
 
     /**
@@ -191,7 +191,7 @@ class App
      */
     public function getSecret(): string
     {
-        $manager = new SecretGeneratorService($this->getTokenSecretPrefix(), $this->getTokenSecret());
+        $manager = new SecretGeneratorService(self::getTokenSecretPrefix(), self::getTokenSecret());
 
         return $manager->generateSecret();
     }
@@ -209,7 +209,7 @@ class App
      */
     public function getTokenServiceFactory(): TokenServiceFactoryInterface
     {
-        return new TokenServiceFactory($this->getTokenSalt());
+        return new TokenServiceFactory(self::getTokenSalt());
     }
 
     /**
@@ -231,9 +231,9 @@ class App
      */
     public function getEntityService(string $entityName = null): EntityServiceInterface
     {
-        $entityServiceFactory = new EntityServiceFactory($this->getEntityClassNamespace());
+        $entityServiceFactory = new EntityServiceFactory(self::getEntityClassNamespace());
 
-        return $entityServiceFactory->create($entityName ?? $this->getEntityName());
+        return $entityServiceFactory->create($entityName ?? self::getEntityName());
     }
 
     /**
@@ -246,7 +246,7 @@ class App
     {
         $factory = $this->getRepositoryFactory();
 
-        return $factory->create($this->getEntityPerPage());
+        return $factory->create(self::getEntityPerPage());
     }
 
     /**
@@ -257,13 +257,13 @@ class App
      */
     public function getRepositoryFactory(): EntityRepositoryFactory
     {
-        if ('sqlite' === $this->getStorageType()) {
+        if ('sqlite' === self::getStorageType()) {
             $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
                 $this->getEntityService()
             );
         } else {
-            $factory = new EntityFileRepositoryFactory($this->getEntityName());
+            $factory = new EntityFileRepositoryFactory(self::getEntityName());
         }
 
         return $factory;
@@ -277,9 +277,9 @@ class App
     public function getPdo(): PDO
     {
         $factory = new PdoServiceFactory(
-            $this->getEntityName(),
-            $this->getStorageType(),
-            $this->getDbFolderName()
+            self::getEntityName(),
+            self::getStorageType(),
+            self::getDbFolderName()
         );
 
         $pdoService = $factory->create();
@@ -296,7 +296,7 @@ class App
     {
         $adapter = new PaginatorAdapter();
 
-        return new PagerfantaPaginatorFactory($adapter, $this->getEntityPerPage());
+        return new PagerfantaPaginatorFactory($adapter, self::getEntityPerPage());
     }
 
     /**
@@ -306,6 +306,6 @@ class App
      */
     public function getAuthService(Request $request): AuthService
     {
-        return new AuthService($request, $this->getUser(), $this->getPassword());
+        return new AuthService($request, self::getUser(), self::getPassword());
     }
 }
