@@ -4,7 +4,7 @@ namespace Todo\Lib\Repository;
 
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
-use Todo\Lib\Service\Entity\EntityServiceInterface;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
 use PDO;
@@ -18,9 +18,9 @@ class EntityPdoRepository implements EntityRepositoryInterface
     private $pdo;
 
     /**
-     * @var EntityServiceInterface
+     * @var EntityFactoryInterface
      */
-    private $entityService;
+    private $entityFactory;
 
     /**
      * @var string
@@ -34,14 +34,14 @@ class EntityPdoRepository implements EntityRepositoryInterface
 
     /**
      * @param PDO $pdo
-     * @param EntityServiceInterface $entityService
+     * @param EntityFactoryInterface $entityFactory
      * @param int $entityPerPage
      */
-    public function __construct(Pdo $pdo, EntityServiceInterface $entityService, int $entityPerPage)
+    public function __construct(Pdo $pdo, EntityFactoryInterface $entityFactory, int $entityPerPage)
     {
         $this->pdo = $pdo;
-        $this->entityService = $entityService;
-        $this->entityName = $entityService->getEntityName();
+        $this->entityFactory = $entityFactory;
+        $this->entityName = $entityFactory->getEntityName();
         $this->entityPerPage = $entityPerPage;
     }
 
@@ -58,7 +58,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
             throw new EntityNotFoundException();
         }
 
-        return $this->entityService->createEntity($entity);
+        return $this->entityFactory->create($entity);
     }
 
     /**
@@ -87,7 +87,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
         $sth->execute();
 
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $entity) {
-            $result[$entity['id']] = $this->entityService->createEntity($entity);
+            $result[$entity['id']] = $this->entityFactory->create($entity);
         }
 
         return $result;

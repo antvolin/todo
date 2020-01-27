@@ -2,6 +2,8 @@
 
 namespace Todo\Lib;
 
+use Todo\Lib\Factory\Entity\EntityFactory;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Factory\Request\RequestFactory;
 use Todo\Lib\Factory\Service\EntityServiceFactory;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
@@ -276,7 +278,7 @@ class App
         if ('sqlite' === self::getStorageType()) {
             $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
-                $this->getEntityService()
+                $this->getEntityFactory()
             );
         } else {
             $factory = new EntityFileRepositoryFactory(self::getEntityName());
@@ -303,6 +305,14 @@ class App
         $pdoService->createTables();
 
         return $pdo;
+    }
+
+    /**
+     * @return EntityFactoryInterface
+     */
+    private function getEntityFactory(): EntityFactoryInterface
+    {
+        return new EntityFactory(self::getEntityClassNamespace(), self::getEntityName());
     }
 
     /**

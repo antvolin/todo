@@ -24,15 +24,15 @@ class PaginatorRequestHandlerService extends RequestHandlerService
 
     /**
      * @param PaginatorFactoryInterface $paginatorFactory
-     * @param EntityServiceInterface $entityManager
+     * @param EntityServiceInterface $entityService
      */
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
-        EntityServiceInterface $entityManager
+        EntityServiceInterface $entityService
     )
     {
         $this->paginatorFactory = $paginatorFactory;
-        $this->entityService = $entityManager;
+        $this->entityService = $entityService;
     }
 
     /**

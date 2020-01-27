@@ -3,6 +3,7 @@
 namespace Todo\Lib\Factory\Repository;
 
 use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityPdoRepository;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
@@ -18,20 +19,21 @@ class EntityPdoRepositoryFactory extends EntityRepositoryFactory
     /**
      * @var EntityServiceInterface
      */
-    private $entityService;
+    private $entityFactory;
 
     /**
      * @param PDO $pdo
-     * @param EntityServiceInterface $entityService
+     *
+     * @param EntityFactoryInterface $entityFactory
      *
      * @throws NotAllowedEntityName
      */
-    public function __construct(Pdo $pdo, EntityServiceInterface $entityService)
+    public function __construct(Pdo $pdo, EntityFactoryInterface $entityFactory)
     {
-        parent::__construct($entityService->getEntityName());
+        parent::__construct($entityFactory->getEntityName());
 
         $this->pdo = $pdo;
-        $this->entityService = $entityService;
+        $this->entityFactory = $entityFactory;
     }
 
     /**
@@ -39,6 +41,6 @@ class EntityPdoRepositoryFactory extends EntityRepositoryFactory
      */
     public function create(int $entityPerPage): EntityRepositoryInterface
     {
-        return new EntityPdoRepository($this->pdo, $this->entityService, $entityPerPage);
+        return new EntityPdoRepository($this->pdo, $this->entityFactory, $entityPerPage);
     }
 }

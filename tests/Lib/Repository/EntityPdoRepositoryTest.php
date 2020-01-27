@@ -41,7 +41,6 @@ class EntityPdoRepositoryTest extends TestCase
     protected function setUp()
     {
         $this->entityName = App::getEntityName();
-
         $app = new App();
         $this->repository = $app->getRepository();
         $this->entityService = $app->getEntityService();

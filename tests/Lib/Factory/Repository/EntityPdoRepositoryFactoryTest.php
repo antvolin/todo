@@ -7,8 +7,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
-use Todo\Lib\Service\Entity\EntityServiceInterface;
 
 class EntityPdoRepositoryFactoryTest extends TestCase
 {
@@ -35,7 +35,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatableEntityPdoRepository(): void
     {
-        $service = $this->createMock(EntityServiceInterface::class);
+        $service = $this->createMock(EntityFactoryInterface::class);
         $service->method('getEntityName')->willReturn(App::getEntityName());
 
         $factory = new EntityPdoRepositoryFactory($this->pdo, $service);
@@ -57,7 +57,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     {
         $this->expectException(NotAllowedEntityName::class);
 
-        $service = $this->createMock(EntityServiceInterface::class);
+        $service = $this->createMock(EntityFactoryInterface::class);
         $service->method('getEntityName')->willReturn('dsadasd');
 
         $factory = new EntityPdoRepositoryFactory($this->pdo, $service);
