@@ -1,6 +1,6 @@
 {
     "name": "antvolin/todo",
-    "description": "task book",
+    "description": "Entity book - `Todo`.",
     "type": "project",
     "license": "MIT",
     "authors": [

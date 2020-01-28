@@ -1,2 +1,2 @@
 # TODO
-Todo book
+Entity book

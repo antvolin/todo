@@ -96,7 +96,7 @@ class Entity implements EntityInterface, JsonSerializable
      */
     public function setStatus(Status $status): void
     {
-        if (Status::DONE == $this->status->getValue()) {
+        if (Status::DONE === ((string) $this->status)) {
             throw new CannotDoneEntityException();
         }
 
@@ -108,7 +108,7 @@ class Entity implements EntityInterface, JsonSerializable
      */
     public function setText(Text $text): void
     {
-        if (Status::DONE == $this->status->getValue()) {
+        if (Status::DONE === ((string) $this->status)) {
             throw new CannotEditEntityException();
         }
 
@@ -122,10 +122,10 @@ class Entity implements EntityInterface, JsonSerializable
     {
         return [
             'id' => $this->getId()->getValue(),
-            'userName' => $this->getUserName()->getValue(),
-            'email' => $this->getEmail()->getValue(),
-            'text' => $this->getText()->getValue(),
-            'status' => $this->getStatus()->getValue(),
+            'userName' => (string) $this->getUserName(),
+            'email' => (string) $this->getEmail(),
+            'text' => (string) $this->getText(),
+            'status' => (string) $this->getStatus(),
         ];
     }
 }
