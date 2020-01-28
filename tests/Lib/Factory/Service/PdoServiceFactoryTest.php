@@ -2,9 +2,9 @@
 
 namespace Tests\Lib\Factory\Service;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
-use PHPUnit\Framework\TestCase;
 
 class PdoServiceFactoryTest extends TestCase
 {

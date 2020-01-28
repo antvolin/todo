@@ -2,10 +2,10 @@
 
 namespace Tests\Lib\Service\RequestHandler;
 
-use Todo\Lib\App;
-use Todo\Lib\Service\RequestHandler\AccessRequestHandlerService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Todo\Lib\App;
+use Todo\Lib\Service\RequestHandler\AccessRequestHandlerService;
 
 class AccessRequestHandlerServiceTest extends TestCase
 {

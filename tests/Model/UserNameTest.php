@@ -2,9 +2,9 @@
 
 namespace Tests\Model;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Model\UserName;
-use PHPUnit\Framework\TestCase;
 
 class UserNameTest extends TestCase
 {

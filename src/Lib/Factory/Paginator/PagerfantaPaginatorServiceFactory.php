@@ -6,7 +6,7 @@ use Todo\Lib\Service\Paginator\PagerfantaPaginatorService;
 use Todo\Lib\Service\Paginator\PaginatorAdapterInterface;
 use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 
-class PagerfantaPaginatorFactory implements PaginatorFactoryInterface
+class PagerfantaPaginatorServiceFactory implements PaginatorFactoryInterface
 {
     /**
      * @var PaginatorAdapterInterface

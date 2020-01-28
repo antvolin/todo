@@ -2,6 +2,8 @@
 
 namespace Todo\Lib;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Todo\Controller\AuthController;
 use Todo\Controller\EntityController;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
@@ -12,8 +14,6 @@ use Todo\Lib\Service\RequestHandler\AccessRequestHandlerService;
 use Todo\Lib\Service\RequestHandler\FilterRequestHandlerService;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
 use Todo\Lib\Service\RequestHandler\RoleRequestHandlerService;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class Kernel
 {

@@ -11,7 +11,7 @@ use Todo\Lib\Factory\Service\EntityServiceFactory;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
 use Todo\Lib\Factory\Service\TokenServiceFactory;
 use Todo\Lib\Factory\Service\TokenServiceFactoryInterface;
-use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
+use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
@@ -318,7 +318,7 @@ class App
     {
         $adapter = new PaginatorAdapter();
 
-        return new PagerfantaPaginatorFactory($adapter, self::getEntityPerPage());
+        return new PagerfantaPaginatorServiceFactory($adapter, self::getEntityPerPage());
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Tests\Model;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
@@ -14,7 +15,6 @@ use Todo\Model\Status;
 use Todo\Model\Entity;
 use Todo\Model\Text;
 use Todo\Model\UserName;
-use PHPUnit\Framework\TestCase;
 
 class EntityTest extends TestCase
 {

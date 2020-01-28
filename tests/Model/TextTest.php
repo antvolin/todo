@@ -2,9 +2,9 @@
 
 namespace Tests\Model;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Model\Text;
-use PHPUnit\Framework\TestCase;
 
 class TextTest extends TestCase
 {

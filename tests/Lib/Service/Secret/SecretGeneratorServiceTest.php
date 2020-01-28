@@ -2,9 +2,9 @@
 
 namespace Tests\Lib\Service\Secret;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Service\Secret\SecretGeneratorService;
-use PHPUnit\Framework\TestCase;
 
 class SecretGeneratorServiceTest extends TestCase
 {

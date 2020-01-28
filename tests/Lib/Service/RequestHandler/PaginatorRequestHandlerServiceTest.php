@@ -2,8 +2,8 @@
 
 namespace Tests\Lib\Service\RequestHandler;
 
-use Todo\Lib\App;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\App;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;

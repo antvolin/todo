@@ -2,9 +2,9 @@
 
 namespace Tests\Lib\Factory\Repository;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
-use PHPUnit\Framework\TestCase;
 
 class EntityFileRepositoryFactoryTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace Tests\Lib\Service\Auth;
 
-use Todo\Lib\App;
-use Todo\Lib\Service\Auth\AuthService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Todo\Lib\App;
+use Todo\Lib\Service\Auth\AuthService;
 
 class AuthServiceTest extends TestCase
 {

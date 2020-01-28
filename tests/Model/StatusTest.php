@@ -2,9 +2,9 @@
 
 namespace Tests\Model;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Model\Status;
-use PHPUnit\Framework\TestCase;
 
 class StatusTest extends TestCase
 {

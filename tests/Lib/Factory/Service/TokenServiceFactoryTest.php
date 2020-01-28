@@ -2,11 +2,11 @@
 
 namespace Tests\Lib\Factory\Service;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Todo\Lib\App;
 use Todo\Lib\Factory\Service\TokenServiceFactory;
-use PHPUnit\Framework\TestCase;
 
 class TokenServiceFactoryTest extends TestCase
 {

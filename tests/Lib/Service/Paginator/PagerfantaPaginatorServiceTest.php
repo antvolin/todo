@@ -2,8 +2,8 @@
 
 namespace Tests\Lib\Service\Paginator;
 
-use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Lib\Service\Paginator\PagerfantaPaginatorService;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
@@ -48,7 +48,7 @@ class PagerfantaPaginatorServiceTest extends TestCase
             'i' => 92,
         ];
 
-        $this->paginator = (new PagerfantaPaginatorFactory(new PaginatorAdapter(), 3))->create($rows, count($rows), $this->currentPage);
+        $this->paginator = (new PagerfantaPaginatorServiceFactory(new PaginatorAdapter(), 3))->create($rows, count($rows), $this->currentPage);
     }
 
     /**

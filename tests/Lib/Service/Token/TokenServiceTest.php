@@ -2,9 +2,9 @@
 
 namespace Tests\Lib\Service\Token;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Service\Token\TokenService;
-use PHPUnit\Framework\TestCase;
 
 class TokenServiceTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace Todo\Lib\Factory\Repository;
 
+use PDO;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityPdoRepository;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
-use PDO;
 
 class EntityPdoRepositoryFactory extends EntityRepositoryFactory
 {

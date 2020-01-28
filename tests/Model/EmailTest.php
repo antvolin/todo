@@ -2,10 +2,10 @@
 
 namespace Tests\Model;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Model\Email;
-use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase
 {

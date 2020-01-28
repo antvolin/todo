@@ -2,13 +2,13 @@
 
 namespace Todo\Lib\Repository;
 
+use PDO;
+use PDOException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
-use PDO;
-use PDOException;
 
 class EntityPdoRepository implements EntityRepositoryInterface
 {

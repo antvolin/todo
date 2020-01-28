@@ -2,9 +2,9 @@
 
 namespace Tests\Lib\Service\RequestHandler;
 
-use Todo\Lib\App;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Todo\Lib\App;
 use Todo\Lib\Service\RequestHandler\FilterRequestHandlerService;
 use Todo\Lib\Service\RequestHandler\RequestHandlerService;
 

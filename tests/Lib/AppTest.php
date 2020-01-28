@@ -2,8 +2,8 @@
 
 namespace Tests\Lib;
 
-use Todo\Lib\App;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\App;
 use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
 
 class AppTest extends TestCase

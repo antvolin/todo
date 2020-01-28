@@ -2,6 +2,7 @@
 
 namespace Tests\Lib\Service\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
@@ -16,7 +17,6 @@ use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
 use Todo\Model\EntityInterface;
 use Todo\Model\Status;
-use PHPUnit\Framework\TestCase;
 
 class EntityServiceTest extends TestCase
 {

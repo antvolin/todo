@@ -2,6 +2,7 @@
 
 namespace Tests\Lib\Repository;
 
+use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
@@ -10,7 +11,6 @@ use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Repository\EntityPdoRepository;
-use PHPUnit\Framework\TestCase;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
 

@@ -2,8 +2,8 @@
 
 namespace Tests\Lib\Factory\Request;
 
-use Todo\Lib\Factory\Request\RequestFactory;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Factory\Request\RequestFactory;
 
 class RequestFactoryTest extends TestCase
 {

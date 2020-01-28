@@ -2,8 +2,8 @@
 
 namespace Tests\Lib\Factory\Paginator;
 
-use Todo\Lib\Factory\Paginator\PagerfantaPaginatorFactory;
 use PHPUnit\Framework\TestCase;
+use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
 
 class PagerfantaPaginatorFactoryTest extends TestCase
@@ -29,7 +29,7 @@ class PagerfantaPaginatorFactoryTest extends TestCase
             ->with($this->equalTo($countRows));
         $adapter->method('getNbResults')->willReturn($countRows);
 
-        $factory = new PagerfantaPaginatorFactory($adapter, $entityPerPage);
+        $factory = new PagerfantaPaginatorServiceFactory($adapter, $entityPerPage);
 
         $paginator = $factory->create($rows, $countRows, $currentPage);
 

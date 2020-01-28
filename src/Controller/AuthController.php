@@ -2,10 +2,10 @@
 
 namespace Todo\Controller;
 
-use Todo\Lib\Factory\Template\TemplateAdapterInterface;
-use Todo\Lib\Service\Auth\AuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Todo\Lib\Factory\Template\TemplateAdapterInterface;
+use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Auth\AuthServiceInterface;
 
 class AuthController
