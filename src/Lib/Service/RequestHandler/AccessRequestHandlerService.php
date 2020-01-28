@@ -13,11 +13,11 @@ class AccessRequestHandlerService extends RequestHandlerService
     /**
      * @var TokenServiceFactory
      */
-    private $tokenManagerFactory;
+    private $tokenServiceFactory;
 
-    public function __construct(TokenServiceFactory $tokenManagerFactory)
+    public function __construct(TokenServiceFactory $tokenServiceFactory)
     {
-        $this->tokenManagerFactory = $tokenManagerFactory;
+        $this->tokenServiceFactory = $tokenServiceFactory;
     }
 
     /**
@@ -27,9 +27,9 @@ class AccessRequestHandlerService extends RequestHandlerService
     {
         $token = $request->get('csrf-token');
         $secret = $request->getSession()->get('secret');
-        $tokenManager = $this->tokenManagerFactory->create($request);
+        $tokenService = $this->tokenServiceFactory->create($request);
 
-        if ($token && !$tokenManager->isValidToken($token, $secret)) {
+        if ($token && !$tokenService->isValidToken($token, $secret)) {
             throw new AccessDeniedHttpException(self::ACCESS_DENIED_MSG);
         }
     }

@@ -38,17 +38,17 @@ class EntityController
 
     /**
      * @param Request $request
-     * @param EntityServiceInterface $entityManager
+     * @param EntityServiceInterface $entityService
      * @param TemplateAdapterInterface $template
      */
     public function __construct(
         Request $request,
-        EntityServiceInterface $entityManager,
+        EntityServiceInterface $entityService,
         TemplateAdapterInterface $template
     )
     {
         $this->request = $request;
-        $this->entityService = $entityManager;
+        $this->entityService = $entityService;
         $this->template = $template;
     }
 

@@ -2,13 +2,10 @@
 
 namespace Todo\Lib\Service\Path;
 
-class PathService
+class PathService implements PathServiceInterface
 {
     /**
-     * @param string $path
-     * @param string $separator
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getFirstPart(string $path, string $separator = '/'): string
     {
@@ -16,10 +13,7 @@ class PathService
     }
 
     /**
-     * @param string $path
-     * @param string $separator
-     *
-     * @return array
+     * @inheritDoc
      */
     public static function getPathParts(string $path, string $separator = '/'): array
     {
@@ -27,9 +21,7 @@ class PathService
     }
 
     /**
-     * @param int $level
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getSrcPathByLevel(int $level = 0): string
     {
@@ -43,11 +35,7 @@ class PathService
     }
 
     /**
-     * @param string $pdoType
-     * @param string $dbFolderName
-     * @param string $entityName
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getPathToPdoDsn(string $pdoType, string $dbFolderName, string $entityName): string
     {
@@ -55,7 +43,7 @@ class PathService
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public static function getPathToTemplates(): string
     {

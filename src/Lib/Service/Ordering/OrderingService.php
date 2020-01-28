@@ -2,7 +2,7 @@
 
 namespace Todo\Lib\Service\Ordering;
 
-class OrderingService
+class OrderingService implements OrderingServiceInterface
 {
     public const ASC = 'ASC';
     public const DESC = 'DESC';
@@ -18,9 +18,7 @@ class OrderingService
     ];
 
     /**
-     * @param string|null $orderBy
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getOrderBy(?string $orderBy): string
     {
@@ -30,9 +28,7 @@ class OrderingService
     }
 
     /**
-     * @param string|null $order
-     *
-     * @return string
+     * @pinheritDoc
      */
     public static function getOrder(?string $order): string
     {
@@ -40,9 +36,7 @@ class OrderingService
     }
 
     /**
-     * @param string|null $order
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getNextOrder(?string $order): string
     {

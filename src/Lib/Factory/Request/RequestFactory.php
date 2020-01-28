@@ -5,7 +5,7 @@ namespace Todo\Lib\Factory\Request;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class RequestFactory
+class RequestFactory implements RequestFactoryInterface
 {
     /**
      * @return Request

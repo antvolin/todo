@@ -2,7 +2,7 @@
 
 namespace Todo\Lib\Service\Secret;
 
-class SecretGeneratorService
+class SecretGeneratorService implements SecretGeneratorServiceInterface
 {
     /**
      * @var string
@@ -15,8 +15,7 @@ class SecretGeneratorService
     private $tokenSecret;
 
     /**
-     * @param string $tokenSecretPrefix
-     * @param string $tokenSecret
+     * @inheritDoc
      */
     public function __construct(string $tokenSecretPrefix, string $tokenSecret)
     {
@@ -25,9 +24,7 @@ class SecretGeneratorService
     }
 
     /**
-     * @param null $secretPrefix
-     *
-     * @return string
+     * @inheritDoc
      */
     public function generateSecret($secretPrefix = null): string
     {

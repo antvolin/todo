@@ -17,17 +17,17 @@ class EntityServiceFactoryTest extends TestCase
     public function shouldBeCreatableEntityServiceWithValidName(): void
     {
         $factory = new EntityServiceFactory(App::getEntityClassNamespace());
-        $entityManager = $factory->create(App::getEntityName());
+        $entityService = $factory->create(App::getEntityName());
 
-        $this->assertTrue(method_exists($entityManager, 'getEntityName'));
-        $this->assertTrue(method_exists($entityManager, 'getEntityById'));
-        $this->assertTrue(method_exists($entityManager, 'getEntities'));
-        $this->assertTrue(method_exists($entityManager, 'getCountEntities'));
-        $this->assertTrue(method_exists($entityManager, 'createEntity'));
-        $this->assertTrue(method_exists($entityManager, 'editEntity'));
-        $this->assertTrue(method_exists($entityManager, 'doneEntity'));
-        $this->assertTrue(method_exists($entityManager, 'addEntity'));
-        $this->assertTrue(method_exists($entityManager, 'deleteEntity'));
+        $this->assertTrue(method_exists($entityService, 'getEntityName'));
+        $this->assertTrue(method_exists($entityService, 'getEntityById'));
+        $this->assertTrue(method_exists($entityService, 'getEntities'));
+        $this->assertTrue(method_exists($entityService, 'getCountEntities'));
+        $this->assertTrue(method_exists($entityService, 'createEntity'));
+        $this->assertTrue(method_exists($entityService, 'editEntity'));
+        $this->assertTrue(method_exists($entityService, 'doneEntity'));
+        $this->assertTrue(method_exists($entityService, 'addEntity'));
+        $this->assertTrue(method_exists($entityService, 'deleteEntity'));
     }
 
     /**

@@ -207,9 +207,9 @@ class App
      */
     public function getSecret(): string
     {
-        $manager = new SecretGeneratorService(self::getTokenSecretPrefix(), self::getTokenSecret());
+        $service = new SecretGeneratorService(self::getTokenSecretPrefix(), self::getTokenSecret());
 
-        return $manager->generateSecret();
+        return $service->generateSecret();
     }
 
     /**

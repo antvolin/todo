@@ -6,11 +6,12 @@ use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Auth\AuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Todo\Lib\Service\Auth\AuthServiceInterface;
 
 class AuthController
 {
     /**
-     * @var AuthService
+     * @var AuthServiceInterface
      */
     private $authService;
 
@@ -20,11 +21,11 @@ class AuthController
     private $template;
 
     /**
-     * @param AuthService $authService
+     * @param AuthServiceInterface $authService
      * @param TemplateAdapterInterface $template
      */
     public function __construct(
-        AuthService $authService,
+        AuthServiceInterface $authService,
         TemplateAdapterInterface $template
     )
     {

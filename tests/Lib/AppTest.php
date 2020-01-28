@@ -55,7 +55,7 @@ class AppTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeGettingTokenManagerFactory(): void
+    public function shouldBeGettingTokenServiceFactory(): void
     {
         $factory = $this->app->getTokenServiceFactory();
 
@@ -67,17 +67,17 @@ class AppTest extends TestCase
      *
      * @throws NotAllowedEntityName
      */
-    public function shouldBeGettingEntityManager(): void
+    public function shouldBeGettingEntityService(): void
     {
-        $manager = $this->app->getEntityService();
+        $service = $this->app->getEntityService();
 
-        $this->assertTrue(method_exists($manager, 'getCountEntities'));
-        $this->assertTrue(method_exists($manager, 'deleteEntity'));
-        $this->assertTrue(method_exists($manager, 'doneEntity'));
-        $this->assertTrue(method_exists($manager, 'editEntity'));
-        $this->assertTrue(method_exists($manager, 'getEntities'));
-        $this->assertTrue(method_exists($manager, 'getEntityById'));
-        $this->assertTrue(method_exists($manager, 'addEntity'));
+        $this->assertTrue(method_exists($service, 'getCountEntities'));
+        $this->assertTrue(method_exists($service, 'deleteEntity'));
+        $this->assertTrue(method_exists($service, 'doneEntity'));
+        $this->assertTrue(method_exists($service, 'editEntity'));
+        $this->assertTrue(method_exists($service, 'getEntities'));
+        $this->assertTrue(method_exists($service, 'getEntityById'));
+        $this->assertTrue(method_exists($service, 'addEntity'));
     }
 
     /**

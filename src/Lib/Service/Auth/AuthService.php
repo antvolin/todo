@@ -5,7 +5,7 @@ namespace Todo\Lib\Service\Auth;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuthService
+class AuthService implements AuthServiceInterface
 {
     public const ERROR_MSG = 'The entered data is not correct!';
 
@@ -25,9 +25,7 @@ class AuthService
     private $password;
 
     /**
-     * @param Request $request
-     * @param string $user
-     * @param string $password
+     * @inheritDoc
      */
     public function __construct(Request $request, string $user, string $password)
     {
@@ -37,7 +35,7 @@ class AuthService
     }
 
     /**
-     * @return Request
+     * @inheritDoc
      */
     public function getRequest(): Request
     {
@@ -45,7 +43,7 @@ class AuthService
     }
 
     /**
-     * @return RedirectResponse|null
+     * @inheritDoc
      */
     public function login(): ?RedirectResponse
     {
@@ -62,7 +60,7 @@ class AuthService
     }
 
     /**
-     * @return RedirectResponse
+     * @inheritDoc
      */
     public function logout(): RedirectResponse
     {

@@ -5,9 +5,8 @@ namespace Todo\Lib;
 use Todo\Controller\AuthController;
 use Todo\Controller\EntityController;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
-use Todo\Lib\Repository\EntityRepositoryInterface;
-use Todo\Lib\Service\Auth\AuthService;
-use Todo\Lib\Service\Entity\EntityService;
+use Todo\Lib\Service\Auth\AuthServiceInterface;
+use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Path\PathService;
 use Todo\Lib\Service\RequestHandler\AccessRequestHandlerService;
 use Todo\Lib\Service\RequestHandler\FilterRequestHandlerService;
@@ -29,14 +28,9 @@ class Kernel
     private $template;
 
     /**
-     * @var EntityService
+     * @var EntityServiceInterface
      */
     private $entityService;
-
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $entityRepository;
 
     /**
      * @var App
@@ -44,7 +38,7 @@ class Kernel
     private $app;
 
     /**
-     * @var AuthService
+     * @var AuthServiceInterface
      */
     private $authService;
 
