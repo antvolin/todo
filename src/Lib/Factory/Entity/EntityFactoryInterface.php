@@ -10,11 +10,6 @@ use Todo\Model\EntityInterface;
 interface EntityFactoryInterface
 {
     /**
-     * @return string
-     */
-    public function getEntityName(): string;
-
-    /**
      * @param array $entity
      *
      * @return EntityInterface

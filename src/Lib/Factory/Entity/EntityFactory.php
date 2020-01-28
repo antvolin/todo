@@ -17,26 +17,12 @@ class EntityFactory implements EntityFactoryInterface
     private $entityClass;
 
     /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
      * @param string $entityClassNamespace
      * @param string $entityName
      */
     public function __construct(string $entityClassNamespace, string $entityName)
     {
         $this->entityClass = $entityClassNamespace.ucfirst($entityName);
-        $this->entityName = $entityName;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getEntityName(): string
-    {
-        return $this->entityName;
     }
 
     /**

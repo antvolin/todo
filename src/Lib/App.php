@@ -233,9 +233,9 @@ class App
      */
     public function getTemplate(): TemplateAdapterInterface
     {
-        if ('twig' === self::getTemplateType()) {
+//        if ('twig' === self::getTemplateType()) {
             $factory = new TwigTemplateFactory();
-        }
+//        }
 
         return $factory->create();
     }
@@ -257,20 +257,18 @@ class App
     /**
      * @return EntityRepositoryInterface
      *
-     * @throws Exceptions\NotAllowedEntityName
      * @throws Exceptions\PdoConnectionException
      */
     public function getRepository(): EntityRepositoryInterface
     {
         $factory = $this->getRepositoryFactory();
 
-        return $factory->create(self::getEntityPerPage());
+        return $factory->create(self::getEntityPerPage(), self::getEntityName());
     }
 
     /**
      * @return EntityRepositoryFactory
      *
-     * @throws Exceptions\NotAllowedEntityName
      * @throws Exceptions\PdoConnectionException
      */
     public function getRepositoryFactory(): EntityRepositoryFactory
@@ -281,7 +279,7 @@ class App
                 $this->getEntityFactory()
             );
         } else {
-            $factory = new EntityFileRepositoryFactory(self::getEntityName());
+            $factory = new EntityFileRepositoryFactory();
         }
 
         return $factory;

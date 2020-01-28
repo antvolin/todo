@@ -11,9 +11,9 @@ class EntityFileRepositoryFactory extends EntityRepositoryFactory
     /**
      * @inheritdoc
      */
-    public function create(int $entityPerPage): EntityRepositoryInterface
+    public function create(int $entityPerPage, string $entityName): EntityRepositoryInterface
     {
-        $entityStoragePath = PathService::getSrcPathByLevel() .$this->entityName;
+        $entityStoragePath = PathService::getSrcPathByLevel().$entityName;
 
         return new EntityFileRepository($entityStoragePath, $entityPerPage);
     }

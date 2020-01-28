@@ -23,26 +23,27 @@ class EntityPdoRepository implements EntityRepositoryInterface
     private $entityFactory;
 
     /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
      * @var int
      */
     private $entityPerPage;
 
     /**
+     * @var string
+     */
+    private $entityName;
+
+    /**
      * @param PDO $pdo
      * @param EntityFactoryInterface $entityFactory
      * @param int $entityPerPage
+     * @param string $entityName
      */
-    public function __construct(Pdo $pdo, EntityFactoryInterface $entityFactory, int $entityPerPage)
+    public function __construct(Pdo $pdo, EntityFactoryInterface $entityFactory, int $entityPerPage, string $entityName)
     {
         $this->pdo = $pdo;
         $this->entityFactory = $entityFactory;
-        $this->entityName = $entityFactory->getEntityName();
         $this->entityPerPage = $entityPerPage;
+        $this->entityName = $entityName;
     }
 
     /**
