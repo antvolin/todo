@@ -36,29 +36,19 @@ class Entity implements EntityInterface, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function __construct(Id $id, UserName $userName, Email $email, Text $text, Status $status)
+    public function __construct(
+        Id $id,
+        UserName $userName,
+        Email $email,
+        Text $text,
+        Status $status
+    )
     {
         $this->id = $id;
         $this->userName = $userName;
         $this->email = $email;
         $this->text = $text;
         $this->status = $status;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        $status = $this->getStatus();
-
-        return [
-            'id' => $this->getId()->getValue(),
-            'userName' => $this->getUserName()->getValue(),
-            'email' => $this->getEmail()->getValue(),
-            'text' => $this->getText()->getValue(),
-            'status' => $status ? $status->getValue() : null,
-        ];
     }
 
     /**
@@ -96,7 +86,7 @@ class Entity implements EntityInterface, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function getStatus(): ?Status
+    public function getStatus(): Status
     {
         return $this->status;
     }
@@ -104,7 +94,7 @@ class Entity implements EntityInterface, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function setStatus(?Status $status): void
+    public function setStatus(Status $status): void
     {
         if (Status::DONE == $this->status->getValue()) {
             throw new CannotDoneEntityException();
@@ -123,5 +113,19 @@ class Entity implements EntityInterface, JsonSerializable
         }
 
         $this->text = $text;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId()->getValue(),
+            'userName' => $this->getUserName()->getValue(),
+            'email' => $this->getEmail()->getValue(),
+            'text' => $this->getText()->getValue(),
+            'status' => $this->getStatus()->getValue(),
+        ];
     }
 }

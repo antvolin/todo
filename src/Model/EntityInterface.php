@@ -41,16 +41,16 @@ interface EntityInterface
     public function getText(): Text;
 
     /**
-     * @return Status|null
+     * @return Status
      */
-    public function getStatus(): ?Status;
+    public function getStatus(): Status;
 
     /**
-     * @param Status|null $status
+     * @param Status $status
      *
      * @throws CannotDoneEntityException
      */
-    public function setStatus(?Status $status): void;
+    public function setStatus(Status $status): void;
 
     /**
      * @param Text $text

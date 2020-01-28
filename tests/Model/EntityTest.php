@@ -131,4 +131,21 @@ class EntityTest extends TestCase
         $this->entity->setStatus(new Status(Status::DONE));
         $this->entity->setStatus(new Status(Status::DONE));
     }
+
+    /**
+     * @test
+     */
+    public function shouldBeSerializableToJson(): void
+    {
+        $json = $this->entity->jsonSerialize();
+
+        $this->assertArrayHasKey('id', $json);
+        $this->assertIsString($json['userName']);
+        $this->assertNotEmpty($json['userName']);
+        $this->assertIsString($json['email']);
+        $this->assertNotEmpty($json['email']);
+        $this->assertIsString($json['text']);
+        $this->assertNotEmpty($json['text']);
+        $this->assertArrayHasKey('status', $json);
+    }
 }

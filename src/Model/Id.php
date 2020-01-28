@@ -20,9 +20,9 @@ class Id
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getValue(): int
+    public function getValue(): ?int
     {
         return $this->value;
     }

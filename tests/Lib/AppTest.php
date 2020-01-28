@@ -83,7 +83,6 @@ class AppTest extends TestCase
     /**
      * @test
      *
-     * @throws NotAllowedEntityName
      * @throws PdoConnectionExceptionAlias
      */
     public function shouldBeGettingRepository(): void
@@ -99,7 +98,6 @@ class AppTest extends TestCase
     /**
      * @test
      *
-     * @throws NotAllowedEntityName
      * @throws PdoConnectionExceptionAlias
      */
     public function shouldBeGettingRepositoryFactory(): void
