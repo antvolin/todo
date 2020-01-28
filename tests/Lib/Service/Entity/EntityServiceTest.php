@@ -29,7 +29,6 @@ class EntityServiceTest extends TestCase
     private $entityService;
 
     /**
-     * @throws NotAllowedEntityName
      * @throws PdoConnectionException
      */
     protected function setUp()

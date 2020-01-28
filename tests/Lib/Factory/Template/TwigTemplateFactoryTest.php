@@ -14,7 +14,9 @@ class TwigTemplateFactoryTest extends TestCase
     {
         $factory = new TwigTemplateFactory();
         $template = $factory->create();
+        $result = $template->render('list.html.twig');
 
-        $this->assertNotEmpty($template->render('list.html.twig'));
+        $this->assertIsString($result);
+        $this->assertNotEmpty($result);
     }
 }
