@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
@@ -45,7 +44,6 @@ class PathServiceTest extends TestCase
     /**
      * @test
      *
-     * @throws NotAllowedEntityName
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException

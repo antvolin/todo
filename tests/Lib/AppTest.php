@@ -3,7 +3,6 @@
 namespace Tests\Lib;
 
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
 
@@ -64,8 +63,6 @@ class AppTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws NotAllowedEntityName
      */
     public function shouldBeGettingEntityService(): void
     {

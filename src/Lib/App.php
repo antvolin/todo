@@ -2,6 +2,8 @@
 
 namespace Todo\Lib;
 
+use PDO;
+use Symfony\Component\HttpFoundation\Request;
 use Todo\Lib\Factory\Entity\EntityFactory;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Factory\Request\RequestFactory;
@@ -21,8 +23,6 @@ use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
 use Todo\Lib\Service\Secret\SecretGeneratorService;
 use Todo\Lib\Repository\EntityRepositoryInterface;
-use PDO;
-use Symfony\Component\HttpFoundation\Request;
 
 class App
 {

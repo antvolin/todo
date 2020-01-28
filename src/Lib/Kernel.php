@@ -51,7 +51,6 @@ class Kernel
     }
 
     /**
-     * @throws Exceptions\NotAllowedEntityName
      * @throws Exceptions\PdoConnectionException
      */
 	public function process(): void

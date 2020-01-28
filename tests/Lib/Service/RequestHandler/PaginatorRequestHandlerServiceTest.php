@@ -3,7 +3,6 @@
 namespace Tests\Lib\Service\RequestHandler;
 
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
@@ -14,7 +13,6 @@ class PaginatorRequestHandlerServiceTest extends TestCase
     /**
      * @test
      *
-     * @throws NotAllowedEntityName
      * @throws PdoConnectionException
      */
     public function shouldBeCreatedPaginatorAndAddedItToTheRequest(): void

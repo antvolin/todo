@@ -5,7 +5,6 @@ namespace Tests\Lib\Repository;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
@@ -35,7 +34,6 @@ class EntityPdoRepositoryTest extends TestCase
     private $repository;
 
     /**
-     * @throws NotAllowedEntityName
      * @throws PdoConnectionException
      */
     protected function setUp()

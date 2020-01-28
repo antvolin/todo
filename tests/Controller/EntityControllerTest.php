@@ -12,7 +12,6 @@ use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
@@ -47,7 +46,6 @@ class EntityControllerTest extends TestCase
     private $request;
 
     /**
-     * @throws NotAllowedEntityName
      * @throws PdoConnectionException
      */
     protected function setUp()
