@@ -7,7 +7,6 @@ use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotAllowedEntityName;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
@@ -34,7 +33,7 @@ class EntityServiceTest extends TestCase
     protected function setUp()
     {
         $app = new App();
-        $this->entityService = new EntityService(App::getEntityClassNamespace(), App::getEntityName());
+        $this->entityService = new EntityService($app->getEntityFactory());
         $this->entityService->setRepository($app->getRepository());
     }
 

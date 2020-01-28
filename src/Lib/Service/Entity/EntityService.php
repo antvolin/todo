@@ -4,46 +4,30 @@ namespace Todo\Lib\Service\Entity;
 
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
-use Todo\Model\Email;
 use Todo\Model\EntityInterface;
 use Todo\Model\Status;
 use Todo\Model\Text;
-use Todo\Model\UserName;
-use Todo\Model\Id;
 
 class EntityService implements EntityServiceInterface
 {
-    /**
-     * @var string
-     */
-    private $entityClass;
-
-    /**
-     * @var string
-     */
-    private $entityName;
-
     /**
      * @var EntityRepositoryInterface $repository
      */
     private $repository;
 
     /**
-     * @inheritDoc
+     * @var EntityFactoryInterface $factory
      */
-    public function __construct(string $entityClassNamespace, string $entityName)
-    {
-        $this->entityName = strtolower($entityName);
-        $this->entityClass = $entityClassNamespace.ucfirst($this->entityName);
-    }
+    private $factory;
 
     /**
      * @inheritDoc
      */
-    public function getEntityName(): string
+    public function __construct(EntityFactoryInterface $factory)
     {
-        return $this->entityName;
+        $this->factory = $factory;
     }
 
     /**
@@ -83,15 +67,7 @@ class EntityService implements EntityServiceInterface
      */
     public function createEntity(array $entity): EntityInterface
     {
-        $entityClass = $this->entityClass;
-
-        return new $entityClass(
-            new Id($entity['id']),
-            new UserName($entity['user_name']),
-            new Email($entity['email']),
-            new Text($entity['text']),
-            new Status($entity['status'])
-        );
+        return $this->factory->create($entity);
     }
 
     /**
@@ -101,7 +77,7 @@ class EntityService implements EntityServiceInterface
     {
         $entity = $this->repository->getEntityById($entityId);
 
-        if (Status::DONE == $entity->getStatus()) {
+        if (Status::DONE === ((string) $entity->getStatus())) {
             throw new CannotEditEntityException();
         }
 
@@ -118,7 +94,7 @@ class EntityService implements EntityServiceInterface
     {
         $entity = $this->repository->getEntityById($entityId);
 
-        if (Status::DONE == $entity->getStatus()) {
+        if (Status::DONE === ((string) $entity->getStatus())) {
             throw new CannotDoneEntityException();
         }
 
@@ -132,15 +108,17 @@ class EntityService implements EntityServiceInterface
      */
     public function addEntity(string $userName, string $email, string $text): int
     {
-        return $this->repository->addEntity(
-            new $this->entityClass(
-                new Id(),
-                new UserName($userName),
-                new Email($email),
-                new Text($text),
-                new Status()
-            )
-        );
+        $entity = [
+            'id' => null,
+            'user_name' => $userName,
+            'email' => $email,
+            'text' => $text,
+            'status' => null,
+        ];
+
+        $entity = $this->factory->create($entity);
+
+        return $this->repository->addEntity($entity);
     }
 
     /**

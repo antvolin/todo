@@ -9,21 +9,16 @@ use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\EntityInterface;
 
 interface EntityServiceInterface
 {
     /**
-     * @param string $entityClassNamespace
-     * @param string $entityName
+     * @param EntityFactoryInterface $factory
      */
-    public function __construct(string $entityClassNamespace, string $entityName);
-
-    /**
-     * @return string
-     */
-    public function getEntityName(): string;
+    public function __construct(EntityFactoryInterface $factory);
 
     /**
      * @param int $id

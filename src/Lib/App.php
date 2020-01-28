@@ -98,7 +98,7 @@ class App
         self::$storageType = $_ENV['STORAGE_TYPE'];
         self::$user = $_ENV['APP_USER'];
         self::$password = $_ENV['APP_PASSWORD'];
-        self::$templateType = $_ENV['TEMPLATE'];
+        self::$templateType = $_ENV['TEMPLATE_TYPE'];
     }
 
     /**
@@ -233,25 +233,23 @@ class App
      */
     public function getTemplate(): TemplateAdapterInterface
     {
-//        if ('twig' === self::getTemplateType()) {
+        $factory = null;
+
+        if ('twig' === self::getTemplateType()) {
             $factory = new TwigTemplateFactory();
-//        }
+        }
 
         return $factory->create();
     }
 
     /**
-     * @param string|null $entityName
-     *
      * @return EntityServiceInterface
-     *
-     * @throws Exceptions\NotAllowedEntityName
      */
-    public function getEntityService(string $entityName = null): EntityServiceInterface
+    public function getEntityService(): EntityServiceInterface
     {
-        $entityServiceFactory = new EntityServiceFactory(self::getEntityClassNamespace());
+        $entityServiceFactory = new EntityServiceFactory($this->getEntityFactory());
 
-        return $entityServiceFactory->create($entityName ?? self::getEntityName());
+        return $entityServiceFactory->create();
     }
 
     /**
@@ -308,7 +306,7 @@ class App
     /**
      * @return EntityFactoryInterface
      */
-    private function getEntityFactory(): EntityFactoryInterface
+    public function getEntityFactory(): EntityFactoryInterface
     {
         return new EntityFactory(self::getEntityClassNamespace(), self::getEntityName());
     }

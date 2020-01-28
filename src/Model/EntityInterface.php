@@ -7,10 +7,6 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 
 interface EntityInterface
 {
-    public const ALLOWED_ENTITY_NAMES = [
-        'entity',
-    ];
-
     /**
      * @param Id $id
      * @param UserName $userName

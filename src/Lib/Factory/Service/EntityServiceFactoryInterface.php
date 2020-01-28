@@ -2,23 +2,18 @@
 
 namespace Todo\Lib\Factory\Service;
 
-use Todo\Lib\Exceptions\NotAllowedEntityName;
+use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 
 interface EntityServiceFactoryInterface
 {
     /**
-     * @param string $entityClassNamespace
+     * @param EntityFactoryInterface $entityFactory
      */
-    public function __construct(string $entityClassNamespace);
+    public function __construct(EntityFactoryInterface $entityFactory);
 
     /**
-     * @param string $entityName
-     *
      * @return EntityServiceInterface
-     *
-     * @throws NotAllowedEntityName
-     * @throws NotAllowedEntityName
      */
-    public function create(string $entityName): EntityServiceInterface;
+    public function create(): EntityServiceInterface;
 }
