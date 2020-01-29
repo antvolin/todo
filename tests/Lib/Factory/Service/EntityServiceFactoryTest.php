@@ -28,13 +28,12 @@ class EntityServiceFactoryTest extends TestCase
         $factory = new EntityServiceFactory($this->entityFactory);
         $entityService = $factory->create();
 
-        $this->assertTrue(method_exists($entityService, 'getEntityById'));
-        $this->assertTrue(method_exists($entityService, 'getEntities'));
-        $this->assertTrue(method_exists($entityService, 'getCountEntities'));
-        $this->assertTrue(method_exists($entityService, 'createEntity'));
-        $this->assertTrue(method_exists($entityService, 'editEntity'));
-        $this->assertTrue(method_exists($entityService, 'doneEntity'));
-        $this->assertTrue(method_exists($entityService, 'addEntity'));
-        $this->assertTrue(method_exists($entityService, 'deleteEntity'));
+        $this->assertTrue(method_exists($entityService, 'getById'));
+        $this->assertTrue(method_exists($entityService, 'getCollection'));
+        $this->assertTrue(method_exists($entityService, 'getCount'));
+        $this->assertTrue(method_exists($entityService, 'edit'));
+        $this->assertTrue(method_exists($entityService, 'done'));
+        $this->assertTrue(method_exists($entityService, 'add'));
+        $this->assertTrue(method_exists($entityService, 'remove'));
     }
 }

@@ -59,7 +59,7 @@ class EntityPdoRepositoryTest extends TestCase
         $userName = $this->generateUserName(__METHOD__, __CLASS__);
         $text = $this->generateText(__METHOD__, __CLASS__);
 
-        $id = $this->entityService->addEntity($userName, $this->generateEmail(), $text);
+        $id = $this->entityService->add($userName, $this->generateEmail(), $text);
         $entity = $this->repository->getById($id);
 
         $this->assertTrue(method_exists($entity, 'getId'));
@@ -84,7 +84,7 @@ class EntityPdoRepositoryTest extends TestCase
         $userName = $this->generateUserName(__METHOD__, __CLASS__);
         $text = $this->generateText(__METHOD__, __CLASS__);
 
-        $this->entityService->addEntity($userName, $this->generateEmail(), $text);
+        $this->entityService->add($userName, $this->generateEmail(), $text);
 
         $this->assertLessThan($this->repository->getCount(), 0);
     }
@@ -107,9 +107,9 @@ class EntityPdoRepositoryTest extends TestCase
         $text2 = $this->generateText(__METHOD__, __CLASS__, 2);
         $text3 = $this->generateText(__METHOD__, __CLASS__, 3);
 
-        $this->entityService->addEntity($userName1, $this->generateEmail(), $text1);
-        $this->entityService->addEntity($userName2, $this->generateEmail(), $text2);
-        $this->entityService->addEntity($userName3, $this->generateEmail(), $text3);
+        $this->entityService->add($userName1, $this->generateEmail(), $text1);
+        $this->entityService->add($userName2, $this->generateEmail(), $text2);
+        $this->entityService->add($userName3, $this->generateEmail(), $text3);
 
         $this->assertCount(3, $this->repository->getCollection(1));
     }

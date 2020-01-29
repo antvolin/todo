@@ -34,7 +34,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function getEntityById(Id $entityId): EntityInterface
+    public function getById(Id $entityId): EntityInterface
     {
         return $this->repository->getById($entityId);
     }
@@ -42,7 +42,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         return $this->repository->getCollection($page, $orderBy, $order);
     }
@@ -50,7 +50,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function getCountEntities(): int
+    public function getCount(): int
     {
         return $this->repository->getCount();
     }
@@ -66,15 +66,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function createEntity(array $entity): EntityInterface
-    {
-        return $this->factory->create($entity);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function editEntity(Id $entityId, string $text): void
+    public function edit(Id $entityId, string $text): void
     {
         $entity = $this->repository->getById($entityId);
 
@@ -91,7 +83,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function doneEntity(Id $entityId): void
+    public function done(Id $entityId): void
     {
         $entity = $this->repository->getById($entityId);
 
@@ -107,7 +99,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function addEntity(string $userName, string $email, string $text): Id
+    public function add(string $userName, string $email, string $text): Id
     {
         $entity = [
             'id' => null,
@@ -125,7 +117,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function deleteEntity(Id $entityId): void
+    public function remove(Id $entityId): void
     {
         $this->repository->remove($entityId);
     }

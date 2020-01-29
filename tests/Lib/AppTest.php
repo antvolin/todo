@@ -68,13 +68,13 @@ class AppTest extends TestCase
     {
         $service = $this->app->getEntityService();
 
-        $this->assertTrue(method_exists($service, 'getCountEntities'));
-        $this->assertTrue(method_exists($service, 'deleteEntity'));
-        $this->assertTrue(method_exists($service, 'doneEntity'));
-        $this->assertTrue(method_exists($service, 'editEntity'));
-        $this->assertTrue(method_exists($service, 'getEntities'));
-        $this->assertTrue(method_exists($service, 'getEntityById'));
-        $this->assertTrue(method_exists($service, 'addEntity'));
+        $this->assertTrue(method_exists($service, 'getCount'));
+        $this->assertTrue(method_exists($service, 'remove'));
+        $this->assertTrue(method_exists($service, 'done'));
+        $this->assertTrue(method_exists($service, 'edit'));
+        $this->assertTrue(method_exists($service, 'getCollection'));
+        $this->assertTrue(method_exists($service, 'getById'));
+        $this->assertTrue(method_exists($service, 'add'));
     }
 
     /**

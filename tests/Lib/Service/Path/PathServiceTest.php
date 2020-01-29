@@ -67,7 +67,7 @@ class PathServiceTest extends TestCase
         $userName = $this->generateUserName(__METHOD__, __CLASS__);
         $text = $this->generateText(__METHOD__, __CLASS__);
         $email = $this->generateEmail();
-        $entityService->addEntity($userName, $email, $text);
+        $entityService->add($userName, $email, $text);
 
         $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();
 

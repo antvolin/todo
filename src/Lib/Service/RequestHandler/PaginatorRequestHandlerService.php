@@ -51,8 +51,8 @@ class PaginatorRequestHandlerService extends RequestHandlerService
             $orderBy = $request->get('orderBy');
             $order = $request->get('order');
 
-            $entities = $this->entityService->getEntities($page, $orderBy, $order);
-            $countRows = $this->entityService->getCountEntities();
+            $entities = $this->entityService->getCollection($page, $orderBy, $order);
+            $countRows = $this->entityService->getCount();
 
             $paginator = $this->paginatorFactory->create($entities, $countRows, $page);
 

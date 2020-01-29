@@ -92,7 +92,7 @@ class EntityController
         }
 
         try {
-            $id = $this->entityService->addEntity($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
+            $id = $this->entityService->add($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
         } catch (PdoErrorsException $exception) {
             return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
         }
@@ -118,14 +118,14 @@ class EntityController
     {
         if ('POST' !== $this->request->getMethod()) {
             $id = func_get_args()[0];
-            $text = $this->entityService->getEntityById($id)->getText();
+            $text = $this->entityService->getById($id)->getText();
             $token = $this->request->get('token');
 
             return new Response($this->template->render('form_edit.html.twig', ['id' => $id, 'text' => $text, 'token' => $token]));
         }
 
         try {
-            $this->entityService->editEntity($this->request->get('id'), $this->request->get('text'));
+            $this->entityService->edit($this->request->get('id'), $this->request->get('text'));
         } catch (Exception $exception) {
             $params = ['error' => $exception->getMessage()];
 
@@ -141,7 +141,7 @@ class EntityController
     public function done()
     {
         try {
-            $this->entityService->doneEntity(func_get_args()[0]);
+            $this->entityService->done(func_get_args()[0]);
         } catch (Exception $exception) {
             return new Response($this->template->render('done_error.html.twig', ['error' => $exception->getMessage()]));
         }

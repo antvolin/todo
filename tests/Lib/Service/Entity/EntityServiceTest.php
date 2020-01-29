@@ -52,8 +52,8 @@ class EntityServiceTest extends TestCase
         $email = $this->generateEmail();
         $text = $this->generateText(__METHOD__, __CLASS__);
 
-        $id = $this->entityService->addEntity($userName, $email, $text);
-        $entity = $this->entityService->getEntityById($id);
+        $id = $this->entityService->add($userName, $email, $text);
+        $entity = $this->entityService->getById($id);
 
         $this->assertInstanceOf(EntityInterface::class, $entity);
     }
@@ -76,11 +76,11 @@ class EntityServiceTest extends TestCase
         $text3 = $this->generateText(__METHOD__, __CLASS__, 3);
         $email = $this->generateEmail();
 
-        $this->entityService->addEntity($userName1, $email, $text1);
-        $this->entityService->addEntity($userName2, $email, $text2);
-        $this->entityService->addEntity($userName3, $email, $text3);
+        $this->entityService->add($userName1, $email, $text1);
+        $this->entityService->add($userName2, $email, $text2);
+        $this->entityService->add($userName3, $email, $text3);
 
-        $entities = $this->entityService->getEntities(0);
+        $entities = $this->entityService->getCollection(0);
 
         foreach ($entities as $entity) {
             $this->assertInstanceOf(EntityInterface::class, $entity);
@@ -105,11 +105,11 @@ class EntityServiceTest extends TestCase
         $text3 = $this->generateText(__METHOD__, __CLASS__, 3);
         $email = $this->generateEmail();
 
-        $this->entityService->addEntity($userName1, $email, $text1);
-        $this->entityService->addEntity($userName2, $email, $text2);
-        $this->entityService->addEntity($userName3, $email, $text3);
+        $this->entityService->add($userName1, $email, $text1);
+        $this->entityService->add($userName2, $email, $text2);
+        $this->entityService->add($userName3, $email, $text3);
 
-        $count = $this->entityService->getCountEntities();
+        $count = $this->entityService->getCount();
 
         $this->assertLessThan($count, 0);
     }
@@ -131,10 +131,10 @@ class EntityServiceTest extends TestCase
         $text = $this->generateText(__METHOD__, __CLASS__);
         $email = $this->generateEmail();
 
-        $id = $this->entityService->addEntity($userName, $email, $text);
+        $id = $this->entityService->add($userName, $email, $text);
 
-        $this->entityService->deleteEntity($id);
-        $this->entityService->getEntityById($id);
+        $this->entityService->remove($id);
+        $this->entityService->getById($id);
     }
 
     /**
@@ -155,9 +155,9 @@ class EntityServiceTest extends TestCase
         $text = $this->generateText(__METHOD__, __CLASS__);
         $email = $this->generateEmail();
 
-        $id = $this->entityService->addEntity($userName, $email, $text);
-        $this->entityService->editEntity($id, $newText);
-        $entity = $this->entityService->getEntityById($id);
+        $id = $this->entityService->add($userName, $email, $text);
+        $this->entityService->edit($id, $newText);
+        $entity = $this->entityService->getById($id);
 
         $this->assertEquals(Status::EDITED, $entity->getStatus());
         $this->assertEquals($newText, $entity->getText());
@@ -179,9 +179,9 @@ class EntityServiceTest extends TestCase
         $text = $this->generateText(__METHOD__, __CLASS__);
         $email = $this->generateEmail();
 
-        $id = $this->entityService->addEntity($userName, $email, $text);
-        $this->entityService->doneEntity($id);
-        $entity = $this->entityService->getEntityById($id);
+        $id = $this->entityService->add($userName, $email, $text);
+        $this->entityService->done($id);
+        $entity = $this->entityService->getById($id);
 
         $this->assertEquals(Status::DONE, $entity->getStatus());
     }
