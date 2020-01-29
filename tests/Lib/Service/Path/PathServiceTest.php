@@ -36,11 +36,13 @@ class PathServiceTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeGettingCorrectPathToSource(): void
+    public function shouldBeGettingCorrectPathToEntityStorage(): void
     {
-        $this->markTestIncomplete();
+        if (App::getStorageType() !== 'pdo') {
+            $this->markTestSkipped();
+        }
 
-//        $this->assertDirectoryExists(PathService::getEntityStoragePath(2));
+        $this->assertDirectoryExists(PathService::getPathToEntityStorage(App::getEntityName(), 3));
     }
 
     /**
