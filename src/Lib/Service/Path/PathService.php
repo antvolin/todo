@@ -27,7 +27,12 @@ class PathService implements PathServiceInterface
      */
     public static function getPathToEntityStorage(string $entityName, int $level = 0): string
     {
-        return dirname(__DIR__).self::generatePathToBack($level).$entityName.'/';
+        return sprintf(
+            '%s%s%s/',
+            dirname(__DIR__),
+            self::generatePathToBack($level),
+            $entityName
+        );
     }
 
     /**
@@ -35,7 +40,14 @@ class PathService implements PathServiceInterface
      */
     public static function getPathToPdoDsn(string $pdoType, string $dbFolderName, string $entityName): string
     {
-        return $pdoType.':'.dirname(__DIR__).self::generatePathToBack(3).$dbFolderName.$entityName;
+        return sprintf(
+            '%s:%s%s%s/%s',
+            $pdoType,
+            dirname(__DIR__),
+            self::generatePathToBack(3),
+            $dbFolderName,
+            $entityName
+        );
     }
 
     /**
@@ -43,7 +55,12 @@ class PathService implements PathServiceInterface
      */
     public static function getPathToTemplates(): string
     {
-        return dirname(__DIR__).self::generatePathToBack(3).'templates';
+        return sprintf(
+            '%s%s%s',
+            dirname(__DIR__),
+            self::generatePathToBack(3),
+            'templates'
+        );
     }
 
     /**
@@ -51,7 +68,7 @@ class PathService implements PathServiceInterface
      *
      * @return string
      */
-    public static function generatePathToBack(int $level): string
+    private static function generatePathToBack(int $level): string
     {
         $path = self::DIRECTORY_SEPARATOR;
 
