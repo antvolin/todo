@@ -7,7 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
-use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
+use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactoryInterface;
 
 class EntityPdoRepositoryFactoryTest extends TestCase
 {
@@ -39,7 +39,7 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     public function shouldBeCreatableEntityPdoRepository(): void
     {
         $entityFactory = $this->createMock(EntityFactoryInterface::class);
-        $repositoryFactory = new EntityPdoRepositoryFactory($this->pdo, $entityFactory);
+        $repositoryFactory = new EntityPdoRepositoryFactoryInterface($this->pdo, $entityFactory);
 
         $repository = $repositoryFactory->create($this->entityPerPage, $this->entityName);
 

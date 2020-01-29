@@ -4,7 +4,7 @@ namespace Tests\Lib\Factory\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
-use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
+use Todo\Lib\Factory\Repository\EntityFileRepositoryFactoryInterface;
 
 class EntityFileRepositoryFactoryTest extends TestCase
 {
@@ -29,7 +29,7 @@ class EntityFileRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatableEntityFileRepository(): void
     {
-        $factory = new EntityFileRepositoryFactory();
+        $factory = new EntityFileRepositoryFactoryInterface();
         $repository = $factory->create($this->entityPerPage, $this->entityName);
 
         $this->assertTrue(method_exists($repository, 'getCountEntities'));

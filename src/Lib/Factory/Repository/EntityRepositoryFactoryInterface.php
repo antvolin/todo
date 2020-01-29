@@ -4,7 +4,7 @@ namespace Todo\Lib\Factory\Repository;
 
 use Todo\Lib\Repository\EntityRepositoryInterface;
 
-abstract class EntityRepositoryFactory
+interface EntityRepositoryFactoryInterface
 {
     /**
      * @param int $entityPerPage
@@ -12,5 +12,5 @@ abstract class EntityRepositoryFactory
      *
      * @return EntityRepositoryInterface
      */
-    abstract public function create(int $entityPerPage, string $entityName): EntityRepositoryInterface;
+    public function create(int $entityPerPage, string $entityName): EntityRepositoryInterface;
 }
