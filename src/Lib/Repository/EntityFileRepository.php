@@ -2,11 +2,11 @@
 
 namespace Todo\Lib\Repository;
 
+use FilesystemIterator;
+use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
-use FilesystemIterator;
-use LogicException;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Todo\Model\Id;
 
 class EntityFileRepository implements EntityRepositoryInterface
 {
@@ -33,18 +33,16 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getById(int $id): EntityInterface
+    public function getById(Id $entityId): EntityInterface
     {
-        $file = file_get_contents($this->entityStoragePath.$id);
+        $file = @file_get_contents($this->entityStoragePath.$entityId->getValue());
 
         if (false === $file) {
-            throw new FileNotFoundException('Invalid id value!');
+            throw new EntityNotFoundException('Invalid id value!');
         }
 
-        $entity = unserialize($file, ['allowed_classes' => true]);
-
-        if (!$entity) {
-            throw new LogicException('Failed to produce un serialize entity!');
+        if (!$entity = unserialize($file, ['allowed_classes' => true])) {
+            throw new EntityNotFoundException('Failed to produce un serialize entity!');
         }
 
         return $entity;
@@ -66,18 +64,22 @@ class EntityFileRepository implements EntityRepositoryInterface
         $entity = [];
 
         foreach (glob($this->entityStoragePath.'*') as $file) {
-            $entity[basename($file)] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
+            $entity[] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
         }
 
         if ($orderBy && $order) {
-            $method = 'get'.ucfirst($orderBy);
+            $methodName = explode('_', $orderBy);
+            array_map(static function($path) {
+                ucfirst($path);
+            }, $methodName);
+            $method = 'get'.implode('', $methodName);
 
             if (OrderingService::ASC === $order) {
-                uasort($entity, function (EntityInterface $a, EntityInterface $b) use ($method) {
+                uasort($entity, static function (EntityInterface $a, EntityInterface $b) use ($method) {
                     return strcmp(strtolower($a->$method()), strtolower($b->$method()));
                 });
             } else {
-                uasort($entity, function (EntityInterface $b, EntityInterface $a) use ($method) {
+                uasort($entity, static function (EntityInterface $b, EntityInterface $a) use ($method) {
                     return strcmp(strtolower($a->$method()), strtolower($b->$method()));
                 });
             }
@@ -89,15 +91,25 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function add(EntityInterface $entity, ?int $entityId = null): int
+    public function add(EntityInterface $entity): Id
     {
-        file_put_contents($this->entityStoragePath.$entity->getId()->getValue(), serialize($entity));
+        $entityId = $entity->getId();
 
-        return $entity->getId()->getValue();
+        if (!$entityId->getValue()) {
+            $entityId->setValue(uniqid('id', true));
+            $entity->setId($entityId);
+        }
+
+        file_put_contents($this->entityStoragePath.'/'.$entityId->getValue(), serialize($entity));
+
+        return $entityId;
     }
 
-    public function remove(int $entityId): void
+    /**
+     * @inheritDoc
+     */
+    public function remove(Id $entityId): void
     {
-        // TODO: Implement deleteEntity() method.
+        unlink($this->entityStoragePath.'/'.$entityId->getValue());
     }
 }

@@ -116,6 +116,14 @@ class Entity implements EntityInterface, JsonSerializable
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setId(Id $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize(): array

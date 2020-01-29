@@ -13,8 +13,8 @@ use Todo\Lib\Factory\Service\TokenServiceFactory;
 use Todo\Lib\Factory\Service\TokenServiceFactoryInterface;
 use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
-use Todo\Lib\Factory\Repository\EntityFileRepositoryFactoryInterface;
-use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactoryInterface;
+use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
+use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityRepositoryFactoryInterface;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Factory\Template\TwigTemplateFactory;
@@ -272,12 +272,12 @@ class App
     public function getRepositoryFactory(): EntityRepositoryFactoryInterface
     {
         if ('sqlite' === self::getStorageType()) {
-            $factory = new EntityPdoRepositoryFactoryInterface(
+            $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
                 $this->getEntityFactory()
             );
         } else {
-            $factory = new EntityFileRepositoryFactoryInterface();
+            $factory = new EntityFileRepositoryFactory();
         }
 
         return $factory;

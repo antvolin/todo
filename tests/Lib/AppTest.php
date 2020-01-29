@@ -112,6 +112,8 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingPdo(): void
     {
+        $this->markTestSkipped();
+
         $pdo = $this->app->getPdo();
 
         $this->assertTrue(method_exists($pdo, 'query'));

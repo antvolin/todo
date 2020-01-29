@@ -44,9 +44,7 @@ class AuthController
             return new Response($this->template->render('form_login.html.twig', ['token' => $token]));
         }
 
-        $response = $this->authService->login();
-
-        if ($response) {
+        if ($response = $this->authService->login()) {
             return $response;
         }
 

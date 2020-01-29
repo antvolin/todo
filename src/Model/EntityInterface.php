@@ -54,4 +54,9 @@ interface EntityInterface
      * @throws CannotEditEntityException
      */
     public function setText(Text $text): void;
+
+    /**
+     * @param Id $id
+     */
+    public function setId(Id $id): void;
 }

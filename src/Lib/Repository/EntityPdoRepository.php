@@ -9,6 +9,7 @@ use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
+use Todo\Model\Id;
 
 class EntityPdoRepository implements EntityRepositoryInterface
 {
@@ -49,8 +50,10 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getById(int $id): EntityInterface
+    public function getById(Id $entityId): EntityInterface
     {
+        $id = $entityId->getValue();
+
         $sth = $this->pdo->prepare("SELECT id, user_name, email, text, status FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
         $sth->execute();
@@ -72,7 +75,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
         $orderBy = OrderingService::getOrderBy($orderBy);
         $order = OrderingService::getOrder($order);
 
-        $sth = $this->pdo->prepare("SELECT * FROM $this->entityName ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;");
+        $sth = $this->pdo->prepare("SELECT id, user_name, email, text, status FROM $this->entityName ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;");
         $limit = $this->entityPerPage;
         $offset = $this->entityPerPage * ($page - 1);
         $sth->bindParam(':limit', $limit, PDO::PARAM_INT);
@@ -96,8 +99,10 @@ class EntityPdoRepository implements EntityRepositoryInterface
 
     /**
      * @inheritdoc
+     *
+     * @throws PdoErrorsException
      */
-    public function add(EntityInterface $entity): int
+    public function add(EntityInterface $entity): Id
     {
         $entityId = $entity->getId()->getValue();
         $userName = $entity->getUserName();
@@ -123,16 +128,18 @@ class EntityPdoRepository implements EntityRepositoryInterface
             throw new PdoErrorsException($exception->getMessage());
         }
 
-        return $this->pdo->lastInsertId();
+        return new Id($this->pdo->lastInsertId());
     }
 
     /**
      * @inheritdoc
      */
-    public function remove(int $entityId): void
+    public function remove(Id $entityId): void
     {
+        $id = $entityId->getValue();
+
         $sth = $this->pdo->prepare("DELETE FROM $this->entityName WHERE id = :id;");
-        $sth->bindParam(':id', $entityId, PDO::PARAM_INT);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
         $sth->execute();
     }
 }

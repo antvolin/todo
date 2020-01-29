@@ -25,15 +25,9 @@ class PathService implements PathServiceInterface
     /**
      * @inheritDoc
      */
-    public static function getSrcPathByLevel(int $level = 0): string
+    public static function getPathToEntityStorage(string $entityName, int $level = 0): string
     {
-        $path = '';
-
-        for ($i = $level; $i > 0; --$i) {
-            $path .= self::DIRECTORY_SEPARATOR.'..';
-        }
-
-        return dirname(__DIR__).$path;
+        return dirname(__DIR__).self::generatePathToBack($level).$entityName.'/';
     }
 
     /**
@@ -53,16 +47,16 @@ class PathService implements PathServiceInterface
     }
 
     /**
-     * @param int $levels
+     * @param int $level
      *
      * @return string
      */
-    private static function generatePathToBack(int $levels): string
+    public static function generatePathToBack(int $level): string
     {
-        $path = '';
+        $path = self::DIRECTORY_SEPARATOR;
 
-        for ($i = $levels; $i > 0; --$i) {
-            $path .= self::DIRECTORY_SEPARATOR.'..'.self::DIRECTORY_SEPARATOR;
+        for ($i = $level; $i > 0; --$i) {
+            $path .= '..'.self::DIRECTORY_SEPARATOR;
         }
 
         return $path;

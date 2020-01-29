@@ -4,15 +4,15 @@ namespace Todo\Lib\Repository;
 
 use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Model\EntityInterface;
+use Todo\Model\Id;
 
 interface EntityRepositoryInterface
 {
     /**
-     * @param int $entityId
+     * @param Id $entityId
      *
      * @return EntityInterface
      *
@@ -21,7 +21,7 @@ interface EntityRepositoryInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getById(int $entityId): EntityInterface;
+    public function getById(Id $entityId): EntityInterface;
 
     /**
      * @param int $page
@@ -44,14 +44,12 @@ interface EntityRepositoryInterface
     /**
      * @param EntityInterface $entity
      *
-     * @return int
-     *
-     * @throws PdoErrorsException
+     * @return Id
      */
-    public function add(EntityInterface $entity): int;
+    public function add(EntityInterface $entity): Id;
 
     /**
-     * @param int $entityId
+     * @param Id $entityId
      */
-    public function remove(int $entityId): void;
+    public function remove(Id $entityId): void;
 }

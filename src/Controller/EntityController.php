@@ -3,7 +3,6 @@
 namespace Todo\Controller;
 
 use Exception;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,7 +126,7 @@ class EntityController
 
         try {
             $this->entityService->editEntity($this->request->get('id'), $this->request->get('text'));
-        } catch (InvalidArgumentException $exception) {
+        } catch (Exception $exception) {
             $params = ['error' => $exception->getMessage()];
 
             return new Response($this->template->render('edit_error.html.twig', $params));

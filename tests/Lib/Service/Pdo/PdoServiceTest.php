@@ -35,6 +35,8 @@ class PdoServiceTest extends TestCase
      */
     public function shouldBeCreatedTables(): void
     {
+        $this->markTestSkipped();
+
         $this->pdoService->getPdo();
         $this->assertTrue($this->pdoService->createTables());
     }

@@ -12,6 +12,7 @@ use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\EntityInterface;
+use Todo\Model\Id;
 
 interface EntityServiceInterface
 {
@@ -21,7 +22,7 @@ interface EntityServiceInterface
     public function __construct(EntityFactoryInterface $factory);
 
     /**
-     * @param int $id
+     * @param Id $id
      *
      * @return EntityInterface
      *
@@ -30,7 +31,7 @@ interface EntityServiceInterface
      * @throws NotValidEmailException
      * @throws EntityNotFoundException
      */
-    public function getEntityById(int $id): EntityInterface;
+    public function getEntityById(Id $id): EntityInterface;
 
     /**
      * @param int $page
@@ -67,7 +68,7 @@ interface EntityServiceInterface
     public function createEntity(array $entity): EntityInterface;
 
     /**
-     * @param int $entityId
+     * @param Id $entityId
      * @param string $text
      *
      * @throws CannotBeEmptyException
@@ -78,10 +79,10 @@ interface EntityServiceInterface
      * @throws CannotEditEntityException
      * @throws CannotDoneEntityException
      */
-    public function editEntity(int $entityId, string $text): void;
+    public function editEntity(Id $entityId, string $text): void;
 
     /**
-     * @param int $entityId
+     * @param Id $entityId
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
@@ -90,24 +91,24 @@ interface EntityServiceInterface
      * @throws EntityNotFoundException
      * @throws CannotDoneEntityException
      */
-    public function doneEntity(int $entityId): void;
+    public function doneEntity(Id $entityId): void;
 
     /**
      * @param string $userName
      * @param string $email
      * @param string $text
      *
-     * @return int
+     * @return Id
      *
      * @throws CannotBeEmptyException
      * @throws NotValidEmailException
      * @throws ForbiddenStatusException
      * @throws PdoErrorsException
      */
-    public function addEntity(string $userName, string $email, string $text): int;
+    public function addEntity(string $userName, string $email, string $text): Id;
 
     /**
-     * @param int $entityId
+     * @param Id $entityId
      */
-    public function deleteEntity(int $entityId): void;
+    public function deleteEntity(Id $entityId): void;
 }

@@ -7,6 +7,7 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\EntityInterface;
+use Todo\Model\Id;
 use Todo\Model\Status;
 use Todo\Model\Text;
 
@@ -33,9 +34,9 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function getEntityById(int $id): EntityInterface
+    public function getEntityById(Id $entityId): EntityInterface
     {
-        return $this->repository->getById($id);
+        return $this->repository->getById($entityId);
     }
 
     /**
@@ -73,7 +74,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function editEntity(int $entityId, string $text): void
+    public function editEntity(Id $entityId, string $text): void
     {
         $entity = $this->repository->getById($entityId);
 
@@ -90,7 +91,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function doneEntity(int $entityId): void
+    public function doneEntity(Id $entityId): void
     {
         $entity = $this->repository->getById($entityId);
 
@@ -106,7 +107,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function addEntity(string $userName, string $email, string $text): int
+    public function addEntity(string $userName, string $email, string $text): Id
     {
         $entity = [
             'id' => null,
@@ -124,7 +125,7 @@ class EntityService implements EntityServiceInterface
     /**
      * @inheritDoc
      */
-    public function deleteEntity(int $entityId): void
+    public function deleteEntity(Id $entityId): void
     {
         $this->repository->remove($entityId);
     }

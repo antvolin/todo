@@ -1,4 +1,5 @@
 .env
+/entity/
 
 .phpunit
 .phpunit.result.cache

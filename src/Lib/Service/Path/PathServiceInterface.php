@@ -21,11 +21,12 @@ interface PathServiceInterface
     public static function getPathParts(string $path, string $separator = '/'): array;
 
     /**
+     * @param string $entity
      * @param int $level
      *
      * @return string
      */
-    public static function getSrcPathByLevel(int $level = 0): string;
+    public static function getPathToEntityStorage(string $entity, int $level = 0): string;
 
     /**
      * @param string $pdoType

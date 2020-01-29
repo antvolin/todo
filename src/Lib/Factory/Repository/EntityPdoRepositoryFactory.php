@@ -8,7 +8,7 @@ use Todo\Lib\Repository\EntityPdoRepository;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 
-class EntityPdoRepositoryFactoryInterface implements EntityRepositoryFactoryInterface
+class EntityPdoRepositoryFactory implements EntityRepositoryFactoryInterface
 {
     /**
      * @var PDO

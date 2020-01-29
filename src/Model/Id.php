@@ -20,10 +20,18 @@ class Id
     }
 
     /**
-     * @return int|null
+     * @return string|int|null
      */
-    public function getValue(): ?int
+    public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param string|int|null $value
+     */
+    public function setValue($value): void
+    {
+        $this->value = $value;
     }
 }
