@@ -3,6 +3,7 @@
 namespace Todo\Lib\Repository;
 
 use FilesystemIterator;
+use Generator;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
@@ -61,11 +62,7 @@ class EntityFileRepository implements EntityRepositoryInterface
      */
     public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
-        $entity = [];
-
-        foreach (glob($this->entityStoragePath.'*') as $file) {
-            $entity[] = unserialize(file_get_contents($file), ['allowed_classes' => true]);
-        }
+        $entity = iterator_to_array($this->getFilesIterator());
 
         if ($orderBy && $order) {
             $methodName = explode('_', $orderBy);
@@ -86,6 +83,16 @@ class EntityFileRepository implements EntityRepositoryInterface
         }
 
         return array_slice($entity, ($page - 1) * $this->entityPerPage, $this->entityPerPage);
+    }
+
+    /**
+     * @return Generator
+     */
+    private function getFilesIterator(): ?Generator
+    {
+        foreach (glob($this->entityStoragePath.'*') as $file) {
+            yield unserialize(file_get_contents($file), ['allowed_classes' => true]);
+        }
     }
 
     /**

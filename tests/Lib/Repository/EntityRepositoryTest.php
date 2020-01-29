@@ -14,19 +14,9 @@ use Todo\Lib\Repository\EntityPdoRepository;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
 
-class EntityPdoRepositoryTest extends TestCase
+class EntityRepositoryTest extends TestCase
 {
     use TestValueGenerator;
-
-    /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
 
     /**
      * @var EntityPdoRepository
@@ -34,11 +24,15 @@ class EntityPdoRepositoryTest extends TestCase
     private $repository;
 
     /**
+     * @var EntityServiceInterface
+     */
+    private $entityService;
+
+    /**
      * @throws PdoConnectionException
      */
     protected function setUp()
     {
-        $this->entityName = App::getEntityName();
         $app = new App();
         $this->repository = $app->getRepository();
         $this->entityService = $app->getEntityService();
@@ -97,7 +91,7 @@ class EntityPdoRepositoryTest extends TestCase
      * @throws NotValidEmailException
      * @throws PdoErrorsException
      */
-    public function shouldBeGettingAllEntities(): void
+    public function shouldBeGettingCollectionOfEntities(): void
     {
         $userName1 = $this->generateUserName(__METHOD__, __CLASS__, 1);
         $userName2 = $this->generateUserName(__METHOD__, __CLASS__, 2);
