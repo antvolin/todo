@@ -32,9 +32,10 @@ class EntityFileRepositoryFactoryTest extends TestCase
         $factory = new EntityFileRepositoryFactoryInterface();
         $repository = $factory->create($this->entityPerPage, $this->entityName);
 
-        $this->assertTrue(method_exists($repository, 'getCountEntities'));
-        $this->assertTrue(method_exists($repository, 'getEntities'));
-        $this->assertTrue(method_exists($repository, 'addEntity'));
-        $this->assertTrue(method_exists($repository, 'getEntityById'));
+        $this->assertTrue(method_exists($repository, 'getById'));
+        $this->assertTrue(method_exists($repository, 'getCollection'));
+        $this->assertTrue(method_exists($repository, 'getCount'));
+        $this->assertTrue(method_exists($repository, 'add'));
+        $this->assertTrue(method_exists($repository, 'remove'));
     }
 }

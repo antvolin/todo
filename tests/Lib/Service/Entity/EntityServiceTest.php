@@ -151,13 +151,11 @@ class EntityServiceTest extends TestCase
     public function shouldBeEditingEntity(): void
     {
         $newText = $this->generateText(__METHOD__, __CLASS__, 1);
-
         $userName = $this->generateUserName(__METHOD__, __CLASS__);
         $text = $this->generateText(__METHOD__, __CLASS__);
         $email = $this->generateEmail();
 
         $id = $this->entityService->addEntity($userName, $email, $text);
-
         $this->entityService->editEntity($id, $newText);
         $entity = $this->entityService->getEntityById($id);
 

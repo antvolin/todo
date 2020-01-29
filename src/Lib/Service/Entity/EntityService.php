@@ -35,7 +35,7 @@ class EntityService implements EntityServiceInterface
      */
     public function getEntityById(int $id): EntityInterface
     {
-        return $this->repository->getEntityById($id);
+        return $this->repository->getById($id);
     }
 
     /**
@@ -43,7 +43,7 @@ class EntityService implements EntityServiceInterface
      */
     public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
     {
-        return $this->repository->getEntities($page, $orderBy, $order);
+        return $this->repository->getCollection($page, $orderBy, $order);
     }
 
     /**
@@ -51,7 +51,7 @@ class EntityService implements EntityServiceInterface
      */
     public function getCountEntities(): int
     {
-        return $this->repository->getCountEntities();
+        return $this->repository->getCount();
     }
 
     /**
@@ -75,7 +75,7 @@ class EntityService implements EntityServiceInterface
      */
     public function editEntity(int $entityId, string $text): void
     {
-        $entity = $this->repository->getEntityById($entityId);
+        $entity = $this->repository->getById($entityId);
 
         if (Status::DONE === ((string) $entity->getStatus())) {
             throw new CannotEditEntityException();
@@ -84,7 +84,7 @@ class EntityService implements EntityServiceInterface
         $entity->setStatus(new Status(Status::EDITED));
         $entity->setText(new Text($text));
 
-        $this->repository->addEntity($entity, $entityId);
+        $this->repository->add($entity);
     }
 
     /**
@@ -92,7 +92,7 @@ class EntityService implements EntityServiceInterface
      */
     public function doneEntity(int $entityId): void
     {
-        $entity = $this->repository->getEntityById($entityId);
+        $entity = $this->repository->getById($entityId);
 
         if (Status::DONE === ((string) $entity->getStatus())) {
             throw new CannotDoneEntityException();
@@ -100,7 +100,7 @@ class EntityService implements EntityServiceInterface
 
         $entity->setStatus(new Status(Status::DONE));
 
-        $this->repository->addEntity($entity, $entity->getId()->getValue());
+        $this->repository->add($entity);
     }
 
     /**
@@ -118,7 +118,7 @@ class EntityService implements EntityServiceInterface
 
         $entity = $this->factory->create($entity);
 
-        return $this->repository->addEntity($entity);
+        return $this->repository->add($entity);
     }
 
     /**
@@ -126,6 +126,6 @@ class EntityService implements EntityServiceInterface
      */
     public function deleteEntity(int $entityId): void
     {
-        $this->repository->deleteEntity($entityId);
+        $this->repository->remove($entityId);
     }
 }

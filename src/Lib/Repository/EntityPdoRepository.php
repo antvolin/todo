@@ -49,9 +49,9 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getEntityById(int $id): EntityInterface
+    public function getById(int $id): EntityInterface
     {
-        $sth = $this->pdo->prepare("SELECT * FROM $this->entityName WHERE id = :id;");
+        $sth = $this->pdo->prepare("SELECT id, user_name, email, text, status FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
         $sth->execute();
 
@@ -65,15 +65,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getCountEntities(): int
-    {
-        return  $this->pdo->query("SELECT COUNT(id) FROM $this->entityName;")->fetchColumn();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         $result = [];
 
@@ -88,7 +80,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
         $sth->execute();
 
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $entity) {
-            $result[$entity['id']] = $this->entityFactory->create($entity);
+            $result[] = $this->entityFactory->create($entity);
         }
 
         return $result;
@@ -97,8 +89,17 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function addEntity(EntityInterface $entity, ?int $entityId = null): int
+    public function getCount(): int
     {
+        return  $this->pdo->query("SELECT COUNT(id) FROM $this->entityName;")->fetchColumn();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function add(EntityInterface $entity): int
+    {
+        $entityId = $entity->getId()->getValue();
         $userName = $entity->getUserName();
         $email = $entity->getEmail();
         $text = $entity->getText();
@@ -128,7 +129,7 @@ class EntityPdoRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function deleteEntity(int $entityId): void
+    public function remove(int $entityId): void
     {
         $sth = $this->pdo->prepare("DELETE FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $entityId, PDO::PARAM_INT);

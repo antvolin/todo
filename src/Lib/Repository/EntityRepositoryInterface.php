@@ -21,38 +21,37 @@ interface EntityRepositoryInterface
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getEntityById(int $entityId): EntityInterface;
-
-    /**
-     * @return int
-     */
-    public function getCountEntities(): int;
+    public function getById(int $entityId): EntityInterface;
 
     /**
      * @param int $page
      * @param string|null $orderBy
      * @param string|null $order
      *
-     * @return array
+     * @return EntityInterface[]
      *
      * @throws CannotBeEmptyException
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
      */
-    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array;
+    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array;
+
+    /**
+     * @return int
+     */
+    public function getCount(): int;
 
     /**
      * @param EntityInterface $entity
-     * @param int|null $entityId
      *
      * @return int
      *
      * @throws PdoErrorsException
      */
-    public function addEntity(EntityInterface $entity, ?int $entityId = null): int;
+    public function add(EntityInterface $entity): int;
 
     /**
      * @param int $entityId
      */
-    public function deleteEntity(int $entityId): void;
+    public function remove(int $entityId): void;
 }

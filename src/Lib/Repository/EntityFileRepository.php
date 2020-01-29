@@ -33,7 +33,7 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getEntityById(int $id): EntityInterface
+    public function getById(int $id): EntityInterface
     {
         $file = file_get_contents($this->entityStoragePath.$id);
 
@@ -53,7 +53,7 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getCountEntities(): int
+    public function getCount(): int
     {
         return iterator_count(new FilesystemIterator($this->entityStoragePath, FilesystemIterator::SKIP_DOTS));
     }
@@ -61,7 +61,7 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function getEntities(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         $entity = [];
 
@@ -89,14 +89,14 @@ class EntityFileRepository implements EntityRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function addEntity(EntityInterface $entity, ?int $entityId = null): int
+    public function add(EntityInterface $entity, ?int $entityId = null): int
     {
         file_put_contents($this->entityStoragePath.$entity->getId()->getValue(), serialize($entity));
 
         return $entity->getId()->getValue();
     }
 
-    public function deleteEntity(int $entityId): void
+    public function remove(int $entityId): void
     {
         // TODO: Implement deleteEntity() method.
     }
