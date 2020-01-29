@@ -4,6 +4,7 @@
 /vendor/
 /database/
 /react_v2/node_modules/
+db_inserter.sh
 
 .phpunit
 .phpunit.result.cache
