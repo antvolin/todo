@@ -41,7 +41,7 @@ class PathService implements PathServiceInterface
     public static function getPathToPdoDsn(string $pdoType, string $dbFolderName, string $entityName): string
     {
         return sprintf(
-            '%s:%s%s%s/%s',
+            '%s:%s%s%s%s',
             $pdoType,
             dirname(__DIR__),
             self::generatePathToBack(3),
