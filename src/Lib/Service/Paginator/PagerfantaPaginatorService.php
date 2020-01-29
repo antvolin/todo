@@ -39,7 +39,7 @@ class PagerfantaPaginatorService implements PaginatorServiceInterface
      */
     public function getHtml(?string $orderBy, ?string $order): string
     {
-        $routeGenerator = function (int $page) use ($orderBy, $order) {
+        $routeGenerator = static function (int $page) use ($orderBy, $order) {
             return sprintf('/entity/list?page=%s&orderBy=%s&order=%s', $page, $orderBy, $order);
         };
 

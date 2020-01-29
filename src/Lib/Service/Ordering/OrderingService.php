@@ -28,7 +28,7 @@ class OrderingService implements OrderingServiceInterface
     }
 
     /**
-     * @pinheritDoc
+     * @inheritDoc
      */
     public static function getOrder(?string $order): string
     {

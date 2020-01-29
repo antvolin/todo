@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\CannotDoneEntityException;
-use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\NotValidEmailException;
@@ -107,12 +105,9 @@ class EntityController
      * @return RedirectResponse|Response
      *
      * @throws CannotBeEmptyException
-     * @throws CannotDoneEntityException
-     * @throws CannotEditEntityException
-     * @throws ForbiddenStatusException
      * @throws EntityNotFoundException
+     * @throws ForbiddenStatusException
      * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function edit()
     {

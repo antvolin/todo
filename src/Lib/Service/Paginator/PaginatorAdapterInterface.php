@@ -3,6 +3,7 @@
 namespace Todo\Lib\Service\Paginator;
 
 use Pagerfanta\Adapter\AdapterInterface;
+use Traversable;
 
 interface PaginatorAdapterInterface extends AdapterInterface
 {
@@ -25,7 +26,7 @@ interface PaginatorAdapterInterface extends AdapterInterface
      * @param int $offset
      * @param int $length
      *
-     * @return array|\Traversable
+     * @return array|Traversable
      */
     public function getSlice($offset, $length);
 }
