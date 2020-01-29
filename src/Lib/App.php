@@ -79,6 +79,11 @@ class App
     /**
      * @var string
      */
+    private static $pdoType;
+
+    /**
+     * @var string
+     */
     private static $user;
 
     /**
@@ -96,6 +101,7 @@ class App
         self::$tokenSalt = $_ENV['TOKEN_SALT'];
         self::$dbFolderName = $_ENV['DB_FOLDER_NAME'];
         self::$storageType = $_ENV['STORAGE_TYPE'];
+        self::$pdoType = $_ENV['PDO_TYPE'];
         self::$user = $_ENV['APP_USER'];
         self::$password = $_ENV['APP_PASSWORD'];
         self::$templateType = $_ENV['TEMPLATE_TYPE'];
@@ -171,6 +177,14 @@ class App
     public static function getStorageType(): string
     {
         return self::$storageType;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPdoType(): string
+    {
+        return self::$pdoType;
     }
 
     /**
@@ -271,7 +285,7 @@ class App
      */
     public function getRepositoryFactory(): EntityRepositoryFactoryInterface
     {
-        if ('sqlite' === self::getStorageType()) {
+        if ('pdo' === self::getStorageType()) {
             $factory = new EntityPdoRepositoryFactory(
                 $this->getPdo(),
                 $this->getEntityFactory()
@@ -292,7 +306,7 @@ class App
     {
         $factory = new PdoServiceFactory(
             self::getEntityName(),
-            self::getStorageType(),
+            self::getPdoType(),
             self::getDbFolderName()
         );
 

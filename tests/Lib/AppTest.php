@@ -112,7 +112,9 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingPdo(): void
     {
-        $this->markTestSkipped();
+        if (App::getStorageType() !== 'pdo') {
+            $this->markTestSkipped();
+        }
 
         $pdo = $this->app->getPdo();
 

@@ -16,7 +16,7 @@ class PdoServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->pdoService = new PdoService(App::getEntityName(), App::getStorageType(), App::getDbFolderName());
+        $this->pdoService = new PdoService(App::getEntityName(), App::getPdoType(), App::getDbFolderName());
     }
 
     /**
@@ -35,7 +35,9 @@ class PdoServiceTest extends TestCase
      */
     public function shouldBeCreatedTables(): void
     {
-        $this->markTestSkipped();
+        if (App::getStorageType() !== 'pdo') {
+            $this->markTestSkipped();
+        }
 
         $this->pdoService->getPdo();
         $this->assertTrue($this->pdoService->createTables());

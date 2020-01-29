@@ -54,11 +54,13 @@ class PathServiceTest extends TestCase
      */
     public function shouldBeGettingCorrectPathToPdoDsn(): void
     {
-        $this->markTestSkipped();
+        if (App::getStorageType() !== 'pdo') {
+            $this->markTestSkipped();
+        }
 
         $app = new App();
         $entityName = App::getEntityName();
-        $dsn = PathService::getPathToPdoDsn(App::getStorageType(), App::getDbFolderName(), $entityName);
+        $dsn = PathService::getPathToPdoDsn(App::getPdoType(), App::getDbFolderName(), $entityName);
         $pdo = new PDO($dsn);
 
         $entityService = $app->getEntityService();
