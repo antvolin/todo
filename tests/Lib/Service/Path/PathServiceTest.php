@@ -28,7 +28,7 @@ class PathServiceTest extends TestCase
             'part3',
             'part4',
         ];
-        $actual = PathService::getPathParts('/part1/part2/part3/part4/');
+        $actual = PathService::separatePath('/part1/part2/part3/part4/');
 
         $this->assertSame($expected, $actual);
     }

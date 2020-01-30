@@ -21,10 +21,10 @@ class RoleRequestHandlerService extends RequestHandlerService
      */
     protected function process(Request $request): void
     {
-        $pathParts = PathService::getPathParts($request->getPathInfo());
+        $pathParts = PathService::separatePath($request->getPathInfo());
 
         if (count($pathParts) > 1) {
-            $controllerMethodName = PathService::getFirstPart($request->getPathInfo());
+            $controllerMethodName = PathService::getFirstPathPart($request->getPathInfo());
             $admin = $request->getSession()->get('admin');
 
             if (!$admin && in_array($controllerMethodName, self::MODIFY_METHODS, true)) {

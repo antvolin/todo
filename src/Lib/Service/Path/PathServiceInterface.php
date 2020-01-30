@@ -10,7 +10,7 @@ interface PathServiceInterface
      *
      * @return string
      */
-    public static function getFirstPart(string $path, string $separator = '/'): string;
+    public static function getFirstPathPart(string $path, string $separator = '/'): string;
 
     /**
      * @param string $path
@@ -18,7 +18,7 @@ interface PathServiceInterface
      *
      * @return array
      */
-    public static function getPathParts(string $path, string $separator = '/'): array;
+    public static function separatePath(string $path, string $separator = '/'): array;
 
     /**
      * @param string $entity

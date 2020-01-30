@@ -48,7 +48,6 @@ class EntityControllerTest extends TestCase
         $this->markTestIncomplete();
 
         $handler = new PaginatorRequestHandlerService(
-            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -98,7 +97,6 @@ class EntityControllerTest extends TestCase
     public function shouldBeGettingCreatePage(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -120,7 +118,6 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityCreatable(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -147,7 +144,6 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityEditable(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -176,7 +172,6 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityDone(): void
     {
         $handler = new PaginatorRequestHandlerService(
-            null,
             $this->paginatorFactory,
             $this->entityService
         );

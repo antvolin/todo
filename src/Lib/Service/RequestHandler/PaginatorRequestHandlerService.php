@@ -16,17 +16,15 @@ class PaginatorRequestHandlerService extends RequestHandlerService
     private EntityServiceInterface $entityService;
 
     /**
-     * @param RequestHandlerService|null $nextHandler
      * @param PaginatorFactoryInterface $paginatorFactory
      * @param EntityServiceInterface $entityService
      */
     public function __construct(
-        ?RequestHandlerService $nextHandler,
         PaginatorFactoryInterface $paginatorFactory,
         EntityServiceInterface $entityService
     )
     {
-        parent::__construct($nextHandler);
+        parent::__construct();
 
         $this->paginatorFactory = $paginatorFactory;
         $this->entityService = $entityService;
@@ -41,9 +39,9 @@ class PaginatorRequestHandlerService extends RequestHandlerService
      */
     protected function process(Request $request): void
     {
-        $pathParts = PathService::getPathParts($request->getPathInfo());
+        $pathParts = PathService::separatePath($request->getPathInfo());
 
-        if (count($pathParts) === 1 || 'list' === PathService::getFirstPart($request->getPathInfo())) {
+        if (count($pathParts) === 1 || 'list' === PathService::getFirstPathPart($request->getPathInfo())) {
             $page = $request->get('page', 1);
             $orderBy = $request->get('orderBy');
             $order = $request->get('order');

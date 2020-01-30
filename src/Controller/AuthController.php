@@ -8,7 +8,7 @@ use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Auth\AuthServiceInterface;
 
-class AuthController
+class AuthController implements ControllerInterface
 {
     private AuthServiceInterface $authService;
     private TemplateAdapterInterface $template;

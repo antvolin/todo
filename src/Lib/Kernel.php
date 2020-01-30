@@ -5,6 +5,7 @@ namespace Todo\Lib;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Controller\AuthController;
+use Todo\Controller\ControllerInterface;
 use Todo\Controller\EntityController;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Auth\AuthServiceInterface;
@@ -43,23 +44,50 @@ class Kernel
     {
         $this->handleRequest();
 
-        $urlParts = PathService::getPathParts($this->request->getPathInfo());
+        $urlParts = PathService::separatePath($this->request->getPathInfo());
+        $controller = $this->getController($urlParts);
+        $response = $this->getResponse($controller, $urlParts);
 
-        if ('auth' === strtolower(array_shift($urlParts))) {
+        $response->send();
+	}
+
+    /**
+     * @param array $urlParts
+     *
+     * @return ControllerInterface
+     */
+	private function getController(array $urlParts): ControllerInterface
+    {
+        $prefixClassName = strtolower(array_shift($urlParts));
+
+        if ('auth' === $prefixClassName) {
             $controller = $this->createAuthController();
         } else {
             $controller = $this->createEntityController();
         }
 
-        if (method_exists($controller, $action = array_shift($urlParts))) {
+        return $controller;
+    }
+
+    /**
+     * @param ControllerInterface $controller
+     * @param array $urlParts
+     *
+     * @return Response
+     */
+    private function getResponse(ControllerInterface $controller, array $urlParts): Response
+    {
+        $methodName = array_shift($urlParts);
+
+        if (method_exists($controller, $methodName)) {
             /** @var Response $response */
-            $response = $controller->$action(...$urlParts);
+            $response = $controller->$methodName(...$urlParts);
         } else {
             $response = $controller->list();
         }
 
-        $response->send();
-	}
+        return $response;
+    }
 
     private function handleRequest(): void
     {
@@ -67,7 +95,6 @@ class Kernel
             new AccessRequestHandlerService(
                 new RoleRequestHandlerService(
                     new PaginatorRequestHandlerService(
-                        null,
                         $this->app->getPaginatorFactory(),
                         $this->entityService
                     )

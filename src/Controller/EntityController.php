@@ -16,7 +16,7 @@ use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
 
-class EntityController
+class EntityController implements ControllerInterface
 {
     private Request $request;
     private EntityServiceInterface $entityService;

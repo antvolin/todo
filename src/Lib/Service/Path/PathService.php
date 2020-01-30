@@ -9,15 +9,15 @@ class PathService implements PathServiceInterface
     /**
      * @inheritDoc
      */
-    public static function getFirstPart(string $path, string $separator = self::DIRECTORY_SEPARATOR): string
+    public static function getFirstPathPart(string $path, string $separator = self::DIRECTORY_SEPARATOR): string
     {
-        return strtolower(self::getPathParts($path, $separator)[1]);
+        return strtolower(self::separatePath($path, $separator)[1]);
     }
 
     /**
      * @inheritDoc
      */
-    public static function getPathParts(string $path, string $separator = self::DIRECTORY_SEPARATOR): array
+    public static function separatePath(string $path, string $separator = self::DIRECTORY_SEPARATOR): array
     {
         return explode($separator, trim($path, $separator));
     }
