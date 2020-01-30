@@ -44,21 +44,21 @@ class Kernel
     {
         $this->handleRequest();
 
-        $urlParts = PathService::separatePath($this->request->getPathInfo());
-        $controller = $this->getController($urlParts);
-        $response = $this->getResponse($controller, $urlParts);
+        $separatedPath = PathService::separatePath($this->request->getPathInfo());
+        $controller = $this->getController($separatedPath);
+        $response = $this->getResponse($controller, $separatedPath);
 
         $response->send();
 	}
 
     /**
-     * @param array $urlParts
+     * @param array $separatedPath
      *
      * @return ControllerInterface
      */
-	private function getController(array $urlParts): ControllerInterface
+	private function getController(array $separatedPath): ControllerInterface
     {
-        $prefixClassName = strtolower(array_shift($urlParts));
+        $prefixClassName = strtolower(array_shift($separatedPath));
 
         if ('auth' === $prefixClassName) {
             $controller = $this->createAuthController();
@@ -71,17 +71,17 @@ class Kernel
 
     /**
      * @param ControllerInterface $controller
-     * @param array $urlParts
+     * @param array $separatedPath
      *
      * @return Response
      */
-    private function getResponse(ControllerInterface $controller, array $urlParts): Response
+    private function getResponse(ControllerInterface $controller, array $separatedPath): Response
     {
-        $methodName = array_shift($urlParts);
+        $methodName = array_shift($separatedPath);
 
         if (method_exists($controller, $methodName)) {
             /** @var Response $response */
-            $response = $controller->$methodName(...$urlParts);
+            $response = $controller->$methodName(...$separatedPath);
         } else {
             $response = $controller->list();
         }
