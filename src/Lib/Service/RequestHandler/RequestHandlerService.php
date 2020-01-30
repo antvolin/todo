@@ -9,11 +9,11 @@ abstract class RequestHandlerService implements RequestHandlerServiceInterface
     protected ?RequestHandlerService $nextHandler = null;
 
     /**
-     * @param RequestHandlerService|null $handler
+     * @param RequestHandlerService|null $nextHandler
      */
-    public function __construct(?RequestHandlerService $handler = null)
+    public function __construct(?RequestHandlerService $nextHandler = null)
     {
-        $this->nextHandler = $handler;
+        $this->nextHandler = $nextHandler;
     }
 
     /**

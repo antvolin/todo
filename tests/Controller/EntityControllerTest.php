@@ -9,13 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Todo\Controller\EntityController;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\CannotDoneEntityException;
-use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
-use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
@@ -51,6 +48,7 @@ class EntityControllerTest extends TestCase
         $this->markTestIncomplete();
 
         $handler = new PaginatorRequestHandlerService(
+            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -58,7 +56,7 @@ class EntityControllerTest extends TestCase
 
         $response = $this->controller->list();
 
-        $content = json_decode($response->getContent(), true);
+        $content = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $this->assertIsBool($content['isAdmin']);
         $this->assertIsBool($content['isCreated']);
@@ -100,6 +98,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeGettingCreatePage(): void
     {
         $handler = new PaginatorRequestHandlerService(
+            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -121,6 +120,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityCreatable(): void
     {
         $handler = new PaginatorRequestHandlerService(
+            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -140,16 +140,14 @@ class EntityControllerTest extends TestCase
      * @test
      *
      * @throws CannotBeEmptyException
-     * @throws CannotDoneEntityException
-     * @throws CannotEditEntityException
      * @throws EntityNotFoundException
      * @throws ForbiddenStatusException
      * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeEntityEditable(): void
     {
         $handler = new PaginatorRequestHandlerService(
+            null,
             $this->paginatorFactory,
             $this->entityService
         );
@@ -178,6 +176,7 @@ class EntityControllerTest extends TestCase
     public function shouldBeEntityDone(): void
     {
         $handler = new PaginatorRequestHandlerService(
+            null,
             $this->paginatorFactory,
             $this->entityService
         );

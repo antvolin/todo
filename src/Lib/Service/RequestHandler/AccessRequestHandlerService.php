@@ -12,12 +12,12 @@ class AccessRequestHandlerService extends RequestHandlerService
     private TokenServiceFactory $tokenServiceFactory;
 
     /**
-     * @param RequestHandlerService|null $requestHandlerService
+     * @param RequestHandlerService|null $nextHandler
      * @param TokenServiceFactory $tokenServiceFactory
      */
-    public function __construct(?RequestHandlerService $requestHandlerService, TokenServiceFactory $tokenServiceFactory)
+    public function __construct(?RequestHandlerService $nextHandler, TokenServiceFactory $tokenServiceFactory)
     {
-        parent::__construct($requestHandlerService);
+        parent::__construct($nextHandler);
 
         $this->tokenServiceFactory = $tokenServiceFactory;
     }

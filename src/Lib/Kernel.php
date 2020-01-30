@@ -67,6 +67,7 @@ class Kernel
             new AccessRequestHandlerService(
                 new RoleRequestHandlerService(
                     new PaginatorRequestHandlerService(
+                        null,
                         $this->app->getPaginatorFactory(),
                         $this->entityService
                     )
@@ -74,19 +75,6 @@ class Kernel
                 $this->app->getTokenServiceFactory()
             )
         );
-//        $accessRequestHandler = new AccessRequestHandlerService(
-//            $this->app->getTokenServiceFactory()
-//        );
-//        $roleRequestHandler = new RoleRequestHandlerService();
-//        $pagingRequestHandler = new PaginatorRequestHandlerService(
-//            $this->app->getPaginatorFactory(),
-//            $this->entityService
-//        );
-
-//        $filterRequestHandler
-//            ->setNextHandler($accessRequestHandler)
-//            ->setNextHandler($roleRequestHandler)
-//            ->setNextHandler($pagingRequestHandler);
 
         $requestHandler->handle($this->request);
     }

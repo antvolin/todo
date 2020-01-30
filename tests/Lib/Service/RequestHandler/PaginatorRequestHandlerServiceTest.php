@@ -22,7 +22,7 @@ class PaginatorRequestHandlerServiceTest extends TestCase
         $entityService = $app->getEntityService();
         $entityService->setRepository($app->getRepository());
         $request = $app->getRequest();
-        $handler = new PaginatorRequestHandlerService($paginatorFactory, $entityService);
+        $handler = new PaginatorRequestHandlerService(null, $paginatorFactory, $entityService);
         $handler->handle($request);
 
         $this->assertInstanceOf(PaginatorServiceInterface::class, $request->get('paginator'));
