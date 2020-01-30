@@ -8,10 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TokenServiceFactory implements TokenServiceFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $tokenSalt;
+    private string $tokenSalt;
 
     /**
      * @inheritDoc

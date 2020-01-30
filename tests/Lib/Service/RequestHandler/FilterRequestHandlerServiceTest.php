@@ -10,15 +10,8 @@ use Todo\Lib\Service\RequestHandler\RequestHandlerService;
 
 class FilterRequestHandlerServiceTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $originalText;
-
-    /**
-     * @var Request
-     */
-    private $request;
+    private string $originalText;
+    private Request $request;
 
     /**
      * @var RequestHandlerService

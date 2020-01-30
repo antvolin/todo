@@ -11,10 +11,7 @@ use Todo\Model\UserName;
 
 class EntityFactory implements EntityFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $entityClass;
+    private string $entityClass;
 
     /**
      * @param string $entityClassNamespace

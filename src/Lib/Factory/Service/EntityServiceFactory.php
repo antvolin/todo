@@ -8,10 +8,7 @@ use Todo\Lib\Service\Entity\EntityServiceInterface;
 
 class EntityServiceFactory implements EntityServiceFactoryInterface
 {
-    /**
-     * @var EntityFactoryInterface
-     */
-    private $entityFactory;
+    private EntityFactoryInterface $entityFactory;
 
     /**
      * @param EntityFactoryInterface $entityFactory

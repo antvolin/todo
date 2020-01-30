@@ -12,11 +12,7 @@ class Status
         self::EDITED,
         self::DONE,
     ];
-
-    /**
-     * @var string
-     */
-    private $value;
+    private ?string $value = null;
 
     /**
      * @param string|null $value

@@ -4,15 +4,8 @@ namespace Todo\Lib\Service\Secret;
 
 class SecretGeneratorService implements SecretGeneratorServiceInterface
 {
-    /**
-     * @var string
-     */
-    private $tokenSecretPrefix;
-
-    /**
-     * @var string
-     */
-    private $tokenSecret;
+    private string $tokenSecretPrefix;
+    private string $tokenSecret;
 
     /**
      * @inheritDoc

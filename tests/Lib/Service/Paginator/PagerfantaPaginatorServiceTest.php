@@ -5,30 +5,15 @@ namespace Tests\Lib\Service\Paginator;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Service\Ordering\OrderingService;
-use Todo\Lib\Service\Paginator\PagerfantaPaginatorService;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
+use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 
 class PagerfantaPaginatorServiceTest extends TestCase
 {
-    /**
-     * @var PagerfantaPaginatorService
-     */
-    private $paginator;
-
-    /**
-     * @var int
-     */
-    private $prevPage;
-
-    /**
-     * @var int
-     */
-    private $currentPage;
-
-    /**
-     * @var int
-     */
-    private $nextPage;
+    private PaginatorServiceInterface $paginator;
+    private int $prevPage;
+    private int $currentPage;
+    private int $nextPage;
 
     protected function setUp()
     {

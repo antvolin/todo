@@ -9,10 +9,7 @@ use Twig\Error\SyntaxError;
 
 class TwigTemplateAdapter implements TemplateAdapterInterface
 {
-    /**
-     * @var Environment
-     */
-    private $template;
+    private Environment $template;
 
     /**
      * @param Environment $template

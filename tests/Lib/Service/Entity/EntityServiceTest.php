@@ -22,10 +22,7 @@ class EntityServiceTest extends TestCase
 {
     use TestValueGenerator;
 
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
+    private EntityServiceInterface $entityService;
 
     /**
      * @throws PdoConnectionException

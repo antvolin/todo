@@ -6,21 +6,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class RequestHandlerService implements RequestHandlerServiceInterface
 {
-    /**
-     * @var RequestHandlerService
-     */
-    protected $nextHandler;
+    protected ?RequestHandlerService $nextHandler = null;
 
     /**
-     * @param RequestHandlerService $handler
-     *
-     * @return RequestHandlerService
+     * @param RequestHandlerService|null $handler
      */
-    public function setNextHandler(RequestHandlerService $handler): RequestHandlerService
+    public function __construct(?RequestHandlerService $handler = null)
     {
         $this->nextHandler = $handler;
-
-        return $handler;
     }
 
     /**

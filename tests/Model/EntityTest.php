@@ -18,35 +18,12 @@ use Todo\Model\UserName;
 
 class EntityTest extends TestCase
 {
-    /**
-     * @var Id
-     */
-    private $id;
-
-    /**
-     * @var UserName
-     */
-    private $userName;
-
-    /**
-     * @var Email
-     */
-    private $email;
-
-    /**
-     * @var Text
-     */
-    private $text;
-
-    /**
-     * @var Status
-     */
-    private $status;
-
-    /**
-     * @var EntityInterface
-     */
-    private $entity;
+    private Id $id;
+    private UserName $userName;
+    private Email $email;
+    private Text $text;
+    private Status $status;
+    private EntityInterface $entity;
 
     /**
      * @throws CannotBeEmptyException

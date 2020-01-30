@@ -11,20 +11,9 @@ use Todo\Lib\App;
 
 class AuthControllerTest extends TestCase
 {
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var string
-     */
-    private $token;
-
-    /**
-     * @var AuthController
-     */
-    private $controller;
+    private string $token;
+    private Request $request;
+    private AuthController $controller;
 
     protected function setUp()
     {

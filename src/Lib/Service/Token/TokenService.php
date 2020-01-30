@@ -4,10 +4,7 @@ namespace Todo\Lib\Service\Token;
 
 class TokenService implements TokenServiceInterface
 {
-    /**
-     * @var string
-     */
-    private $token;
+    private string $token;
 
     /**
      * @return string

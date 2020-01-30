@@ -25,25 +25,10 @@ class EntityControllerTest extends TestCase
 {
     use TestValueGenerator;
 
-    /**
-     * @var PaginatorFactoryInterface
-     */
-    private $paginatorFactory;
-
-    /**
-     * @var EntityController
-     */
-    private $controller;
-
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
-
-    /**
-     * @var Request
-     */
-    private $request;
+    private PaginatorFactoryInterface $paginatorFactory;
+    private EntityController $controller;
+    private EntityServiceInterface $entityService;
+    private Request $request;
 
     /**
      * @throws PdoConnectionException

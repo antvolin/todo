@@ -9,14 +9,16 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class AccessRequestHandlerService extends RequestHandlerService
 {
     private const ACCESS_DENIED_MSG = 'Attempt to use csrf attack!';
+    private TokenServiceFactory $tokenServiceFactory;
 
     /**
-     * @var TokenServiceFactory
+     * @param RequestHandlerService|null $requestHandlerService
+     * @param TokenServiceFactory $tokenServiceFactory
      */
-    private $tokenServiceFactory;
-
-    public function __construct(TokenServiceFactory $tokenServiceFactory)
+    public function __construct(?RequestHandlerService $requestHandlerService, TokenServiceFactory $tokenServiceFactory)
     {
+        parent::__construct($requestHandlerService);
+
         $this->tokenServiceFactory = $tokenServiceFactory;
     }
 

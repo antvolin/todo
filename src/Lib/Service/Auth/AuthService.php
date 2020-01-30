@@ -8,21 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthService implements AuthServiceInterface
 {
     public const ERROR_MSG = 'The entered data is not correct!';
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var string
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $password;
+    private Request $request;
+    private string $user;
+    private string $password;
 
     /**
      * @inheritDoc

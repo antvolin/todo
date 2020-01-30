@@ -18,20 +18,9 @@ use Todo\Lib\Service\Ordering\OrderingService;
 
 class EntityController
 {
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
-
-    /**
-     * @var TemplateAdapterInterface
-     */
-    private $template;
+    private Request $request;
+    private EntityServiceInterface $entityService;
+    private TemplateAdapterInterface $template;
 
     /**
      * @param Request $request

@@ -10,25 +10,10 @@ use Todo\Lib\Service\Auth\AuthService;
 
 class AuthServiceTest extends TestCase
 {
-    /**
-     * @var AuthService
-     */
-    private $service;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var string
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $password;
+    private AuthService $service;
+    private Request $request;
+    private string $user;
+    private string $password;
 
     protected function setUp()
     {

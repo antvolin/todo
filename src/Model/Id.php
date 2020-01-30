@@ -4,10 +4,7 @@ namespace Todo\Model;
 
 class Id
 {
-    /**
-     * @var int
-     */
-    private $value;
+    private ?int $value = null;
 
     /**
      * @param int|null $value

@@ -8,10 +8,7 @@ use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
 
 class AppTest extends TestCase
 {
-    /**
-     * @var App
-     */
-    private $app;
+    private App $app;
 
     protected function setUp()
     {

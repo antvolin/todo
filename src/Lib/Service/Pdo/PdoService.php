@@ -9,25 +9,10 @@ use Todo\Lib\Service\Path\PathService;
 
 class PdoService implements PdoServiceInterface
 {
-    /**
-     * @var PDO
-     */
-    private $pdo;
-
-    /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
-     * @var string
-     */
-    private $pdoType;
-
-    /**
-     * @var string
-     */
-    private $dbFolderName;
+    private PDO $pdo;
+    private string $entityName;
+    private string $pdoType;
+    private string $dbFolderName;
 
     /**
      * @inheritDoc

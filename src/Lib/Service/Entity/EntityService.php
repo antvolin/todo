@@ -13,15 +13,8 @@ use Todo\Model\Text;
 
 class EntityService implements EntityServiceInterface
 {
-    /**
-     * @var EntityRepositoryInterface $repository
-     */
-    private $repository;
-
-    /**
-     * @var EntityFactoryInterface $factory
-     */
-    private $factory;
+    private EntityRepositoryInterface $repository;
+    private EntityFactoryInterface $factory;
 
     /**
      * @inheritDoc

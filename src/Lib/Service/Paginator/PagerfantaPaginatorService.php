@@ -7,23 +7,16 @@ use Pagerfanta\View\DefaultView;
 
 class PagerfantaPaginatorService implements PaginatorServiceInterface
 {
-    /**
-     * @var Pagerfanta
-     */
-    private $paginator;
+    private Pagerfanta $paginator;
 
     /**
      * @inheritdoc
      */
     public function __construct(PaginatorAdapterInterface $adapter, int $page, int $entityPerPage)
     {
-        if (!$this->paginator) {
-            $pager = new Pagerfanta($adapter);
-            $pager->setMaxPerPage($entityPerPage);
-            $pager->setCurrentPage($page);
-
-            $this->paginator = $pager;
-        }
+        $this->paginator = new Pagerfanta($adapter);
+        $this->paginator->setMaxPerPage($entityPerPage);
+        $this->paginator->setCurrentPage($page);
     }
 
     /**

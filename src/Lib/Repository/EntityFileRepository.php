@@ -11,15 +11,8 @@ use Todo\Model\Id;
 
 class EntityFileRepository implements EntityRepositoryInterface
 {
-    /**
-     * @var int
-     */
-    private $entityPerPage;
-
-    /**
-     * @var string
-     */
-    private $entityStoragePath;
+    private int $entityPerPage;
+    private string $entityStoragePath;
 
     /**
      * @param string $entityStoragePath

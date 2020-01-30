@@ -13,25 +13,10 @@ use Todo\Model\Id;
 
 class EntityPdoRepository implements EntityRepositoryInterface
 {
-    /**
-     * @var PDO
-     */
-    private $pdo;
-
-    /**
-     * @var EntityFactoryInterface
-     */
-    private $entityFactory;
-
-    /**
-     * @var int
-     */
-    private $entityPerPage;
-
-    /**
-     * @var string
-     */
-    private $entityName;
+    private PDO $pdo;
+    private EntityFactoryInterface $entityFactory;
+    private int $entityPerPage;
+    private string $entityName;
 
     /**
      * @param PDO $pdo

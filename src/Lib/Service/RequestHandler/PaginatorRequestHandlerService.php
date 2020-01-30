@@ -12,15 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorRequestHandlerService extends RequestHandlerService
 {
-    /**
-     * @var PaginatorFactoryInterface
-     */
-    private $paginatorFactory;
-
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
+    private PaginatorFactoryInterface $paginatorFactory;
+    private EntityServiceInterface $entityService;
 
     /**
      * @param PaginatorFactoryInterface $paginatorFactory

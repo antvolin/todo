@@ -9,10 +9,7 @@ use Todo\Lib\Factory\Service\EntityServiceFactory;
 
 class EntityServiceFactoryTest extends TestCase
 {
-    /**
-     * @var EntityFactoryInterface
-     */
-    private $entityFactory;
+    private EntityFactoryInterface $entityFactory;
 
     protected function setUp()
     {

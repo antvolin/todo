@@ -10,7 +10,7 @@ use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Exceptions\PdoConnectionException;
 use Todo\Lib\Exceptions\PdoErrorsException;
-use Todo\Lib\Repository\EntityPdoRepository;
+use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
 
@@ -18,15 +18,8 @@ class EntityRepositoryTest extends TestCase
 {
     use TestValueGenerator;
 
-    /**
-     * @var EntityPdoRepository
-     */
-    private $repository;
-
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
+    private EntityRepositoryInterface $repository;
+    private EntityServiceInterface $entityService;
 
     /**
      * @throws PdoConnectionException

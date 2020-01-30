@@ -26,73 +26,25 @@ use Todo\Lib\Repository\EntityRepositoryInterface;
 
 class App
 {
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var string
-     */
-    private static $entityName;
-
-    /**
-     * @var int
-     */
-    private static $entityPerPage;
-
-    /**
-     * @var string
-     */
-    private static $entityClassNamespace;
-
-    /**
-     * @var string
-     */
-    private static $templateType;
-
-    /**
-     * @var string
-     */
-    private static $tokenSecretPrefix;
-
-    /**
-     * @var string
-     */
-    private static $tokenSecret;
-
-    /**
-     * @var string
-     */
-    private static $tokenSalt;
-
-    /**
-     * @var string
-     */
-    private static $dbFolderName;
-
-    /**
-     * @var string
-     */
-    private static $storageType;
-
-    /**
-     * @var string
-     */
-    private static $pdoType;
-
-    /**
-     * @var string
-     */
-    private static $user;
-
-    /**
-     * @var string
-     */
-    private static $password;
+    private Request $request;
+    private static int $entityPerPage;
+    private static string $entityName;
+    private static string $entityClassNamespace;
+    private static string $templateType;
+    private static string $tokenSecretPrefix;
+    private static string $tokenSecret;
+    private static string $tokenSalt;
+    private static string $dbFolderName;
+    private static string $storageType;
+    private static string $pdoType;
+    private static string $user;
+    private static string $password;
 
     public function __construct()
     {
+        $factory = new RequestFactory();
+        $this->request = $factory->create();
+
         self::$entityName = $_ENV['ENTITY_NAME'];
         self::$entityPerPage = $_ENV['ENTITY_PER_PAGE'];
         self::$entityClassNamespace = $_ENV['ENTITY_CLASS_NAMESPACE'];
@@ -208,11 +160,6 @@ class App
      */
     public function getRequest(): Request
     {
-        if (!$this->request) {
-            $factory = new RequestFactory();
-            $this->request = $factory->create();
-        }
-
         return $this->request;
     }
 

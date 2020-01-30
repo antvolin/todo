@@ -17,51 +17,30 @@ use Todo\Lib\Service\RequestHandler\RoleRequestHandlerService;
 
 class Kernel
 {
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var TemplateAdapterInterface
-     */
-    private $template;
-
-    /**
-     * @var EntityServiceInterface
-     */
-    private $entityService;
-
-    /**
-     * @var App
-     */
-    private $app;
-
-    /**
-     * @var AuthServiceInterface
-     */
-    private $authService;
+    private App $app;
+    private Request $request;
+    private AuthServiceInterface $authService;
+    private EntityServiceInterface $entityService;
+    private TemplateAdapterInterface $template;
 
     /**
      * @param App $app
+     *
+     * @throws Exceptions\PdoConnectionException
      */
     public function __construct(App $app)
     {
         $this->app = $app;
-    }
-
-    /**
-     * @throws Exceptions\PdoConnectionException
-     */
-	public function process(): void
-    {
         $this->request = $this->app->getRequest();
         $this->request->request->set('token', $this->app->getToken());
         $this->authService = $this->app->getAuthService($this->request);
-        $this->template = $this->app->getTemplate();
         $this->entityService = $this->app->getEntityService();
         $this->entityService->setRepository($this->app->getRepository());
+        $this->template = $this->app->getTemplate();
+    }
 
+	public function process(): void
+    {
         $this->handleRequest();
 
         $urlParts = PathService::getPathParts($this->request->getPathInfo());
@@ -84,22 +63,32 @@ class Kernel
 
     private function handleRequest(): void
     {
-        $filterRequestHandler = new FilterRequestHandlerService();
-        $accessRequestHandler = new AccessRequestHandlerService(
-            $this->app->getTokenServiceFactory()
+        $requestHandler = new FilterRequestHandlerService(
+            new AccessRequestHandlerService(
+                new RoleRequestHandlerService(
+                    new PaginatorRequestHandlerService(
+                        $this->app->getPaginatorFactory(),
+                        $this->entityService
+                    )
+                ),
+                $this->app->getTokenServiceFactory()
+            )
         );
-        $roleRequestHandler = new RoleRequestHandlerService();
-        $pagingRequestHandler = new PaginatorRequestHandlerService(
-            $this->app->getPaginatorFactory(),
-            $this->entityService
-        );
+//        $accessRequestHandler = new AccessRequestHandlerService(
+//            $this->app->getTokenServiceFactory()
+//        );
+//        $roleRequestHandler = new RoleRequestHandlerService();
+//        $pagingRequestHandler = new PaginatorRequestHandlerService(
+//            $this->app->getPaginatorFactory(),
+//            $this->entityService
+//        );
 
-        $filterRequestHandler
-            ->setNextHandler($accessRequestHandler)
-            ->setNextHandler($roleRequestHandler)
-            ->setNextHandler($pagingRequestHandler);
+//        $filterRequestHandler
+//            ->setNextHandler($accessRequestHandler)
+//            ->setNextHandler($roleRequestHandler)
+//            ->setNextHandler($pagingRequestHandler);
 
-        $filterRequestHandler->handle($this->request);
+        $requestHandler->handle($this->request);
     }
 
     /**

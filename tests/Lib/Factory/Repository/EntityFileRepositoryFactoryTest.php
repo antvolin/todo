@@ -8,15 +8,8 @@ use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
 
 class EntityFileRepositoryFactoryTest extends TestCase
 {
-    /**
-     * @var int
-     */
-    private $entityPerPage;
-
-    /**
-     * @var string
-     */
-    private $entityName;
+    private int $entityPerPage;
+    private string $entityName;
 
     protected function setUp()
     {

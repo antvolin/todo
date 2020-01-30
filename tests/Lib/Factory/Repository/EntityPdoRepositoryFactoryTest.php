@@ -11,20 +11,9 @@ use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 
 class EntityPdoRepositoryFactoryTest extends TestCase
 {
-    /**
-     * @var int
-     */
-    private $entityPerPage;
-
-    /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
-     * @var MockObject
-     */
-    private $pdo;
+    private int $entityPerPage;
+    private string $entityName;
+    private MockObject $pdo;
 
     protected function setUp()
     {

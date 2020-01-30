@@ -4,15 +4,8 @@ namespace Todo\Lib\Service\Paginator;
 
 class PaginatorAdapter implements PaginatorAdapterInterface
 {
-    /**
-     * @var array
-     */
-    private $rows = [];
-
-    /**
-     * @var int
-     */
-    private $countRows;
+    private array $rows = [];
+    private int $countRows;
 
     /**
      * @inheritdoc

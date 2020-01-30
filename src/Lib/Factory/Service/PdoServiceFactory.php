@@ -7,20 +7,9 @@ use Todo\Lib\Service\Pdo\PdoServiceInterface;
 
 class PdoServiceFactory implements PdoServiceFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $entityName;
-
-    /**
-     * @var string
-     */
-    private $pdoType;
-
-    /**
-     * @var string
-     */
-    private $dbFolderName;
+    private string $entityName;
+    private string $pdoType;
+    private string $dbFolderName;
 
     /**
      * @inheritDoc

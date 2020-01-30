@@ -8,30 +8,11 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 
 class Entity implements EntityInterface, JsonSerializable
 {
-    /**
-     * @var Id
-     */
-    private $id;
-
-    /**
-     * @var UserName
-     */
-    private $userName;
-
-    /**
-     * @var Email
-     */
-    private $email;
-
-    /**
-     * @var Text
-     */
-    private $text;
-
-    /**
-     * @var Status
-     */
-    private $status;
+    private Id $id;
+    private UserName $userName;
+    private Email $email;
+    private Text $text;
+    private Status $status;
 
     /**
      * @inheritdoc

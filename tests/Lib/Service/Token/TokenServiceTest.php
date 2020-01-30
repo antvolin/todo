@@ -8,25 +8,10 @@ use Todo\Lib\Service\Token\TokenService;
 
 class TokenServiceTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $secret;
-
-    /**
-     * @var string
-     */
-    private $token;
-
-    /**
-     * @var string
-     */
-    private $tokenSalt;
-
-    /**
-     * @var TokenService
-     */
-    private $tokenService;
+    private string $secret;
+    private string $token;
+    private string $tokenSalt;
+    private TokenService $tokenService;
 
     protected function setUp()
     {

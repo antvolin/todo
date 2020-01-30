@@ -6,10 +6,7 @@ use Todo\Lib\Exceptions\CannotBeEmptyException;
 
 class Text
 {
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
     /**
      * @param string $value

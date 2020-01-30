@@ -8,15 +8,8 @@ use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 
 class PagerfantaPaginatorServiceFactory implements PaginatorFactoryInterface
 {
-    /**
-     * @var PaginatorAdapterInterface
-     */
-    private $adapter;
-
-    /**
-     * @var int
-     */
-    private $entityPerPage;
+    private PaginatorAdapterInterface $adapter;
+    private int $entityPerPage;
 
     /**
      * @inheritdoc

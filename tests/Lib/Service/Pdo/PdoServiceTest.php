@@ -9,10 +9,7 @@ use Todo\Lib\Service\Pdo\PdoService;
 
 class PdoServiceTest extends TestCase
 {
-    /**
-     * PdoService $pdoService
-     */
-    private $pdoService;
+    private PdoService $pdoService;
 
     protected function setUp()
     {

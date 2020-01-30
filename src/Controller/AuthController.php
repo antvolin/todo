@@ -10,15 +10,8 @@ use Todo\Lib\Service\Auth\AuthServiceInterface;
 
 class AuthController
 {
-    /**
-     * @var AuthServiceInterface
-     */
-    private $authService;
-
-    /**
-     * @var TemplateAdapterInterface
-     */
-    private $template;
+    private AuthServiceInterface $authService;
+    private TemplateAdapterInterface $template;
 
     /**
      * @param AuthServiceInterface $authService
