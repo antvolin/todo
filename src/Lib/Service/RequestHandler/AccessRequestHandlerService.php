@@ -2,29 +2,22 @@
 
 namespace Todo\Lib\Service\RequestHandler;
 
-use Todo\Lib\Factory\Service\TokenServiceFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Todo\Lib\Factory\Service\TokenServiceFactoryInterface;
 
 class AccessRequestHandlerService extends RequestHandlerService
 {
     private const ACCESS_DENIED_MSG = 'Attempt to use csrf attack!';
-    private TokenServiceFactory $tokenServiceFactory;
+    private TokenServiceFactoryInterface $tokenServiceFactory;
 
-    /**
-     * @param RequestHandlerService|null $nextHandler
-     * @param TokenServiceFactory $tokenServiceFactory
-     */
-    public function __construct(?RequestHandlerService $nextHandler, TokenServiceFactory $tokenServiceFactory)
+    public function __construct(?RequestHandlerService $nextHandler, TokenServiceFactoryInterface $tokenServiceFactory)
     {
         parent::__construct($nextHandler);
 
         $this->tokenServiceFactory = $tokenServiceFactory;
     }
 
-    /**
-     * @param Request $request
-     */
     protected function process(Request $request): void
     {
         $token = $request->get('csrf-token');

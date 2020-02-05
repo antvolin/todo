@@ -48,9 +48,6 @@ class OrderingServiceTest extends TestCase
         $this->assertEquals(OrderingService::ASC, OrderingService::getNextOrder('test'));
     }
 
-    /**
-     * @return array
-     */
     public function validOrderByFields(): array
     {
         $data = [];
@@ -62,9 +59,6 @@ class OrderingServiceTest extends TestCase
         return $data;
     }
 
-    /**
-     * @return array
-     */
     public function validOrderFields(): array
     {
         $data = [];

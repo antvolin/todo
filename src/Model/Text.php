@@ -22,9 +22,6 @@ class Text
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->value;

@@ -6,17 +6,12 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Todo\Lib\App;
 use Todo\Lib\Service\RequestHandler\FilterRequestHandlerService;
-use Todo\Lib\Service\RequestHandler\RequestHandlerService;
 
 class FilterRequestHandlerServiceTest extends TestCase
 {
     private string $originalText;
     private Request $request;
-
-    /**
-     * @var RequestHandlerService
-     */
-    private $filterRequestHandler;
+    private FilterRequestHandlerService $filterRequestHandler;
 
     protected function setUp()
     {
@@ -50,9 +45,6 @@ class FilterRequestHandlerServiceTest extends TestCase
         $this->assertFalse(strpos($specialChar, $this->request->request->get('text')));
     }
 
-    /**
-     * @return array
-     */
     public function specialChars(): array
     {
         return [

@@ -4,7 +4,8 @@ namespace Tests\Lib\Service\Pdo;
 
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\DB\PdoDatabaseConfiguration;
+use Todo\Lib\DB\PdoDatabaseConnection;
 use Todo\Lib\Service\Pdo\PdoService;
 
 class PdoServiceTest extends TestCase
@@ -13,7 +14,9 @@ class PdoServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->pdoService = new PdoService(App::getEntityName(), App::getPdoType(), App::getDbFolderName());
+        $pdoDatabaseConfiguration = new PdoDatabaseConfiguration(App::getEntityName(), App::getRepositoryType(), App::getDbFolderName());
+        $pdoDatabaseConnection = new PdoDatabaseConnection($pdoDatabaseConfiguration);
+        $this->pdoService = new PdoService($pdoDatabaseConnection);
     }
 
     /**
@@ -22,21 +25,5 @@ class PdoServiceTest extends TestCase
     public function shouldBeGettingPdo(): void
     {
         $this->assertTrue(method_exists($this->pdoService, 'getPdo'));
-        $this->assertTrue(method_exists($this->pdoService, 'createTables'));
-    }
-
-    /**
-     * @test
-     *
-     * @throws PdoConnectionException
-     */
-    public function shouldBeCreatedTables(): void
-    {
-        if (App::getStorageType() !== 'pdo') {
-            $this->markTestSkipped();
-        }
-
-        $this->pdoService->getPdo();
-        $this->assertTrue($this->pdoService->createTables());
     }
 }

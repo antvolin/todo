@@ -4,6 +4,7 @@ namespace Tests\Lib\Factory\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
+use Todo\Lib\Exceptions\CannotCreateDirectoryException;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
 
 class EntityFileRepositoryFactoryTest extends TestCase
@@ -19,6 +20,8 @@ class EntityFileRepositoryFactoryTest extends TestCase
 
     /**
      * @test
+     *
+     * @throws CannotCreateDirectoryException
      */
     public function shouldBeCreatableEntityFileRepository(): void
     {

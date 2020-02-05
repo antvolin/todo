@@ -8,9 +8,6 @@ use Twig\Loader\FilesystemLoader;
 
 class TwigTemplateFactory implements TemplateFactoryInterface
 {
-    /**
-     * @return TemplateAdapterInterface
-     */
     public function create(): TemplateAdapterInterface
     {
         $loader = new FilesystemLoader(PathService::getPathToTemplates());

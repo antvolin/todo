@@ -18,12 +18,6 @@ class EntityPdoRepository implements EntityRepositoryInterface
     private int $entityPerPage;
     private string $entityName;
 
-    /**
-     * @param PDO $pdo
-     * @param EntityFactoryInterface $entityFactory
-     * @param int $entityPerPage
-     * @param string $entityName
-     */
     public function __construct(Pdo $pdo, EntityFactoryInterface $entityFactory, int $entityPerPage, string $entityName)
     {
         $this->pdo = $pdo;
@@ -33,7 +27,11 @@ class EntityPdoRepository implements EntityRepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * @param Id $entityId
+     *
+     * @return EntityInterface
+     *
+     * @throws EntityNotFoundException
      */
     public function getById(Id $entityId): EntityInterface
     {
@@ -50,9 +48,6 @@ class EntityPdoRepository implements EntityRepositoryInterface
         return $this->entityFactory->create($entity);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         $result = [];
@@ -74,16 +69,15 @@ class EntityPdoRepository implements EntityRepositoryInterface
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCount(): int
     {
         return  $this->pdo->query("SELECT COUNT(id) FROM $this->entityName;")->fetchColumn();
     }
 
     /**
-     * @inheritdoc
+     * @param EntityInterface $entity
+     *
+     * @return Id
      *
      * @throws PdoErrorsException
      */
@@ -116,9 +110,6 @@ class EntityPdoRepository implements EntityRepositoryInterface
         return new Id($this->pdo->lastInsertId());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function remove(Id $entityId): void
     {
         $id = $entityId->getValue();

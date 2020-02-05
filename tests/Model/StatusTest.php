@@ -40,9 +40,6 @@ class StatusTest extends TestCase
         new Status($status);
     }
 
-    /**
-     * @return array
-     */
     public function notValidStatuses(): array
     {
         return [
@@ -53,9 +50,6 @@ class StatusTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     public function validStatuses(): array
     {
         $data = [];

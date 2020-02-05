@@ -19,8 +19,8 @@ class AuthControllerTest extends TestCase
     {
         $app = new App();
         $this->request = $app->getRequest();
-        $this->token = $app->getToken();
-        $this->controller = new AuthController($app->getAuthService($this->request), $app->getTemplate());
+        $this->token = $app->createToken();
+        $this->controller = new AuthController($app->createAuthService($this->request), $app->createTemplate());
     }
 
     /**
@@ -79,7 +79,6 @@ class AuthControllerTest extends TestCase
         $this->controller->login();
         $response = $this->controller->logout();
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals('/entity/list', $response->getTargetUrl());
         $this->assertNull($request->getSession()->get(App::getUser()));
     }

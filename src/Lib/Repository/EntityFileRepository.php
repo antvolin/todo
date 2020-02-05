@@ -14,10 +14,6 @@ class EntityFileRepository implements EntityRepositoryInterface
     private int $entityPerPage;
     private string $entityStoragePath;
 
-    /**
-     * @param string $entityStoragePath
-     * @param int $entityPerPage
-     */
     public function __construct(string $entityStoragePath, int $entityPerPage)
     {
         $this->entityStoragePath = $entityStoragePath;
@@ -25,7 +21,11 @@ class EntityFileRepository implements EntityRepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * @param Id $entityId
+     *
+     * @return EntityInterface
+     *
+     * @throws EntityNotFoundException
      */
     public function getById(Id $entityId): EntityInterface
     {
@@ -42,17 +42,11 @@ class EntityFileRepository implements EntityRepositoryInterface
         return $entity;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCount(): int
     {
         return iterator_count(new FilesystemIterator($this->entityStoragePath, FilesystemIterator::SKIP_DOTS));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         $entity = iterator_to_array($this->getFilesIterator());
@@ -78,9 +72,6 @@ class EntityFileRepository implements EntityRepositoryInterface
         return array_slice($entity, ($page - 1) * $this->entityPerPage, $this->entityPerPage);
     }
 
-    /**
-     * @return Generator
-     */
     private function getFilesIterator(): ?Generator
     {
         foreach (glob($this->entityStoragePath.'*') as $file) {
@@ -88,9 +79,6 @@ class EntityFileRepository implements EntityRepositoryInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function add(EntityInterface $entity): Id
     {
         $entityId = $entity->getId();
@@ -105,9 +93,6 @@ class EntityFileRepository implements EntityRepositoryInterface
         return $entityId;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function remove(Id $entityId): void
     {
         unlink($this->entityStoragePath.'/'.$entityId->getValue());

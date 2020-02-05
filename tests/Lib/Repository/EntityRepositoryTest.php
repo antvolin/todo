@@ -4,12 +4,7 @@ namespace Tests\Lib\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\EntityNotFoundException;
-use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\PdoConnectionException;
-use Todo\Lib\Exceptions\PdoErrorsException;
+use Todo\Lib\Exceptions\CannotCreateDirectoryException;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
@@ -22,24 +17,18 @@ class EntityRepositoryTest extends TestCase
     private EntityServiceInterface $entityService;
 
     /**
-     * @throws PdoConnectionException
+     * @throws CannotCreateDirectoryException
      */
     protected function setUp()
     {
         $app = new App();
-        $this->repository = $app->getRepository();
-        $this->entityService = $app->getEntityService();
+        $this->repository = $app->createRepository();
+        $this->entityService = $app->createEntityService();
         $this->entityService->setRepository($this->repository);
     }
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws EntityNotFoundException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeGettingEntityById(): void
     {
@@ -60,11 +49,6 @@ class EntityRepositoryTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeGettingCountEntities(): void
     {
@@ -78,11 +62,6 @@ class EntityRepositoryTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeGettingCollectionOfEntities(): void
     {

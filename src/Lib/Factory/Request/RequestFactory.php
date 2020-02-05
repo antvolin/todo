@@ -7,9 +7,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class RequestFactory implements RequestFactoryInterface
 {
-    /**
-     * @return Request
-     */
     public function create(): Request
     {
         $request = Request::createFromGlobals();

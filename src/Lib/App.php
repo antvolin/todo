@@ -15,28 +15,29 @@ use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
-use Todo\Lib\Factory\Repository\EntityRepositoryFactoryInterface;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Factory\Template\TwigTemplateFactory;
 use Todo\Lib\Service\Auth\AuthService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
+use Todo\Lib\Service\Pdo\PdoDatabaseService;
 use Todo\Lib\Service\Secret\SecretGeneratorService;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 
 class App
 {
+    private ?PDO $pdo = null;
     private Request $request;
     private static int $entityPerPage;
     private static string $entityName;
     private static string $entityClassNamespace;
-    private static string $templateType;
+    private static string $viewType;
     private static string $tokenSecretPrefix;
     private static string $tokenSecret;
     private static string $tokenSalt;
     private static string $dbFolderName;
-    private static string $storageType;
-    private static string $pdoType;
+    private static string $repositoryType;
+    private static string $dbType;
     private static string $user;
     private static string $password;
 
@@ -52,163 +53,109 @@ class App
         self::$tokenSecret = $_ENV['TOKEN_SECRET'];
         self::$tokenSalt = $_ENV['TOKEN_SALT'];
         self::$dbFolderName = $_ENV['DB_FOLDER_NAME'];
-        self::$storageType = $_ENV['STORAGE_TYPE'];
-        self::$pdoType = $_ENV['PDO_TYPE'];
+        self::$repositoryType = $_ENV['REPOSITORY_TYPE'];
+        self::$dbType = $_ENV['DB_TYPE'];
         self::$user = $_ENV['APP_USER'];
         self::$password = $_ENV['APP_PASSWORD'];
-        self::$templateType = $_ENV['TEMPLATE_TYPE'];
+        self::$viewType = $_ENV['VIEW_TYPE'];
     }
 
-    /**
-     * @return string
-     */
     public static function getEntityName(): string
     {
         return self::$entityName;
     }
 
-    /**
-     * @return string
-     */
     public static function getEntityClassNamespace(): string
     {
         return self::$entityClassNamespace;
     }
 
-    /**
-     * @return int
-     */
     public static function getEntityPerPage(): int
     {
         return self::$entityPerPage;
     }
 
-    /**
-     * @return string
-     */
-    public static function getTemplateType(): string
+    public static function getViewType(): string
     {
-        return self::$templateType;
+        return self::$viewType;
     }
 
-    /**
-     * @return string
-     */
     public static function getTokenSecretPrefix(): string
     {
         return self::$tokenSecretPrefix;
     }
 
-    /**
-     * @return string
-     */
     public static function getTokenSecret(): string
     {
         return self::$tokenSecret;
     }
 
-    /**
-     * @return string
-     */
     public static function getTokenSalt(): string
     {
         return self::$tokenSalt;
     }
 
-    /**
-     * @return string
-     */
     public static function getDbFolderName(): string
     {
         return self::$dbFolderName;
     }
 
-    /**
-     * @return string
-     */
-    public static function getStorageType(): string
+    public static function getRepositoryType(): string
     {
-        return self::$storageType;
+        return self::$repositoryType;
     }
 
-    /**
-     * @return string
-     */
-    public static function getPdoType(): string
+    public static function getDbType(): string
     {
-        return self::$pdoType;
+        return self::$dbType;
     }
 
-    /**
-     * @return string
-     */
     public static function getUser(): string
     {
         return self::$user;
     }
 
-    /**
-     * @return string
-     */
     public static function getPassword(): string
     {
         return self::$password;
     }
 
-    /**
-     * @return Request
-     */
     public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @return string
-     */
-    public function getSecret(): string
+    public function createSecret(): string
     {
         $service = new SecretGeneratorService(self::getTokenSecretPrefix(), self::getTokenSecret());
 
         return $service->generateSecret();
     }
 
-    /**
-     * @return string
-     */
-    public function getToken(): string
+    public function createToken(): string
     {
-        return $this->getTokenServiceFactory()->create($this->getRequest())->getToken();
+        return $this->createTokenServiceFactory()->create($this->getRequest())->getToken();
     }
 
-    /**
-     * @return TokenServiceFactory
-     */
-    public function getTokenServiceFactory(): TokenServiceFactoryInterface
+    public function createTokenServiceFactory(): TokenServiceFactoryInterface
     {
         return new TokenServiceFactory(self::getTokenSalt());
     }
 
-    /**
-     * @return TemplateAdapterInterface
-     */
-    public function getTemplate(): TemplateAdapterInterface
+    public function createTemplate(): TemplateAdapterInterface
     {
         $factory = null;
 
-        if ('twig' === self::getTemplateType()) {
+        if ('twig' === self::getViewType()) {
             $factory = new TwigTemplateFactory();
         }
 
         return $factory->create();
     }
 
-    /**
-     * @return EntityServiceInterface
-     */
-    public function getEntityService(): EntityServiceInterface
+    public function createEntityService(): EntityServiceInterface
     {
-        $entityServiceFactory = new EntityServiceFactory($this->getEntityFactory());
+        $entityServiceFactory = new EntityServiceFactory($this->createEntityFactory());
 
         return $entityServiceFactory->create();
     }
@@ -216,79 +163,58 @@ class App
     /**
      * @return EntityRepositoryInterface
      *
-     * @throws Exceptions\PdoConnectionException
+     * @throws Exceptions\CannotCreateDirectoryException
      */
-    public function getRepository(): EntityRepositoryInterface
+    public function createRepository(): EntityRepositoryInterface
     {
-        $factory = $this->getRepositoryFactory();
+        if ('pdo' === self::getRepositoryType()) {
+            $this->createPdo();
+            $this->createTables();
 
-        return $factory->create(self::getEntityPerPage(), self::getEntityName());
-    }
-
-    /**
-     * @return EntityRepositoryFactoryInterface
-     *
-     * @throws Exceptions\PdoConnectionException
-     */
-    public function getRepositoryFactory(): EntityRepositoryFactoryInterface
-    {
-        if ('pdo' === self::getStorageType()) {
             $factory = new EntityPdoRepositoryFactory(
-                $this->getPdo(),
-                $this->getEntityFactory()
+                $this->pdo,
+                $this->createEntityFactory()
             );
         } else {
             $factory = new EntityFileRepositoryFactory();
         }
 
-        return $factory;
+        return $factory->create(self::getEntityPerPage(), self::getEntityName());
     }
 
-    /**
-     * @return PDO
-     *
-     * @throws Exceptions\PdoConnectionException
-     */
-    public function getPdo(): PDO
-    {
-        $factory = new PdoServiceFactory(
-            self::getEntityName(),
-            self::getPdoType(),
-            self::getDbFolderName()
-        );
-
-        $pdoService = $factory->create();
-        $pdo = $pdoService->getPdo();
-        $pdoService->createTables();
-
-        return $pdo;
-    }
-
-    /**
-     * @return EntityFactoryInterface
-     */
-    public function getEntityFactory(): EntityFactoryInterface
+    public function createEntityFactory(): EntityFactoryInterface
     {
         return new EntityFactory(self::getEntityClassNamespace(), self::getEntityName());
     }
 
-    /**
-     * @return PaginatorFactoryInterface
-     */
-    public function getPaginatorFactory(): PaginatorFactoryInterface
+    public function createPaginatorFactory(): PaginatorFactoryInterface
     {
-        $adapter = new PaginatorAdapter();
-
-        return new PagerfantaPaginatorServiceFactory($adapter, self::getEntityPerPage());
+        return new PagerfantaPaginatorServiceFactory(new PaginatorAdapter(), self::getEntityPerPage());
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return AuthService
-     */
-    public function getAuthService(Request $request): AuthService
+    public function createAuthService(Request $request): AuthService
     {
         return new AuthService($request, self::getUser(), self::getPassword());
+    }
+
+    private function createPdo(): PDO
+    {
+        if (!$this->pdo) {
+            $this->pdo = (new PdoServiceFactory(
+                self::getEntityName(),
+                self::getDbType(),
+                self::getDbFolderName()
+            ))->create()->getPdo();
+        }
+
+        return $this->pdo;
+    }
+
+    private function createTables(): void
+    {
+        if ('pdo' === self::getRepositoryType()) {
+            $pdoDatabaseService = new PdoDatabaseService($this->pdo, self::getEntityName());
+            $pdoDatabaseService->createTables();
+        }
     }
 }

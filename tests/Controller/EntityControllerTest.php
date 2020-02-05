@@ -8,11 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Controller\EntityController;
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\EntityNotFoundException;
-use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\Exceptions\CannotCreateDirectoryException;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
@@ -28,16 +24,16 @@ class EntityControllerTest extends TestCase
     private Request $request;
 
     /**
-     * @throws PdoConnectionException
+     * @throws CannotCreateDirectoryException
      */
     protected function setUp()
     {
         $app = new App();
-        $this->paginatorFactory = $app->getPaginatorFactory();
+        $this->paginatorFactory = $app->createPaginatorFactory();
         $this->request = $app->getRequest();
-        $this->entityService = $app->getEntityService();
-        $this->entityService->setRepository($app->getRepository());
-        $this->controller = new EntityController($this->request, $this->entityService, $app->getTemplate());
+        $this->entityService = $app->createEntityService();
+        $this->entityService->setRepository($app->createRepository());
+        $this->controller = new EntityController($this->request, $this->entityService, $app->createTemplate());
     }
 
     /**
@@ -89,10 +85,6 @@ class EntityControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      */
     public function shouldBeGettingCreatePage(): void
     {
@@ -110,10 +102,6 @@ class EntityControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      */
     public function shouldBeEntityCreatable(): void
     {
@@ -135,11 +123,6 @@ class EntityControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws EntityNotFoundException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      */
     public function shouldBeEntityEditable(): void
     {
@@ -164,10 +147,6 @@ class EntityControllerTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      */
     public function shouldBeEntityDone(): void
     {

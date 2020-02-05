@@ -2,6 +2,9 @@
 
 namespace Todo\Lib\Factory\Entity;
 
+use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
+use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Model\Email;
 use Todo\Model\EntityInterface;
 use Todo\Model\Id;
@@ -13,17 +16,19 @@ class EntityFactory implements EntityFactoryInterface
 {
     private string $entityClass;
 
-    /**
-     * @param string $entityClassNamespace
-     * @param string $entityName
-     */
     public function __construct(string $entityClassNamespace, string $entityName)
     {
         $this->entityClass = $entityClassNamespace.ucfirst($entityName);
     }
 
     /**
-     * @inheritDoc
+     * @param array $entity
+     *
+     * @return EntityInterface
+     *
+     * @throws CannotBeEmptyException
+     * @throws ForbiddenStatusException
+     * @throws NotValidEmailException
      */
     public function create(array $entity): EntityInterface
     {

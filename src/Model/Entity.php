@@ -14,9 +14,6 @@ class Entity implements EntityInterface, JsonSerializable
     private Text $text;
     private Status $status;
 
-    /**
-     * @inheritdoc
-     */
     public function __construct(
         Id $id,
         UserName $userName,
@@ -32,49 +29,31 @@ class Entity implements EntityInterface, JsonSerializable
         $this->status = $status;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getId(): Id
     {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getUserName(): UserName
     {
         return $this->userName;
     }
 
-    /**
-     * @return Email
-     */
     public function getEmail(): Email
     {
         return $this->email;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getText(): Text
     {
         return $this->text;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getStatus(): Status
     {
         return $this->status;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setStatus(Status $status): void
     {
         if (Status::DONE === ((string) $this->status)) {
@@ -84,9 +63,6 @@ class Entity implements EntityInterface, JsonSerializable
         $this->status = $status;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setText(Text $text): void
     {
         if (Status::DONE === ((string) $this->status)) {
@@ -96,17 +72,11 @@ class Entity implements EntityInterface, JsonSerializable
         $this->text = $text;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setId(Id $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return array
-     */
     public function jsonSerialize(): array
     {
         return [

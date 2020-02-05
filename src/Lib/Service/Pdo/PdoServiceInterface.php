@@ -3,26 +3,11 @@
 namespace Todo\Lib\Service\Pdo;
 
 use PDO;
-use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\DB\PdoDatabaseConnection;
 
 interface PdoServiceInterface
 {
-    /**
-     * @param string $pdoType
-     * @param string $dbFolderName
-     * @param string $entityName
-     */
-    public function __construct(string $pdoType, string $dbFolderName, string $entityName);
+    public function __construct(PdoDatabaseConnection $connection);
 
-    /**
-     * @return PDO
-     *
-     * @throws PdoConnectionException
-     */
     public function getPdo(): PDO;
-
-    /**
-     * @return bool
-     */
-    public function createTables(): bool;
 }

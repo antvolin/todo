@@ -6,25 +6,16 @@ class PathService implements PathServiceInterface
 {
     private const DIRECTORY_SEPARATOR = '/';
 
-    /**
-     * @inheritDoc
-     */
     public static function getFirstPathPart(string $path, string $separator = self::DIRECTORY_SEPARATOR): string
     {
         return strtolower(self::separatePath($path, $separator)[1]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function separatePath(string $path, string $separator = self::DIRECTORY_SEPARATOR): array
     {
         return explode($separator, trim($path, $separator));
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function getPathToEntityStorage(string $entityName, int $level = 0): string
     {
         return sprintf(
@@ -35,24 +26,6 @@ class PathService implements PathServiceInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function getPathToPdoDsn(string $pdoType, string $dbFolderName, string $entityName): string
-    {
-        return sprintf(
-            '%s:%s%s%s%s',
-            $pdoType,
-            dirname(__DIR__),
-            self::generatePathToBack(3),
-            $dbFolderName,
-            $entityName
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getPathToTemplates(): string
     {
         return sprintf(
@@ -63,11 +36,6 @@ class PathService implements PathServiceInterface
         );
     }
 
-    /**
-     * @param int $level
-     *
-     * @return string
-     */
     private static function generatePathToBack(int $level): string
     {
         $path = self::DIRECTORY_SEPARATOR;

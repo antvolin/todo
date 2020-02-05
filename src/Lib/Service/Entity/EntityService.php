@@ -2,8 +2,10 @@
 
 namespace Todo\Lib\Service\Entity;
 
+use Todo\Lib\Exceptions\CannotBeEmptyException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
+use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Model\EntityInterface;
@@ -16,48 +18,39 @@ class EntityService implements EntityServiceInterface
     private EntityRepositoryInterface $repository;
     private EntityFactoryInterface $factory;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct(EntityFactoryInterface $factory)
     {
         $this->factory = $factory;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getById(Id $entityId): EntityInterface
     {
         return $this->repository->getById($entityId);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
     {
         return $this->repository->getCollection($page, $orderBy, $order);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getCount(): int
     {
         return $this->repository->getCount();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setRepository(EntityRepositoryInterface $repository): void
     {
         $this->repository = $repository;
     }
 
     /**
-     * @inheritDoc
+     * @param Id $entityId
+     * @param string $text
+     *
+     * @throws CannotBeEmptyException
+     * @throws CannotDoneEntityException
+     * @throws CannotEditEntityException
+     * @throws ForbiddenStatusException
      */
     public function edit(Id $entityId, string $text): void
     {
@@ -74,7 +67,10 @@ class EntityService implements EntityServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * @param Id $entityId
+     *
+     * @throws CannotDoneEntityException
+     * @throws ForbiddenStatusException
      */
     public function done(Id $entityId): void
     {
@@ -89,9 +85,6 @@ class EntityService implements EntityServiceInterface
         $this->repository->add($entity);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function add(string $userName, string $email, string $text): Id
     {
         $entity = [
@@ -107,9 +100,6 @@ class EntityService implements EntityServiceInterface
         return $this->repository->add($entity);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function remove(Id $entityId): void
     {
         $this->repository->remove($entityId);

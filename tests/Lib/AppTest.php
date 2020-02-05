@@ -4,7 +4,7 @@ namespace Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\PdoConnectionException as PdoConnectionExceptionAlias;
+use Todo\Lib\Exceptions\CannotCreateDirectoryException;
 
 class AppTest extends TestCase
 {
@@ -31,7 +31,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingSecret(): void
     {
-        $secret = $this->app->getSecret();
+        $secret = $this->app->createSecret();
 
         $this->assertIsString($secret);
         $this->assertNotEmpty($secret);
@@ -42,7 +42,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingToken(): void
     {
-        $token = $this->app->getToken();
+        $token = $this->app->createToken();
 
         $this->assertIsString($token);
         $this->assertNotEmpty($token);
@@ -53,7 +53,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingTokenServiceFactory(): void
     {
-        $factory = $this->app->getTokenServiceFactory();
+        $factory = $this->app->createTokenServiceFactory();
 
         $this->assertTrue(method_exists($factory, 'create'));
     }
@@ -63,7 +63,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingEntityService(): void
     {
-        $service = $this->app->getEntityService();
+        $service = $this->app->createEntityService();
 
         $this->assertTrue(method_exists($service, 'getCount'));
         $this->assertTrue(method_exists($service, 'remove'));
@@ -77,11 +77,11 @@ class AppTest extends TestCase
     /**
      * @test
      *
-     * @throws PdoConnectionExceptionAlias
+     * @throws CannotCreateDirectoryException
      */
     public function shouldBeGettingRepository(): void
     {
-        $repository = $this->app->getRepository();
+        $repository = $this->app->createRepository();
 
         $this->assertTrue(method_exists($repository, 'getById'));
         $this->assertTrue(method_exists($repository, 'getCollection'));
@@ -92,41 +92,10 @@ class AppTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws PdoConnectionExceptionAlias
-     */
-    public function shouldBeGettingRepositoryFactory(): void
-    {
-        $factory = $this->app->getRepositoryFactory();
-
-        $this->assertTrue(method_exists($factory, 'create'));
-    }
-
-    /**
-     * @test
-     *
-     * @throws PdoConnectionExceptionAlias
-     */
-    public function shouldBeGettingPdo(): void
-    {
-        if (App::getStorageType() !== 'pdo') {
-            $this->markTestSkipped();
-        }
-
-        $pdo = $this->app->getPdo();
-
-        $this->assertTrue(method_exists($pdo, 'query'));
-        $this->assertTrue(method_exists($pdo, 'exec'));
-        $this->assertTrue(method_exists($pdo, 'prepare'));
-        $this->assertTrue(method_exists($pdo, 'lastInsertId'));
-    }
-
-    /**
-     * @test
      */
     public function shouldBeGettingPaginatorFactory(): void
     {
-        $factory = $this->app->getPaginatorFactory();
+        $factory = $this->app->createPaginatorFactory();
 
         $this->assertTrue(method_exists($factory, 'create'));
     }
@@ -136,7 +105,7 @@ class AppTest extends TestCase
      */
     public function shouldBeGettingAuthService(): void
     {
-        $service = $this->app->getAuthService($this->app->getRequest());
+        $service = $this->app->createAuthService($this->app->getRequest());
 
         $this->assertTrue(method_exists($service, 'getRequest'));
         $this->assertTrue(method_exists($service, 'logout'));

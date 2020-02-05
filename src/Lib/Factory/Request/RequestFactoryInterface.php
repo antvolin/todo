@@ -6,8 +6,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface RequestFactoryInterface
 {
-    /**
-     * @return Request
-     */
     public function create(): Request;
 }

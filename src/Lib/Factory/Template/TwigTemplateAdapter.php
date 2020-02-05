@@ -11,16 +11,16 @@ class TwigTemplateAdapter implements TemplateAdapterInterface
 {
     private Environment $template;
 
-    /**
-     * @param Environment $template
-     */
     public function __construct(Environment $template)
     {
         $this->template = $template;
     }
 
     /**
-     * @inheritDoc
+     * @param string $name
+     * @param array $context
+     *
+     * @return string
      *
      * @throws LoaderError
      * @throws RuntimeError

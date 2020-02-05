@@ -78,11 +78,6 @@ class PagerfantaPaginatorServiceTest extends TestCase
         $this->assertEquals($html1, $html2);
     }
 
-    /**
-     * @param int $page
-     *
-     * @return string
-     */
     private function getUrl(int $page): string
     {
         return sprintf('/entity/list?page=%s&orderBy=user_name&order=ASC', $page);

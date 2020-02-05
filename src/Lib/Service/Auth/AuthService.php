@@ -12,9 +12,6 @@ class AuthService implements AuthServiceInterface
     private string $user;
     private string $password;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct(Request $request, string $user, string $password)
     {
         $this->request = $request;
@@ -22,17 +19,11 @@ class AuthService implements AuthServiceInterface
         $this->password = $password;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function login(): ?RedirectResponse
     {
         $user = $this->request->get('user');
@@ -47,9 +38,6 @@ class AuthService implements AuthServiceInterface
         return new RedirectResponse('/entity/list');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function logout(): RedirectResponse
     {
         if ($this->request->getSession()->get($this->user)) {

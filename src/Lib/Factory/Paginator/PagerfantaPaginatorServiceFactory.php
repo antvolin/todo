@@ -11,18 +11,12 @@ class PagerfantaPaginatorServiceFactory implements PaginatorFactoryInterface
     private PaginatorAdapterInterface $adapter;
     private int $entityPerPage;
 
-    /**
-     * @inheritdoc
-     */
     public function __construct(PaginatorAdapterInterface $adapter, int $entityPerPage)
     {
         $this->adapter = $adapter;
         $this->entityPerPage = $entityPerPage;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function create(array $rows, int $countRows, int $page): PaginatorServiceInterface
     {
         $this->adapter->setData($rows);

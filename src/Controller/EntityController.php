@@ -7,11 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\PdoErrorsException;
-use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Ordering\OrderingService;
@@ -22,11 +17,6 @@ class EntityController implements ControllerInterface
     private EntityServiceInterface $entityService;
     private TemplateAdapterInterface $template;
 
-    /**
-     * @param Request $request
-     * @param EntityServiceInterface $entityService
-     * @param TemplateAdapterInterface $template
-     */
     public function __construct(
         Request $request,
         EntityServiceInterface $entityService,
@@ -38,9 +28,6 @@ class EntityController implements ControllerInterface
         $this->template = $template;
     }
 
-    /**
-     * @return Response
-     */
     public function list(): Response
     {
         $page = $this->request->get('page', 1);
@@ -65,10 +52,6 @@ class EntityController implements ControllerInterface
 
     /**
      * @return RedirectResponse|Response
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      */
     public function create()
     {
@@ -78,11 +61,7 @@ class EntityController implements ControllerInterface
             return new Response($this->template->render('form_create.html.twig', ['token' => $token]));
         }
 
-        try {
-            $id = $this->entityService->add($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
-        } catch (PdoErrorsException $exception) {
-            return new Response($this->template->render('form_create.html.twig', ['error' => $exception->getMessage(), 'token' => $token]));
-        }
+        $id = $this->entityService->add($this->request->get('user_name'), $this->request->get('email'), $this->request->get('text'));
 
         $this->request->request->set('entity_id', $id);
         $this->request->getSession()->set('isCreated', true);
@@ -92,11 +71,6 @@ class EntityController implements ControllerInterface
 
     /**
      * @return RedirectResponse|Response
-     *
-     * @throws CannotBeEmptyException
-     * @throws EntityNotFoundException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
      */
     public function edit()
     {
@@ -104,8 +78,9 @@ class EntityController implements ControllerInterface
             $id = func_get_args()[0];
             $text = $this->entityService->getById($id)->getText();
             $token = $this->request->get('token');
+            $params = ['id' => $id, 'text' => $text, 'token' => $token];
 
-            return new Response($this->template->render('form_edit.html.twig', ['id' => $id, 'text' => $text, 'token' => $token]));
+            return new Response($this->template->render('form_edit.html.twig', $params));
         }
 
         try {

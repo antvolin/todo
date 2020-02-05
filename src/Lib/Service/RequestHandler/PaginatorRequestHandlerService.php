@@ -2,9 +2,6 @@
 
 namespace Todo\Lib\Service\RequestHandler;
 
-use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Path\PathService;
@@ -15,10 +12,6 @@ class PaginatorRequestHandlerService extends RequestHandlerService
     private PaginatorFactoryInterface $paginatorFactory;
     private EntityServiceInterface $entityService;
 
-    /**
-     * @param PaginatorFactoryInterface $paginatorFactory
-     * @param EntityServiceInterface $entityService
-     */
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
         EntityServiceInterface $entityService
@@ -30,13 +23,6 @@ class PaginatorRequestHandlerService extends RequestHandlerService
         $this->entityService = $entityService;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     */
     protected function process(Request $request): void
     {
         $pathParts = PathService::separatePath($request->getPathInfo());

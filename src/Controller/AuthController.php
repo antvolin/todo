@@ -13,10 +13,6 @@ class AuthController implements ControllerInterface
     private AuthServiceInterface $authService;
     private TemplateAdapterInterface $template;
 
-    /**
-     * @param AuthServiceInterface $authService
-     * @param TemplateAdapterInterface $template
-     */
     public function __construct(
         AuthServiceInterface $authService,
         TemplateAdapterInterface $template
@@ -44,9 +40,6 @@ class AuthController implements ControllerInterface
         return new Response($this->template->render('form_login.html.twig', ['error' => AuthService::ERROR_MSG, 'token' => $token]));
     }
 
-    /**
-     * @return RedirectResponse
-     */
     public function logout(): RedirectResponse
     {
         return $this->authService->logout();

@@ -17,7 +17,7 @@ class TokenServiceTest extends TestCase
     {
         $app = new App();
         $this->tokenService = new TokenService();
-        $this->secret = $app->getSecret();
+        $this->secret = $app->createSecret();
         $this->tokenSalt = App::getTokenSalt();
         $this->tokenService->generateToken($this->secret, $this->tokenSalt);
         $this->token = $this->tokenService->getToken();

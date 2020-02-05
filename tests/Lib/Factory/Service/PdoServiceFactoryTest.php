@@ -15,12 +15,11 @@ class PdoServiceFactoryTest extends TestCase
     {
         $factory = new PdoServiceFactory(
             App::getEntityName(),
-            App::getStorageType(),
+            App::getRepositoryType(),
             App::getDbFolderName()
         );
         $pdoService = $factory->create();
 
         $this->assertTrue(method_exists($pdoService, 'getPdo'));
-        $this->assertTrue(method_exists($pdoService, 'createTables'));
     }
 }

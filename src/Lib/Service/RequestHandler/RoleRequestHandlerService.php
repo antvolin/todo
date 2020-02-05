@@ -16,9 +16,6 @@ class RoleRequestHandlerService extends RequestHandlerService
     private const DONE_METHOD = 'done';
     private const NOT_ENOUGH_RIGHTS_MSG = 'Not enough rights for this operation!';
 
-    /**
-     * @param Request $request
-     */
     protected function process(Request $request): void
     {
         $pathParts = PathService::separatePath($request->getPathInfo());

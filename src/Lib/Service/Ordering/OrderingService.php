@@ -17,9 +17,6 @@ class OrderingService implements OrderingServiceInterface
         'status',
     ];
 
-    /**
-     * @inheritDoc
-     */
     public static function getOrderBy(?string $orderBy): string
     {
         $key = array_search($orderBy, self::ALLOWED_ORDER_BY_FIELDS, true);
@@ -27,17 +24,11 @@ class OrderingService implements OrderingServiceInterface
         return self::ALLOWED_ORDER_BY_FIELDS[$key];
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function getOrder(?string $order): string
     {
         return $order === self::DESC ? self::DESC : self::ASC;
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function getNextOrder(?string $order): string
     {
         return !$order || self::ASC === $order ? self::DESC : self::ASC;

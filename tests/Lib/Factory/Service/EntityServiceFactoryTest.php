@@ -14,7 +14,7 @@ class EntityServiceFactoryTest extends TestCase
     protected function setUp()
     {
         $app = new App();
-        $this->entityFactory = $app->getEntityFactory();
+        $this->entityFactory = $app->createEntityFactory();
     }
 
     /**

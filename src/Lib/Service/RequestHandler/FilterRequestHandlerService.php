@@ -6,9 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FilterRequestHandlerService extends RequestHandlerService
 {
-    /**
-     * @param Request $request
-     */
     protected function process(Request $request): void
     {
         if ($request->request->count()) {

@@ -2,21 +2,12 @@
 
 namespace Tests\Lib\Service\Path;
 
-use PDO;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
-use Todo\Lib\Exceptions\CannotBeEmptyException;
-use Todo\Lib\Exceptions\ForbiddenStatusException;
-use Todo\Lib\Exceptions\NotValidEmailException;
-use Todo\Lib\Exceptions\PdoConnectionException;
-use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Service\Path\PathService;
-use Todo\Lib\Traits\TestValueGenerator;
 
 class PathServiceTest extends TestCase
 {
-    use TestValueGenerator;
-
     /**
      * @test
      */
@@ -38,44 +29,11 @@ class PathServiceTest extends TestCase
      */
     public function shouldBeGettingCorrectPathToEntityStorage(): void
     {
-        if (App::getStorageType() !== 'pdo') {
+        if (App::getRepositoryType() !== 'pdo') {
             $this->markTestSkipped();
         }
 
         $this->assertDirectoryExists(PathService::getPathToEntityStorage(App::getEntityName(), 3));
-    }
-
-    /**
-     * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
-     * @throws PdoConnectionException
-     */
-    public function shouldBeGettingCorrectPathToPdoDsn(): void
-    {
-        if (App::getStorageType() !== 'pdo') {
-            $this->markTestSkipped();
-        }
-
-        $app = new App();
-        $entityName = App::getEntityName();
-        $dsn = PathService::getPathToPdoDsn(App::getPdoType(), App::getDbFolderName(), $entityName);
-        $pdo = new PDO($dsn);
-
-        $entityService = $app->getEntityService();
-        $entityService->setRepository($app->getRepository());
-
-        $userName = $this->generateUserName(__METHOD__, __CLASS__);
-        $text = $this->generateText(__METHOD__, __CLASS__);
-        $email = $this->generateEmail();
-        $entityService->add($userName, $email, $text);
-
-        $count = $pdo->query('SELECT count(id) FROM '.$entityName)->fetchColumn();
-
-        $this->assertLessThan($count, 0);
     }
 
     /**

@@ -28,9 +28,6 @@ class RoleRequestHandlerServiceTest extends TestCase
         $handler->handle($request);
     }
     
-    /**
-     * @return array
-     */
     public function getModifyMethods(): array
     {
         $data = [];

@@ -4,52 +4,36 @@ namespace Todo\Lib\Service\Pdo;
 
 use PDO;
 use PDOException;
+use Todo\Lib\DB\PdoDatabaseConnection;
 use Todo\Lib\Exceptions\PdoConnectionException;
-use Todo\Lib\Service\Path\PathService;
 
 class PdoService implements PdoServiceInterface
 {
     private PDO $pdo;
-    private string $entityName;
-    private string $pdoType;
-    private string $dbFolderName;
+    private PdoDatabaseConnection $connection;
 
-    /**
-     * @inheritDoc
-     */
-    public function __construct(string $entityName, string $pdoType, string $dbFolderName)
+    public function __construct(PdoDatabaseConnection $connection)
     {
-        $this->entityName = $entityName;
-        $this->pdoType = $pdoType;
-        $this->dbFolderName = $dbFolderName;
+        $this->connection = $connection;
     }
 
     /**
-     * @inheritDoc
+     * @return PDO
+     *
+     * @throws PdoConnectionException
      */
     public function getPdo(): PDO
     {
-        $dsn = PathService::getPathToPdoDsn($this->pdoType, $this->dbFolderName, $this->entityName);
+        $dsn = $this->connection->getDsn();
 
         try {
             $this->pdo = new PDO($dsn);
         } catch (PDOException $exception) {
-            throw new PdoConnectionException($exception->getMessage().' with dsn '.$dsn);
+            throw new PdoConnectionException(sprintf('%s with dsn %s', $exception->getMessage(), $dsn));
         }
 
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $this->pdo;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createTables(): bool
-    {
-        $result1 = $this->pdo->query(sprintf('CREATE TABLE IF NOT EXISTS %s (id INTEGER PRIMARY KEY, user_name TEXT, email TEXT, text TEXT, status TEXT);', $this->entityName));
-        $result2 = $this->pdo->query(sprintf('CREATE UNIQUE INDEX IF NOT EXISTS idx_%s_user_name_email_text ON %s (user_name, email, text);', $this->entityName, $this->entityName));
-
-        return $result1 && $result2;
     }
 }

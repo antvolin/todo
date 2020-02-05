@@ -8,17 +8,11 @@ abstract class RequestHandlerService implements RequestHandlerServiceInterface
 {
     protected ?RequestHandlerService $nextHandler = null;
 
-    /**
-     * @param RequestHandlerService|null $nextHandler
-     */
     public function __construct(?RequestHandlerService $nextHandler = null)
     {
         $this->nextHandler = $nextHandler;
     }
 
-    /**
-     * @param Request $request
-     */
     public function handle(Request $request): void
     {
         $this->process($request);
@@ -28,8 +22,5 @@ abstract class RequestHandlerService implements RequestHandlerServiceInterface
         }
     }
 
-    /**
-     * @param Request $request
-     */
     abstract protected function process(Request $request): void;
 }

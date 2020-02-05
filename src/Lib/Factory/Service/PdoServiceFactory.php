@@ -2,30 +2,29 @@
 
 namespace Todo\Lib\Factory\Service;
 
+use Todo\Lib\DB\PdoDatabaseConfiguration;
+use Todo\Lib\DB\PdoDatabaseConnection;
 use Todo\Lib\Service\Pdo\PdoService;
 use Todo\Lib\Service\Pdo\PdoServiceInterface;
 
 class PdoServiceFactory implements PdoServiceFactoryInterface
 {
     private string $entityName;
-    private string $pdoType;
+    private string $dbType;
     private string $dbFolderName;
 
-    /**
-     * @inheritDoc
-     */
-    public function __construct(string $entityName, string $pdoType, string $dbFolderName)
+    public function __construct(string $entityName, string $dbType, string $dbFolderName)
     {
         $this->entityName = strtolower($entityName);
-        $this->pdoType = strtolower($pdoType);
+        $this->dbType = strtolower($dbType);
         $this->dbFolderName = strtolower($dbFolderName);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function create(): PdoServiceInterface
     {
-        return new PdoService($this->entityName, $this->pdoType, $this->dbFolderName);
+        $pdoDatabaseConfiguration = new PdoDatabaseConfiguration($this->entityName, $this->dbType, $this->dbFolderName);
+        $pdoDatabaseConnection = new PdoDatabaseConnection($pdoDatabaseConfiguration);
+
+        return new PdoService($pdoDatabaseConnection);
     }
 }

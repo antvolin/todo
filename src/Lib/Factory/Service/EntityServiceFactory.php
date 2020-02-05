@@ -10,17 +10,11 @@ class EntityServiceFactory implements EntityServiceFactoryInterface
 {
     private EntityFactoryInterface $entityFactory;
 
-    /**
-     * @param EntityFactoryInterface $entityFactory
-     */
     public function __construct(EntityFactoryInterface $entityFactory)
     {
         $this->entityFactory = $entityFactory;
     }
 
-    /**
-     * @return EntityServiceInterface
-     */
     public function create(): EntityServiceInterface
     {
         return new EntityService($this->entityFactory);

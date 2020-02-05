@@ -7,18 +7,12 @@ class SecretGeneratorService implements SecretGeneratorServiceInterface
     private string $tokenSecretPrefix;
     private string $tokenSecret;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct(string $tokenSecretPrefix, string $tokenSecret)
     {
         $this->tokenSecretPrefix = $tokenSecretPrefix;
         $this->tokenSecret = $tokenSecret;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function generateSecret($secretPrefix = null): string
     {
         if (!$secretPrefix) {

@@ -52,9 +52,6 @@ class EmailTest extends TestCase
         new Email($email);
     }
 
-    /**
-     * @return array
-     */
     public function notValidEmails(): array
     {
         return [

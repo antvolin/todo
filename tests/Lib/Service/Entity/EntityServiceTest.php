@@ -5,13 +5,11 @@ namespace Tests\Lib\Service\Entity;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotBeEmptyException;
+use Todo\Lib\Exceptions\CannotCreateDirectoryException;
 use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
-use Todo\Lib\Exceptions\PdoConnectionException;
-use Todo\Lib\Exceptions\PdoErrorsException;
-use Todo\Lib\Exceptions\NotValidEmailException;
 use Todo\Lib\Service\Entity\EntityService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
@@ -25,23 +23,17 @@ class EntityServiceTest extends TestCase
     private EntityServiceInterface $entityService;
 
     /**
-     * @throws PdoConnectionException
+     * @throws CannotCreateDirectoryException
      */
     protected function setUp()
     {
         $app = new App();
-        $this->entityService = new EntityService($app->getEntityFactory());
-        $this->entityService->setRepository($app->getRepository());
+        $this->entityService = new EntityService($app->createEntityFactory());
+        $this->entityService->setRepository($app->createRepository());
     }
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws EntityNotFoundException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeGettingEntityById(): void
     {
@@ -57,11 +49,6 @@ class EntityServiceTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeGettingEntitiesArray(): void
     {
@@ -86,11 +73,6 @@ class EntityServiceTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeGettingCountOfEntities(): void
     {
@@ -113,12 +95,6 @@ class EntityServiceTest extends TestCase
 
     /**
      * @test
-     *
-     * @throws CannotBeEmptyException
-     * @throws ForbiddenStatusException
-     * @throws EntityNotFoundException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeDeletingEntity(): void
     {
@@ -141,9 +117,6 @@ class EntityServiceTest extends TestCase
      * @throws CannotDoneEntityException
      * @throws CannotEditEntityException
      * @throws ForbiddenStatusException
-     * @throws EntityNotFoundException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeEditingEntity(): void
     {
@@ -163,12 +136,8 @@ class EntityServiceTest extends TestCase
     /**
      * @test
      *
-     * @throws CannotBeEmptyException
      * @throws CannotDoneEntityException
      * @throws ForbiddenStatusException
-     * @throws EntityNotFoundException
-     * @throws NotValidEmailException
-     * @throws PdoErrorsException
      */
     public function shouldBeDoneEntity(): void
     {

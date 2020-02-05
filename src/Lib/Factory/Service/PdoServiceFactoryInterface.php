@@ -6,15 +6,7 @@ use Todo\Lib\Service\Pdo\PdoServiceInterface;
 
 interface PdoServiceFactoryInterface
 {
-    /**
-     * @param string $entityName
-     * @param string $pdoType
-     * @param string $dbFolderName
-     */
-    public function __construct(string $entityName, string $pdoType, string $dbFolderName);
+    public function __construct(string $entityName, string $dbType, string $dbFolderName);
 
-    /**
-     * @return PdoServiceInterface
-     */
     public function create(): PdoServiceInterface;
 }

@@ -27,17 +27,17 @@ class Kernel
     /**
      * @param App $app
      *
-     * @throws Exceptions\PdoConnectionException
+     * @throws Exceptions\CannotCreateDirectoryException
      */
     public function __construct(App $app)
     {
         $this->app = $app;
         $this->request = $this->app->getRequest();
-        $this->request->request->set('token', $this->app->getToken());
-        $this->authService = $this->app->getAuthService($this->request);
-        $this->entityService = $this->app->getEntityService();
-        $this->entityService->setRepository($this->app->getRepository());
-        $this->template = $this->app->getTemplate();
+        $this->request->request->set('token', $this->app->createToken());
+        $this->authService = $this->app->createAuthService($this->request);
+        $this->entityService = $this->app->createEntityService();
+        $this->entityService->setRepository($this->app->createRepository());
+        $this->template = $this->app->createTemplate();
     }
 
 	public function process(): void
@@ -51,11 +51,6 @@ class Kernel
         $response->send();
 	}
 
-    /**
-     * @param array $separatedPath
-     *
-     * @return ControllerInterface
-     */
 	private function getController(array $separatedPath): ControllerInterface
     {
         $prefixClassName = strtolower(array_shift($separatedPath));
@@ -69,12 +64,6 @@ class Kernel
         return $controller;
     }
 
-    /**
-     * @param ControllerInterface $controller
-     * @param array $separatedPath
-     *
-     * @return Response
-     */
     private function getResponse(ControllerInterface $controller, array $separatedPath): Response
     {
         $methodName = array_shift($separatedPath);
@@ -95,20 +84,17 @@ class Kernel
             new AccessRequestHandlerService(
                 new RoleRequestHandlerService(
                     new PaginatorRequestHandlerService(
-                        $this->app->getPaginatorFactory(),
+                        $this->app->createPaginatorFactory(),
                         $this->entityService
                     )
                 ),
-                $this->app->getTokenServiceFactory()
+                $this->app->createTokenServiceFactory()
             )
         );
 
         $requestHandler->handle($this->request);
     }
 
-    /**
-     * @return AuthController
-     */
 	private function createAuthController(): AuthController
     {
         return new AuthController(
@@ -117,9 +103,6 @@ class Kernel
         );
     }
 
-    /**
-     * @return EntityController
-     */
     private function createEntityController(): EntityController
     {
         return new EntityController(

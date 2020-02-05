@@ -10,23 +10,17 @@ class TokenServiceFactory implements TokenServiceFactoryInterface
 {
     private string $tokenSalt;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct(string $tokenSalt)
     {
         $this->tokenSalt = $tokenSalt;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function create(Request $request): TokenService
     {
         $tokenService = new TokenService();
 
         if (!$secret = $request->getSession()->get('secret')) {
-            $secret = (new App())->getSecret();
+            $secret = (new App())->createSecret();
 
             $request->getSession()->set('secret', $secret);
         }
