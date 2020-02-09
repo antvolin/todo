@@ -5,7 +5,6 @@ namespace Todo\Lib\Repository;
 use FilesystemIterator;
 use Generator;
 use Todo\Lib\Exceptions\EntityNotFoundException;
-use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
 use Todo\Model\Id;
 
@@ -47,27 +46,9 @@ class EntityFileRepository implements EntityRepositoryInterface
         return iterator_count(new FilesystemIterator($this->entityStoragePath, FilesystemIterator::SKIP_DOTS));
     }
 
-    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getCollection(int $page): array
     {
         $entity = iterator_to_array($this->getFilesIterator());
-
-        if ($orderBy && $order) {
-            $methodName = explode('_', $orderBy);
-            array_map(static function($path) {
-                ucfirst($path);
-            }, $methodName);
-            $method = 'get'.implode('', $methodName);
-
-            if (OrderingService::ASC === $order) {
-                uasort($entity, static function (EntityInterface $a, EntityInterface $b) use ($method) {
-                    return strcmp(strtolower($a->$method()), strtolower($b->$method()));
-                });
-            } else {
-                uasort($entity, static function (EntityInterface $b, EntityInterface $a) use ($method) {
-                    return strcmp(strtolower($a->$method()), strtolower($b->$method()));
-                });
-            }
-        }
 
         return array_slice($entity, ($page - 1) * $this->entityPerPage, $this->entityPerPage);
     }

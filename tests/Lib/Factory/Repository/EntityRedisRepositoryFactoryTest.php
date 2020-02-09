@@ -2,25 +2,21 @@
 
 namespace Tests\Lib\Factory\Repository;
 
-use PDO;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Todo\Lib\App;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
-use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
-use Todo\Lib\Repository\EntityPdoRepository;
+use Todo\Lib\Factory\Repository\EntityRedisRepositoryFactory;
+use Todo\Lib\Repository\EntityRedisRepository;
 
-class EntityPdoRepositoryFactoryTest extends TestCase
+class EntityRedisRepositoryFactoryTest extends TestCase
 {
     private int $entityPerPage;
-    private string $entityName;
-    private MockObject $pdo;
+    private MockObject $redis;
 
     protected function setUp()
     {
         $this->entityPerPage = 3;
-        $this->entityName = App::getEntityName();
-        $this->pdo = $this->createMock(PDO::class);
+        $this->redis = $this->createMock(\Redis::class);
     }
 
     /**
@@ -29,15 +25,14 @@ class EntityPdoRepositoryFactoryTest extends TestCase
     public function shouldBeCreatableEntityPdoRepository(): void
     {
         $entityFactory = $this->createMock(EntityFactoryInterface::class);
-        $repositoryFactory = new EntityPdoRepositoryFactory(
-            $this->pdo,
+        $repositoryFactory = new EntityRedisRepositoryFactory(
+            $this->redis,
             $entityFactory,
-            $this->entityPerPage,
-            $this->entityName
+            $this->entityPerPage
         );
 
         $repository = $repositoryFactory->createRepository();
 
-        $this->assertInstanceOf(EntityPdoRepository::class, $repository);
+        $this->assertInstanceOf(EntityRedisRepository::class, $repository);
     }
 }

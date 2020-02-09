@@ -10,6 +10,8 @@ use Todo\Lib\Exceptions\CannotDoneEntityException;
 use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
+use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\Exceptions\RedisConnectionException;
 use Todo\Lib\Service\Entity\EntityService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
@@ -24,6 +26,8 @@ class EntityServiceTest extends TestCase
 
     /**
      * @throws CannotCreateDirectoryException
+     * @throws PdoConnectionException
+     * @throws RedisConnectionException
      */
     protected function setUp()
     {
@@ -64,7 +68,7 @@ class EntityServiceTest extends TestCase
         $this->entityService->add($userName2, $email, $text2);
         $this->entityService->add($userName3, $email, $text3);
 
-        $entities = $this->entityService->getCollection(0);
+        $entities = $this->entityService->getCollection(1);
 
         foreach ($entities as $entity) {
             $this->assertInstanceOf(EntityInterface::class, $entity);

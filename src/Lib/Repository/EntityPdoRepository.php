@@ -7,7 +7,6 @@ use PDOException;
 use Todo\Lib\Exceptions\PdoErrorsException;
 use Todo\Lib\Exceptions\EntityNotFoundException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
-use Todo\Lib\Service\Ordering\OrderingService;
 use Todo\Model\EntityInterface;
 use Todo\Model\Id;
 
@@ -48,22 +47,20 @@ class EntityPdoRepository implements EntityRepositoryInterface
         return $this->entityFactory->create($entity);
     }
 
-    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
+    /**
+     * @param int $page
+     *
+     * @return array
+     *
+     * @throws EntityNotFoundException
+     */
+    public function getCollection(int $page): array
     {
         $result = [];
+        $id = $this->generateIdByPage($page);
 
-        $orderBy = OrderingService::getOrderBy($orderBy);
-        $order = OrderingService::getOrder($order);
-
-        $sth = $this->pdo->prepare("SELECT id, user_name, email, text, status FROM $this->entityName ORDER BY $orderBy $order LIMIT :limit OFFSET :offset;");
-        $limit = $this->entityPerPage;
-        $offset = $this->entityPerPage * ($page - 1);
-        $sth->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $sth->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $sth->execute();
-
-        foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $entity) {
-            $result[] = $this->entityFactory->create($entity);
+        for ($i = 0; $i < $this->entityPerPage; ++$i) {
+            $result[] = $this->getById($this->generateId($id + $i));
         }
 
         return $result;
@@ -117,5 +114,19 @@ class EntityPdoRepository implements EntityRepositoryInterface
         $sth = $this->pdo->prepare("DELETE FROM $this->entityName WHERE id = :id;");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
         $sth->execute();
+    }
+
+    private function generateId(int $count = null): Id
+    {
+        if (!$count) {
+            $count = $this->getCount();
+        }
+
+        return new Id(++$count);
+    }
+
+    private function generateIdByPage(int $page): int
+    {
+        return (($page - 1) * $this->entityPerPage) + 1;
     }
 }

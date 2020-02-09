@@ -8,6 +8,7 @@ use Todo\Lib\Exceptions\CannotEditEntityException;
 use Todo\Lib\Exceptions\ForbiddenStatusException;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\Ordering\EntityOrderingService;
 use Todo\Model\EntityInterface;
 use Todo\Model\Id;
 use Todo\Model\Status;
@@ -28,9 +29,19 @@ class EntityService implements EntityServiceInterface
         return $this->repository->getById($entityId);
     }
 
-    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array
+    public function getCollection(
+        int $page,
+        ?string $orderBy = null,
+        ?string $order = null
+    ): array
     {
-        return $this->repository->getCollection($page, $orderBy, $order);
+        $collection = $this->repository->getCollection($page);
+
+        if ($orderBy && $order) {
+            $collection = (new EntityOrderingService())->orderCollection($collection, $orderBy, $order);
+        }
+
+        return $collection;
     }
 
     public function getCount(): int

@@ -5,6 +5,7 @@ namespace Tests\Lib\Factory\Service;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
+use Todo\Lib\Service\DB\PdoDBService;
 
 class PdoServiceFactoryTest extends TestCase
 {
@@ -18,8 +19,8 @@ class PdoServiceFactoryTest extends TestCase
             App::getRepositoryType(),
             App::getDbFolderName()
         );
-        $pdoService = $factory->create();
+        $pdoService = $factory->createService();
 
-        $this->assertTrue(method_exists($pdoService, 'getPdo'));
+        $this->assertInstanceOf(PdoDBService::class, $pdoService);
     }
 }

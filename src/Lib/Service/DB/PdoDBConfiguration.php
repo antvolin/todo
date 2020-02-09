@@ -1,8 +1,8 @@
 <?php
 
-namespace Todo\Lib\DB;
+namespace Todo\Lib\Service\DB;
 
-class PdoDatabaseConfiguration implements DatabaseConfigurationInterface
+class PdoDBConfiguration
 {
     private string $entityName;
     private string $dbType;

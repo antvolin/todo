@@ -19,7 +19,9 @@
         "symfony/twig-bundle": "^5.0",
         "ext-sqlite3": "*",
         "ext-pdo": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "symfony/cache": "^5.0",
+        "ext-redis": "*"
     },
     "require-dev": {
         "symfony/test-pack": "^1.0",

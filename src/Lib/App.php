@@ -3,14 +3,16 @@
 namespace Todo\Lib;
 
 use PDO;
+use Redis;
 use Symfony\Component\HttpFoundation\Request;
 use Todo\Lib\Factory\Entity\EntityFactory;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
+use Todo\Lib\Factory\Repository\EntityRedisRepositoryFactory;
 use Todo\Lib\Factory\Request\RequestFactory;
 use Todo\Lib\Factory\Service\EntityServiceFactory;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
+use Todo\Lib\Factory\Service\RedisDBServiceFactory;
 use Todo\Lib\Factory\Service\TokenServiceFactory;
-use Todo\Lib\Factory\Service\TokenServiceFactoryInterface;
 use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
@@ -18,15 +20,17 @@ use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Factory\Template\TwigTemplateFactory;
 use Todo\Lib\Service\Auth\AuthService;
+use Todo\Lib\Service\DB\PdoDBService;
+use Todo\Lib\Service\DB\RedisDBService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
-use Todo\Lib\Service\Pdo\PdoDatabaseService;
 use Todo\Lib\Service\Secret\SecretGeneratorService;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 
 class App
 {
     private ?PDO $pdo = null;
+    private ?Redis $redis = null;
     private Request $request;
     private static int $entityPerPage;
     private static string $entityName;
@@ -40,6 +44,9 @@ class App
     private static string $dbType;
     private static string $user;
     private static string $password;
+    private static string $redisHost;
+    private static string $redisPort;
+    private static string $redisPassword;
 
     public function __construct()
     {
@@ -58,6 +65,24 @@ class App
         self::$user = $_ENV['APP_USER'];
         self::$password = $_ENV['APP_PASSWORD'];
         self::$viewType = $_ENV['VIEW_TYPE'];
+        self::$redisHost = $_ENV['REDIS_HOST'];
+        self::$redisPort = $_ENV['REDIS_PORT'];
+        self::$redisPassword = $_ENV['REDIS_PASSWORD'];
+    }
+
+    public static function getRedisHost(): string
+    {
+        return self::$redisHost;
+    }
+
+    public static function getRedisPort(): string
+    {
+        return self::$redisPort;
+    }
+
+    public static function getRedisPassword(): string
+    {
+        return self::$redisPassword;
     }
 
     public static function getEntityName(): string
@@ -134,10 +159,13 @@ class App
 
     public function createToken(): string
     {
-        return $this->createTokenServiceFactory()->create($this->getRequest())->getToken();
+        $tokenServiceFactory = $this->createTokenServiceFactory();
+        $tokenServiceFactory->setRequest($this->getRequest());
+
+        return $tokenServiceFactory->createService()->getToken();
     }
 
-    public function createTokenServiceFactory(): TokenServiceFactoryInterface
+    public function createTokenServiceFactory(): TokenServiceFactory
     {
         return new TokenServiceFactory(self::getTokenSalt());
     }
@@ -157,29 +185,55 @@ class App
     {
         $entityServiceFactory = new EntityServiceFactory($this->createEntityFactory());
 
-        return $entityServiceFactory->create();
+        return $entityServiceFactory->createService();
     }
 
     /**
      * @return EntityRepositoryInterface
      *
      * @throws Exceptions\CannotCreateDirectoryException
+     * @throws Exceptions\PdoConnectionException
+     * @throws Exceptions\RedisConnectionException
      */
     public function createRepository(): EntityRepositoryInterface
     {
-        if ('pdo' === self::getRepositoryType()) {
-            $this->createPdo();
-            $this->createTables();
+        $entityFactory = $this->createEntityFactory();
+
+        if ('redis' === self::getRepositoryType()) {
+            $service = $this->createRedisDBService();
+
+            if (!$this->redis) {
+                $this->redis = $service->getDBInstance();
+            }
+
+            $factory = new EntityRedisRepositoryFactory(
+                $this->redis,
+                $entityFactory,
+                self::getEntityPerPage()
+            );
+        } elseif ('pdo' === self::getRepositoryType()) {
+            $service = $this->createPdoDBService();
+
+            if (!$this->pdo) {
+                $this->pdo = $service->getDBInstance();
+            }
+
+            $service->createTables();
 
             $factory = new EntityPdoRepositoryFactory(
                 $this->pdo,
-                $this->createEntityFactory()
+                $entityFactory,
+                self::getEntityPerPage(),
+                self::getEntityName()
             );
         } else {
-            $factory = new EntityFileRepositoryFactory();
+            $factory = new EntityFileRepositoryFactory(
+                self::getEntityPerPage(),
+                self::getEntityName()
+            );
         }
 
-        return $factory->create(self::getEntityPerPage(), self::getEntityName());
+        return $factory->createRepository();
     }
 
     public function createEntityFactory(): EntityFactoryInterface
@@ -197,24 +251,21 @@ class App
         return new AuthService($request, self::getUser(), self::getPassword());
     }
 
-    private function createPdo(): PDO
+    private function createPdoDBService(): PdoDBService
     {
-        if (!$this->pdo) {
-            $this->pdo = (new PdoServiceFactory(
+        return (new PdoServiceFactory(
                 self::getEntityName(),
                 self::getDbType(),
                 self::getDbFolderName()
-            ))->create()->getPdo();
-        }
-
-        return $this->pdo;
+            ))->createService();
     }
 
-    private function createTables(): void
+    private function createRedisDBService(): RedisDBService
     {
-        if ('pdo' === self::getRepositoryType()) {
-            $pdoDatabaseService = new PdoDatabaseService($this->pdo, self::getEntityName());
-            $pdoDatabaseService->createTables();
-        }
+        return (new RedisDBServiceFactory(
+                self::getRedisHost(),
+                self::getRedisPort(),
+                self::getRedisPassword(),
+            ))->createService();
     }
 }

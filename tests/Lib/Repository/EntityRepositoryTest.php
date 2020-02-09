@@ -5,9 +5,12 @@ namespace Tests\Lib\Repository;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotCreateDirectoryException;
+use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\Exceptions\RedisConnectionException;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Traits\TestValueGenerator;
+use Todo\Model\Entity;
 
 class EntityRepositoryTest extends TestCase
 {
@@ -18,6 +21,8 @@ class EntityRepositoryTest extends TestCase
 
     /**
      * @throws CannotCreateDirectoryException
+     * @throws PdoConnectionException
+     * @throws RedisConnectionException
      */
     protected function setUp()
     {
@@ -38,13 +43,7 @@ class EntityRepositoryTest extends TestCase
         $id = $this->entityService->add($userName, $this->generateEmail(), $text);
         $entity = $this->repository->getById($id);
 
-        $this->assertTrue(method_exists($entity, 'getId'));
-        $this->assertTrue(method_exists($entity, 'getUserName'));
-        $this->assertTrue(method_exists($entity, 'getEmail'));
-        $this->assertTrue(method_exists($entity, 'getText'));
-        $this->assertTrue(method_exists($entity, 'getStatus'));
-        $this->assertTrue(method_exists($entity, 'setText'));
-        $this->assertTrue(method_exists($entity, 'setStatus'));
+        $this->assertInstanceOf(Entity::class, $entity);
     }
 
     /**

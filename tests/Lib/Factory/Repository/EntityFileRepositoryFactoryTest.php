@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotCreateDirectoryException;
 use Todo\Lib\Factory\Repository\EntityFileRepositoryFactory;
+use Todo\Lib\Repository\EntityFileRepository;
 
 class EntityFileRepositoryFactoryTest extends TestCase
 {
@@ -25,13 +26,12 @@ class EntityFileRepositoryFactoryTest extends TestCase
      */
     public function shouldBeCreatableEntityFileRepository(): void
     {
-        $factory = new EntityFileRepositoryFactory();
-        $repository = $factory->create($this->entityPerPage, $this->entityName);
+        $factory = new EntityFileRepositoryFactory(
+            $this->entityPerPage,
+            $this->entityName
+        );
+        $repository = $factory->createRepository();
 
-        $this->assertTrue(method_exists($repository, 'getById'));
-        $this->assertTrue(method_exists($repository, 'getCollection'));
-        $this->assertTrue(method_exists($repository, 'getCount'));
-        $this->assertTrue(method_exists($repository, 'add'));
-        $this->assertTrue(method_exists($repository, 'remove'));
+        $this->assertInstanceOf(EntityFileRepository::class, $repository);
     }
 }

@@ -5,6 +5,13 @@ namespace Tests\Lib;
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotCreateDirectoryException;
+use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\Exceptions\RedisConnectionException;
+use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
+use Todo\Lib\Factory\Service\TokenServiceFactory;
+use Todo\Lib\Repository\EntityRepositoryInterface;
+use Todo\Lib\Service\Auth\AuthService;
+use Todo\Lib\Service\Entity\EntityService;
 
 class AppTest extends TestCase
 {
@@ -55,7 +62,7 @@ class AppTest extends TestCase
     {
         $factory = $this->app->createTokenServiceFactory();
 
-        $this->assertTrue(method_exists($factory, 'create'));
+        $this->assertInstanceOf(TokenServiceFactory::class, $factory);
     }
 
     /**
@@ -65,29 +72,21 @@ class AppTest extends TestCase
     {
         $service = $this->app->createEntityService();
 
-        $this->assertTrue(method_exists($service, 'getCount'));
-        $this->assertTrue(method_exists($service, 'remove'));
-        $this->assertTrue(method_exists($service, 'done'));
-        $this->assertTrue(method_exists($service, 'edit'));
-        $this->assertTrue(method_exists($service, 'getCollection'));
-        $this->assertTrue(method_exists($service, 'getById'));
-        $this->assertTrue(method_exists($service, 'add'));
+        $this->assertInstanceOf(EntityService::class, $service);
     }
 
     /**
      * @test
      *
      * @throws CannotCreateDirectoryException
+     * @throws PdoConnectionException
+     * @throws RedisConnectionException
      */
     public function shouldBeGettingRepository(): void
     {
         $repository = $this->app->createRepository();
 
-        $this->assertTrue(method_exists($repository, 'getById'));
-        $this->assertTrue(method_exists($repository, 'getCollection'));
-        $this->assertTrue(method_exists($repository, 'getCount'));
-        $this->assertTrue(method_exists($repository, 'add'));
-        $this->assertTrue(method_exists($repository, 'remove'));
+        $this->assertInstanceOf(EntityRepositoryInterface::class, $repository);
     }
 
     /**
@@ -97,7 +96,7 @@ class AppTest extends TestCase
     {
         $factory = $this->app->createPaginatorFactory();
 
-        $this->assertTrue(method_exists($factory, 'create'));
+        $this->assertInstanceOf(PaginatorFactoryInterface::class, $factory);
     }
 
     /**
@@ -107,8 +106,6 @@ class AppTest extends TestCase
     {
         $service = $this->app->createAuthService($this->app->getRequest());
 
-        $this->assertTrue(method_exists($service, 'getRequest'));
-        $this->assertTrue(method_exists($service, 'logout'));
-        $this->assertTrue(method_exists($service, 'login'));
+        $this->assertInstanceOf(AuthService::class, $service);
     }
 }

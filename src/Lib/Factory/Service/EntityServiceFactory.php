@@ -6,7 +6,7 @@ use Todo\Lib\Factory\Entity\EntityFactoryInterface;
 use Todo\Lib\Service\Entity\EntityService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 
-class EntityServiceFactory implements EntityServiceFactoryInterface
+class EntityServiceFactory implements ServiceFactoryInterface
 {
     private EntityFactoryInterface $entityFactory;
 
@@ -15,7 +15,7 @@ class EntityServiceFactory implements EntityServiceFactoryInterface
         $this->entityFactory = $entityFactory;
     }
 
-    public function create(): EntityServiceInterface
+    public function createService(): EntityServiceInterface
     {
         return new EntityService($this->entityFactory);
     }

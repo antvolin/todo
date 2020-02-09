@@ -4,7 +4,7 @@ namespace Tests\Lib\Service\Paginator;
 
 use PHPUnit\Framework\TestCase;
 use Todo\Lib\Factory\Paginator\PagerfantaPaginatorServiceFactory;
-use Todo\Lib\Service\Ordering\OrderingService;
+use Todo\Lib\Service\Ordering\EntityOrderingService;
 use Todo\Lib\Service\Paginator\PaginatorAdapter;
 use Todo\Lib\Service\Paginator\PaginatorServiceInterface;
 
@@ -73,7 +73,7 @@ class PagerfantaPaginatorServiceTest extends TestCase
         );
 
         $html1 = sprintf('<nav>%s%s%s</nav>', $prevUrl, $currentUrl, $nextUrl);
-        $html2 = $this->paginator->getHtml(OrderingService::ALLOWED_ORDER_BY_FIELDS[0], OrderingService::ASC);
+        $html2 = $this->paginator->getHtml(EntityOrderingService::ALLOWED_ORDER_BY_FIELDS[0], EntityOrderingService::ASC);
 
         $this->assertEquals($html1, $html2);
     }

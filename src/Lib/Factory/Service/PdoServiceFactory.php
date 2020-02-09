@@ -2,12 +2,11 @@
 
 namespace Todo\Lib\Factory\Service;
 
-use Todo\Lib\DB\PdoDatabaseConfiguration;
-use Todo\Lib\DB\PdoDatabaseConnection;
-use Todo\Lib\Service\Pdo\PdoService;
-use Todo\Lib\Service\Pdo\PdoServiceInterface;
+use Todo\Lib\Service\DB\PdoDBConfiguration;
+use Todo\Lib\Service\DB\PdoDBConnection;
+use Todo\Lib\Service\DB\PdoDBService;
 
-class PdoServiceFactory implements PdoServiceFactoryInterface
+class PdoServiceFactory implements ServiceFactoryInterface
 {
     private string $entityName;
     private string $dbType;
@@ -20,11 +19,11 @@ class PdoServiceFactory implements PdoServiceFactoryInterface
         $this->dbFolderName = strtolower($dbFolderName);
     }
 
-    public function create(): PdoServiceInterface
+    public function createService(): PdoDBService
     {
-        $pdoDatabaseConfiguration = new PdoDatabaseConfiguration($this->entityName, $this->dbType, $this->dbFolderName);
-        $pdoDatabaseConnection = new PdoDatabaseConnection($pdoDatabaseConfiguration);
+        $pdoDatabaseConfiguration = new PdoDBConfiguration($this->entityName, $this->dbType, $this->dbFolderName);
+        $pdoDatabaseConnection = new PdoDBConnection($pdoDatabaseConfiguration);
 
-        return new PdoService($pdoDatabaseConnection);
+        return new PdoDBService($pdoDatabaseConnection, $this->entityName);
     }
 }

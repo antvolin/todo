@@ -29,7 +29,7 @@ class PathServiceTest extends TestCase
      */
     public function shouldBeGettingCorrectPathToEntityStorage(): void
     {
-        if (App::getRepositoryType() !== 'pdo') {
+        if ('file' !== App::getRepositoryType()) {
             $this->markTestSkipped();
         }
 

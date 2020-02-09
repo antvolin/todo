@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Todo\Controller\EntityController;
 use Todo\Lib\App;
 use Todo\Lib\Exceptions\CannotCreateDirectoryException;
+use Todo\Lib\Exceptions\PdoConnectionException;
+use Todo\Lib\Exceptions\RedisConnectionException;
 use Todo\Lib\Factory\Paginator\PaginatorFactoryInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
 use Todo\Lib\Service\RequestHandler\PaginatorRequestHandlerService;
@@ -25,6 +27,8 @@ class EntityControllerTest extends TestCase
 
     /**
      * @throws CannotCreateDirectoryException
+     * @throws PdoConnectionException
+     * @throws RedisConnectionException
      */
     protected function setUp()
     {

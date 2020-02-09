@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
-use Todo\Lib\Service\Ordering\OrderingService;
+use Todo\Lib\Service\Ordering\EntityOrderingService;
 
 class EntityController implements ControllerInterface
 {
@@ -39,7 +39,7 @@ class EntityController implements ControllerInterface
             'isAdmin' => $this->request->getSession()->get('admin', false),
             'isCreated' => $this->request->getSession()->get('isCreated', false),
             'page' => $page,
-            'order' => OrderingService::getNextOrder($order),
+            'order' => (new EntityOrderingService)->getNextOrder($order),
             'entities' => $paginator->getCurrentPageResults(),
             'pagination' => $paginator->getHtml($orderBy, $order),
         ];

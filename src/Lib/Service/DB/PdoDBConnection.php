@@ -1,12 +1,12 @@
 <?php
 
-namespace Todo\Lib\DB;
+namespace Todo\Lib\Service\DB;
 
-class PdoDatabaseConnection implements DatabaseConnectionInterface
+class PdoDBConnection
 {
-    private DatabaseConfigurationInterface $configuration;
+    private PdoDBConfiguration $configuration;
 
-    public function __construct(DatabaseConfigurationInterface $config)
+    public function __construct(PdoDBConfiguration $config)
     {
         $this->configuration = $config;
     }
@@ -17,7 +17,7 @@ class PdoDatabaseConnection implements DatabaseConnectionInterface
             '%s:%s%s%s%s',
             $this->configuration->getDbType(),
             dirname(__DIR__),
-            '/../../',
+            '/../../../',
             $this->configuration->getDbFolderName(),
             $this->configuration->getEntityName()
         );

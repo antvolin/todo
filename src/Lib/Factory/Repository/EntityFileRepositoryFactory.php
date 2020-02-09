@@ -9,22 +9,27 @@ use Todo\Lib\Service\Path\PathService;
 
 class EntityFileRepositoryFactory implements EntityRepositoryFactoryInterface
 {
+    private string $entityPerPage;
+    private string $entityName;
+
+    public function __construct(string $entityPerPage, string $entityName)
+    {
+        $this->entityPerPage = $entityPerPage;
+        $this->entityName = $entityName;
+    }
     /**
-     * @param int $entityPerPage
-     * @param string $entityName
-     *
      * @return EntityRepositoryInterface
      *
      * @throws CannotCreateDirectoryException
      */
-    public function create(int $entityPerPage, string $entityName): EntityRepositoryInterface
+    public function createRepository(): EntityRepositoryInterface
     {
-        $entityStoragePath = PathService::getPathToEntityStorage($entityName, 3);
+        $entityStoragePath = PathService::getPathToEntityStorage($this->entityName, 3);
 
         if (!is_dir($entityStoragePath) && !mkdir($entityStoragePath) && !is_dir($entityStoragePath)) {
             throw new CannotCreateDirectoryException(sprintf('Directory "%s" was not created', $entityStoragePath));
         }
 
-        return new EntityFileRepository($entityStoragePath, $entityPerPage);
+        return new EntityFileRepository($entityStoragePath, $this->entityPerPage);
     }
 }

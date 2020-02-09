@@ -6,5 +6,5 @@ use Todo\Lib\Repository\EntityRepositoryInterface;
 
 interface EntityRepositoryFactoryInterface
 {
-    public function create(int $entityPerPage, string $entityName): EntityRepositoryInterface;
+    public function createRepository(): EntityRepositoryInterface;
 }

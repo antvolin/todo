@@ -2,38 +2,34 @@
 
 namespace Todo\Lib\Factory\Repository;
 
-use PDO;
+use Redis;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
-use Todo\Lib\Repository\EntityPdoRepository;
+use Todo\Lib\Repository\EntityRedisRepository;
 use Todo\Lib\Repository\EntityRepositoryInterface;
 
-class EntityPdoRepositoryFactory implements EntityRepositoryFactoryInterface
+class EntityRedisRepositoryFactory implements EntityRepositoryFactoryInterface
 {
-    private PDO $pdo;
+    private Redis $redis;
     private EntityFactoryInterface $entityFactory;
     private string $entityPerPage;
-    private string $entityName;
 
     public function __construct(
-        Pdo $pdo,
+        Redis $redis,
         EntityFactoryInterface $entityFactory,
-        string $entityPerPage,
-        string $entityName
+        string $entityPerPage
     )
     {
-        $this->pdo = $pdo;
+        $this->redis = $redis;
         $this->entityFactory = $entityFactory;
         $this->entityPerPage = $entityPerPage;
-        $this->entityName = $entityName;
     }
 
     public function createRepository(): EntityRepositoryInterface
     {
-        return new EntityPdoRepository(
-            $this->pdo,
+        return new EntityRedisRepository(
+            $this->redis,
             $this->entityFactory,
-            $this->entityPerPage,
-            $this->entityName
+            $this->entityPerPage
         );
     }
 }

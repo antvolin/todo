@@ -4,14 +4,17 @@ namespace Todo\Lib\Service\RequestHandler;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Todo\Lib\Factory\Service\TokenServiceFactoryInterface;
+use Todo\Lib\Factory\Service\TokenServiceFactory;
 
 class AccessRequestHandlerService extends RequestHandlerService
 {
     private const ACCESS_DENIED_MSG = 'Attempt to use csrf attack!';
-    private TokenServiceFactoryInterface $tokenServiceFactory;
+    private TokenServiceFactory $tokenServiceFactory;
 
-    public function __construct(?RequestHandlerService $nextHandler, TokenServiceFactoryInterface $tokenServiceFactory)
+    public function __construct(
+        ?RequestHandlerService $nextHandler,
+        TokenServiceFactory $tokenServiceFactory
+    )
     {
         parent::__construct($nextHandler);
 
@@ -22,7 +25,8 @@ class AccessRequestHandlerService extends RequestHandlerService
     {
         $token = $request->get('csrf-token');
         $secret = $request->getSession()->get('secret');
-        $tokenService = $this->tokenServiceFactory->create($request);
+        $this->tokenServiceFactory->setRequest($request);
+        $tokenService = $this->tokenServiceFactory->createService();
 
         if ($token && !$tokenService->isValidToken($token, $secret)) {
             throw new AccessDeniedHttpException(self::ACCESS_DENIED_MSG);

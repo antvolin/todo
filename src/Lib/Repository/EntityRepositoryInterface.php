@@ -9,7 +9,7 @@ interface EntityRepositoryInterface
 {
     public function getById(Id $entityId): EntityInterface;
 
-    public function getCollection(int $page, ?string $orderBy = null, ?string $order = null): array;
+    public function getCollection(int $page): array;
 
     public function getCount(): int;
 
