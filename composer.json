@@ -21,7 +21,8 @@
         "ext-pdo": "*",
         "ext-json": "*",
         "symfony/cache": "^5.0",
-        "ext-redis": "*"
+        "ext-redis": "*",
+        "ext-memcached": "*"
     },
     "require-dev": {
         "symfony/test-pack": "^1.0",

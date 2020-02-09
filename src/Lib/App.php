@@ -2,14 +2,17 @@
 
 namespace Todo\Lib;
 
+use Memcached;
 use PDO;
 use Redis;
 use Symfony\Component\HttpFoundation\Request;
 use Todo\Lib\Factory\Entity\EntityFactory;
 use Todo\Lib\Factory\Entity\EntityFactoryInterface;
+use Todo\Lib\Factory\Repository\EntityMemcachedRepositoryFactory;
 use Todo\Lib\Factory\Repository\EntityRedisRepositoryFactory;
 use Todo\Lib\Factory\Request\RequestFactory;
 use Todo\Lib\Factory\Service\EntityServiceFactory;
+use Todo\Lib\Factory\Service\MemcachedDBServiceFactory;
 use Todo\Lib\Factory\Service\PdoServiceFactory;
 use Todo\Lib\Factory\Service\RedisDBServiceFactory;
 use Todo\Lib\Factory\Service\TokenServiceFactory;
@@ -20,6 +23,7 @@ use Todo\Lib\Factory\Repository\EntityPdoRepositoryFactory;
 use Todo\Lib\Factory\Template\TemplateAdapterInterface;
 use Todo\Lib\Factory\Template\TwigTemplateFactory;
 use Todo\Lib\Service\Auth\AuthService;
+use Todo\Lib\Service\DB\MemcachedDBService;
 use Todo\Lib\Service\DB\PdoDBService;
 use Todo\Lib\Service\DB\RedisDBService;
 use Todo\Lib\Service\Entity\EntityServiceInterface;
@@ -31,6 +35,7 @@ class App
 {
     private ?PDO $pdo = null;
     private ?Redis $redis = null;
+    private ?Memcached $memcached = null;
     private Request $request;
     private static int $entityPerPage;
     private static string $entityName;
@@ -45,8 +50,10 @@ class App
     private static string $user;
     private static string $password;
     private static string $redisHost;
-    private static string $redisPort;
+    private static int $redisPort;
     private static string $redisPassword;
+    private static string $memcachedHost;
+    private static int $memcachedPort;
 
     public function __construct()
     {
@@ -68,6 +75,8 @@ class App
         self::$redisHost = $_ENV['REDIS_HOST'];
         self::$redisPort = $_ENV['REDIS_PORT'];
         self::$redisPassword = $_ENV['REDIS_PASSWORD'];
+        self::$memcachedHost = $_ENV['MEMCACHED_HOST'];
+        self::$memcachedPort = $_ENV['MEMCACHED_PORT'];
     }
 
     public static function getRedisHost(): string
@@ -75,7 +84,7 @@ class App
         return self::$redisHost;
     }
 
-    public static function getRedisPort(): string
+    public static function getRedisPort(): int
     {
         return self::$redisPort;
     }
@@ -83,6 +92,16 @@ class App
     public static function getRedisPassword(): string
     {
         return self::$redisPassword;
+    }
+
+    public static function getMemcachedHost(): string
+    {
+        return self::$redisHost;
+    }
+
+    public static function getMemcachedServer(): string
+    {
+        return self::$redisHost.':'.self::$memcachedPort;
     }
 
     public static function getEntityName(): string
@@ -192,6 +211,7 @@ class App
      * @return EntityRepositoryInterface
      *
      * @throws Exceptions\CannotCreateDirectoryException
+     * @throws Exceptions\MemcachedConnectionException
      * @throws Exceptions\PdoConnectionException
      * @throws Exceptions\RedisConnectionException
      */
@@ -199,7 +219,20 @@ class App
     {
         $entityFactory = $this->createEntityFactory();
 
-        if ('redis' === self::getRepositoryType()) {
+        if ('memcached' === self::getRepositoryType()) {
+            $service = $this->createMemcachedDBService();
+
+            if (!$this->memcached) {
+                $this->memcached = $service->getDBInstance();
+            }
+
+            $factory = new EntityMemcachedRepositoryFactory(
+                $this->memcached,
+                $entityFactory,
+                self::getEntityPerPage(),
+                self::getMemcachedServer()
+            );
+        } elseif ('redis' === self::getRepositoryType()) {
             $service = $this->createRedisDBService();
 
             if (!$this->redis) {
@@ -267,5 +300,12 @@ class App
                 self::getRedisPort(),
                 self::getRedisPassword(),
             ))->createService();
+    }
+
+    private function createMemcachedDBService(): MemcachedDBService
+    {
+        return (new MemcachedDBServiceFactory(
+            self::getMemcachedHost()
+        ))->createService();
     }
 }
